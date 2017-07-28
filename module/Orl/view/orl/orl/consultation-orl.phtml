@@ -1,0 +1,536 @@
+
+<?php use Facturation\View\Helper\DateHelper; ?>
+
+<!-- SCRIPT DU NOUVEAU CODE POUR LA GESTION DES IMAGES  -->
+<!-- SCRIPT DU NOUVEAU CODE POUR LA GESTION DES IMAGES  -->
+<!-- SCRIPT DU NOUVEAU CODE POUR LA GESTION DES IMAGES  -->
+<?php 
+    echo $this->headLink()->appendStylesheet($this->basePath().'/css/pikachoose/bottom.css');
+    echo  $this->headScript()->appendFile($this->basePath().'/js/plugins/pikachoose/jquery.jcarousel.min.js');
+    echo  $this->headScript()->appendFile($this->basePath().'/js/plugins/pikachoose/jquery.pikachoose.min.js');
+?>
+
+<!-- les scripts des images dans examen morphologique   -->
+<?php echo $this->headScript()->appendFile($this->basePath().'/js/plugins/fancybox/source/jquery.fancybox.js');?>
+<?php echo $this->headLink()->appendStylesheet($this->basePath().'/js/plugins/fancybox/source/jquery.fancybox.css');?>
+<?php echo $this->headScript()->appendFile($this->basePath().'/js/orl/complementcons_accordeon_controle.js');
+      echo $this->headLink()->appendStylesheet($this->basePath().'/css/mescss/bloquerDate.css'); //DatePicker
+      echo $this->headScript()->appendFile($this->basePath().'/js/mesjs/bloquerDate.js'); //Pour bloquer certaines dates
+      echo $this->headScript()->appendFile($this->basePath().'/js/orl/sousDossierr.js'); //Pour les sous dossiers?>
+
+  <?php
+      //RECUPERATION DE LA LISTE DES MEDICAMENTS
+      $hopital = $this->liste_med;
+  ?>
+<script>
+$(function(){
+  document.getElementById('service_accueil').value="";
+  document.getElementById('heure_rv').value="";
+});
+
+
+//POUR LE MENU GAUCHE dans -elementgauche.phtml
+$('#plus_deces').toggle(true);
+$("#deces").replaceWith("<li id='deces' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='<?php echo $this->basePath().'/images_icons/moin-green2.PNG';?>' alt='Liste' /> Consultations </span></a></li>");
+dep_deces1();
+$('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px'});
+</script>
+
+<!--************************************************************************************************************-->
+<!--===================================== BLOCAGE DES JOURS NON CONSULTABLE ====================================-->
+<!--===================================== BLOCAGE DES JOURS NON CONSULTABLE ====================================-->
+<!--************************************************************************************************************-->
+<?php
+  $Control = new DateHelper();
+  $today = new \DateTime();
+  $AnneeActuelle =  $today->format('Y');
+
+  /*****Mois 1 *****/
+  $leMois1 = $today->format('m'); //C'est le mois actuel � l'heure du calendrier
+  $Dimanche1 = $Control->lePremierDimancheDuMois();
+  /*****Mois 2 *****(Sauf pour le douzieme mois)*/
+  $leMois2 = $leMois1 +1;
+  if($leMois2 == 13){ $leMois2 = 1; $AnneeActuelle = $AnneeActuelle + 1;}
+  $Dimanche2 = $Control->lePremierDimancheDuMoisByDate($leMois2, $AnneeActuelle);
+  /*****Mois 3 *****/
+  $leMois3 = $leMois2 +1;
+  if($leMois3 == 13){ $leMois3 = 1; $AnneeActuelle = $AnneeActuelle + 1;}
+  $Dimanche3 = $Control->lePremierDimancheDuMoisByDate($leMois3, $AnneeActuelle);
+  /*****Mois 4 *****/
+  $leMois4 = $leMois3 +1;
+  if($leMois4 == 13){ $leMois4 = 1; $AnneeActuelle = $AnneeActuelle + 1;}
+  $Dimanche4 = $Control->lePremierDimancheDuMoisByDate($leMois4, $AnneeActuelle);
+
+?>
+
+<script>
+  //Bloquer les 90 jours non consultable a patir du jour, du mois actuel
+  /*****Mois 1*****/
+  mois1 = '<?php echo $leMois1?>';
+  dimanche1 = <?php echo $Dimanche1?>;
+  /*****Mois 2 *****/
+  if(<?php echo $leMois2?> > 9){mois2 = <?php echo $leMois2?>;}else{mois2 = '0'+'<?php echo $leMois2?>';}
+  dimanche2 = <?php echo $Dimanche2?>;
+  /*****Mois 3 *****/
+  if(<?php echo $leMois3?> > 9){mois3 = <?php echo $leMois3?>;}else{mois3 = '0'+'<?php echo $leMois3?>';}
+  dimanche3 = <?php echo $Dimanche3?>;
+  /*****Mois 4 *****/
+  if(<?php echo $leMois4?> > 9){mois4 = <?php echo $leMois4?>;}else{mois4 = '0'+'<?php echo $leMois4?>';}
+  dimanche4 = <?php echo $Dimanche4?>;
+
+  /***ANNEE EN COURS***/
+  annee = '<?php echo $AnneeActuelle?>';
+
+  /****************************
+  *===========================
+   **************************/
+          bloquerDate();
+  /**************************
+   * ========================
+   **************************/
+
+  /*<!--************************************************************************************************************-->
+    <!--===================================== FIN BLOCAGE DES JOURS NON CONSULTABLE ================================-->
+    <!--===================================== FIN BLOCAGE DES JOURS NON CONSULTABLE ================================-->
+    <!--************************************************************************************************************--*/
+
+</script>
+<!-- *****************images dans EXAMEN MORPHOLOGIQUE (plugins fancybox) *************** -->
+<!-- *****************images dans EXAMEN MORPHOLOGIQUE (plugins fancybox) *************** -->
+<!-- *****************images dans EXAMEN MORPHOLOGIQUE (plugins fancybox) *************** -->
+<script>
+    function getservices(cle)
+    { 
+         $.ajax({
+            type: 'POST',
+            url: '<?php echo $this->basePath().'/orl/services' ?>',
+            data: 'id='+cle,
+            success: function(data) {
+                var result = jQuery.parseJSON(data);
+                $("#service_accueil").html(result);
+          },
+          error:function(e){console.log(e);alert("Une erreur interne est survenue!");},
+            dataType: "html"
+        });
+
+        return false;
+     }
+
+    //CODE POUR LA PARTIE DES ANTECEDENTS
+    $(function() {
+    	$( "#tabsSousDossier" ).tabs();
+    	$( "#tabsAntecedents" ).tabs();
+    	$( "#tabs" ).tabs();
+    	$( "#tabsInstrumental" ).tabs();
+    	$('#tabs-traitement-chirurgical').tabs();
+    	$('#tabsCompteRendu').tabs();
+    	$('#tabsSurveillance').tabs();
+    });
+    //pagination2();
+    //pagination();
+    AntecedentScript();
+</script>
+
+<style type='text/css'>
+#choix_sous_dossier td {
+	border: 2px solid #eeeeee;
+	padding-left: 5px;
+	font-family: times new roman;
+}
+
+#choix_sous_dossier td input {
+	margin-left: 5px;
+}
+
+/*** Bouton input submit***/
+/*** Bouton input submit***/
+/*** Bouton input submit***/
+.transf,.rendezvous,.ordonnance {
+	width: 32px;
+	height: 32px;
+	background: url(<? php //echo $ this- > basePath()."/images_icons/pdf.PNG"?>)
+		no-repeat right top;
+}
+
+.annulertransfert,.annulerrendezvous,.annulerhospitalisation {
+	position: relative;
+	width: 32px;
+	height: 32px;
+	background: url(<? php //echo $ this- > basePath()."/images_icons/annuler.PNG"?>)
+		no-repeat right top;
+	display: inline;
+	float: right;
+	border: transparent;
+	margin-bottom: 5px;
+}
+
+.transf,.rendezvous {
+	display: inline;
+	float: left;
+	border: transparent;
+	margin-bottom: 5px;
+	title: 'Imprimer';
+}
+
+.ordonnance {
+	display: inline;
+	border: transparent;
+	margin-bottom: 5px;
+	title: 'Imprimer';
+	position: relative;
+	float: right;
+}
+
+.transf input,.rendezvous input,.ordonnance input,.annulertransfert input,.annulerrendezvous input,.annulerhospitalisation input
+	{
+	right: 0;
+	top: 0;
+	font-size: 100px;
+	opacity: 0;
+	-moz-opacity: 0;
+	filter: alpha(opacity = 0);
+	cursor: pointer;
+	text-align: right;
+	width: 32px;
+	height: 32px;
+}
+</style>
+
+<!-- *****************FINNNNNN images dans EXAMEN MORPHOLOGIQUE (plugins fancybox) *********** -->
+<!-- *****************FINNNNNN images dans EXAMEN MORPHOLOGIQUE (plugins fancybox) *********** -->
+
+<style>
+#medicament input[type="text"] { /*le input ou le textarea*/
+	background-color: #fffffa; /*la couleur du champ*/
+	height: 25px; /*la hauteur du champ input*/
+	width: 190px; /* la largeur du champ input*/
+}
+
+#posologie input[type="text"] { /*le input ou le textarea*/
+	background-color: #fffffa; /*la couleur du champ*/
+	height: 25px; /*la hauteur du champ input*/
+	width: 190px; /* la largeur du champ input*/
+}
+
+#quantite input[type="text"] { /*le input ou le textarea*/
+	background-color: #fffffa; /*la couleur du champ*/
+	height: 25px; /*la hauteur du champ input*/
+	width: 190px; /* la largeur du champ input*/
+}
+
+#duree input[type="text"] { /*le input ou le textarea*/
+	background-color: #fffffa; /*la couleur du champ*/
+	height: 25px; /*la hauteur du champ input*/
+	width: 190px; /* la largeur du champ input*/
+}
+
+#etat_civil {
+	color: green;
+	width: 70%;
+}
+
+#etat_civil td {
+	vertical-align: top;
+}
+
+#etat_civil td p {
+	margin-right: 15px;
+	max-height: 46px;
+	max-width: 95%;
+	overflow: auto;
+}
+
+#etat_civil tr {
+	width: 70%;
+}
+
+#contenu {
+	visibility: hidden
+}
+</style>
+
+<script>
+    $(window).load(function () {
+
+    	$('#wait').toggle(false);
+    	$('#contenu').fadeIn().css({'visibility':'visible'});
+
+    	$('#divEtatcivil').css({'height':'350px'});
+
+    	$('#boutonTerminer').click(function(){ 
+
+    		if(!$('#sous_dossier').val()){
+        		$('#sous_dossier_click').trigger('click');
+    		}
+        });
+    	 
+    });
+</script>
+
+<div id="wait"
+	style="color: gray; font-size: 20px; text-align: center; margin-top: 80px;">
+	<span> Chargement ... </span>
+</div>
+
+<div id="contenu">
+    <?php echo $this->headLink()->appendStylesheet($this->basePath().'/css/messtyles.css');?>
+
+    <?php 
+    $form = $this->form;
+    $form->setName('AVIS');
+    $form->setAttribute('action', $this->url('orl', array('action'=>'choix-dossier')));
+    $form->setAttribute('type', 'post');
+    $form->prepare();
+    echo $this->form()->openTag($form); ?>
+
+    
+     <?php echo $this->formHidden($form->get('id_patient'));?>
+     <?php echo $this->formHidden($form->get('id_cons'));?>
+           
+<div id="accordions">
+		<!-- couleur bleu du logo//#49afcd-->
+
+		<!--*************** Accordeon ETAT CIVIL ******************-->
+		<!--*************** Accordeon ETAT CIVIL ********************-->
+		<!--*************** Accordeon ETAT CIVIL ********************-->
+		<!--*1*-->
+		<div
+			style='width: 160px; font-family: police2; font-size: 17px; font-weight: bold;'>Etat
+			Civil</div>
+		<div id="divEtatcivil" >
+
+			<img id="faces"
+				src='<?php echo $this->basePath().'/img/photos_patients/'.$this->image;?>'
+				alt="Jonathan Verrecchia"
+				style='float: left; margin-right: 40px; width: 105px; height: 105px;' />
+
+			<div
+				style='left: 50px; top: 160px; font-family: time new romans; position: absolute;'>
+				Age: <span
+					style='font-size: 19px; font-family: time new romans; color: green; font-weight: bold;'> <?php echo $this->lesdetails['AGE']; ?> ans </span>
+			</div>
+
+			<p style='color: white; opacity: 0.09;'>
+				<img id="faces"
+					src='<?php echo $this->basePath().'/img/photos_patients/'.$this->image;?>'
+					alt="Jonathan Verrecchia"
+					style='float: right; margin-right: 15px; width: 95px; height: 95px;' />
+			</p>
+			<table id="etat_civil">
+				<tr>
+					<td style='width: 27%; font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">Pr&eacute;nom</a><br>
+							<p style='font-weight: bold; font-size: 17px;'><?php echo $this->lesdetails['PRENOM'];?></p>
+						</div>
+					</td>
+
+					<td style='width: 35%; font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">Lieu de naissance</a><br>
+							<p style='font-weight: bold; font-size: 17px;'><?php echo $this->lesdetails['LIEU_NAISSANCE'];?></p>
+						</div>
+					</td>
+
+					<td style='width: 38%; font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">T&eacute;l&eacute;phone</a><br>
+							<p style='font-weight: bold; font-size: 17px;'><?php echo $this->lesdetails['TELEPHONE'];?></p>
+						</div>
+					</td>
+
+				</tr>
+
+				<tr>
+					<td style='font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">Nom</a><br>
+							<p style='font-weight: bold; font-size: 19px;'><?php echo $this->lesdetails['NOM'];?></p>
+						</div>
+					</td>
+
+					<td style='font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">Nationalit&eacute; origine</a><br>
+							<p style='font-weight: bold; font-size: 19px;'><?php echo $this->lesdetails['NATIONALITE_ORIGINE'];?></p>
+						</div>
+					</td>
+
+					<td style='font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">Email</a><br>
+							<p style='font-weight: bold; font-size: 19px;'><?php echo $this->lesdetails['EMAIL'];?></p>
+						</div>
+					</td>
+
+				</tr>
+
+				<tr>
+					<td style='font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">Sexe</a><br>
+							<p style='font-weight: bold; font-size: 19px;'><?php echo $this->lesdetails['SEXE'];?></p>
+						</div>
+					</td>
+
+					<td style='font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">Nationalit&eacute;
+								actuelle</a><br>
+							<p style='font-weight: bold; font-size: 19px;'><?php echo $this->lesdetails['NATIONALITE_ACTUELLE'];?></p>
+						</div>
+					</td>
+
+					<td style='font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">Profession</a><br>
+							<p style='font-weight: bold; font-size: 19px;'><?php echo $this->lesdetails['PROFESSION'];?></p>
+						</div>
+					</td>
+
+				</tr>
+
+				<tr>
+					<td
+						style='width: 27%; font-family: police1; font-size: 12px; vertical-align: top;'>
+
+						<div id="aa">
+							<a style="text-decoration: underline;">Date de naissance</a><br>
+							<p style='font-weight: bold; font-size: 19px;'>
+			   		    <?php 
+			   		    $date_naissance = $this->lesdetails['DATE_NAISSANCE'];
+			   		    if($date_naissance){ echo $Control->convertDate($this->lesdetails['DATE_NAISSANCE']); }else{ echo "";}
+			   		    ?> 
+			   		  </p>
+						</div>
+
+					</td>
+
+					<td
+						style='display: "block"; font-family: police1; font-size: 12px;'>
+						<div id="aa">
+							<a style="text-decoration: underline;">Adresse</a><br>
+							<p style='font-weight: bold; font-size: 19px;'><?php echo $this->lesdetails['ADRESSE'];?></p>
+						</div>
+
+					</td>
+
+					<td
+						style='display: "block"; font-family: police1; font-size: 12px; text-align: right;'>
+			   	
+			   	    <?php if($this->resultRV){?>
+			   	       <span id='image-neon'
+						style='color: red; font-weight: bold; font-size: 17px;'>Rendez-vous &agrave; <?php echo $this->resultRV; ?> </span>
+			   	       
+			   	    <?php } ?>
+			   	</td>
+				</tr>
+			</table>
+
+			<script>
+          function FaireClignoterImage (){
+                  $('#image-neon').fadeOut(900).delay(300).fadeIn(800);
+          }
+          setInterval('FaireClignoterImage()',2200);
+		    </script>
+
+			<?php 
+			  $today = new \DateTime();
+			  $date = $today->format('Y-m-d');
+			?>
+			
+			<div id="barre"></div>
+			<div
+				style='color: white; opacity: 1; width: 95px; height: 40px; float: right'>
+				<img src='<?php echo $this->basePath().'/images_icons/fleur1.jpg'?>'
+					alt="fleur1" />
+			</div>
+
+			<table id="numero" style="padding-top: 5px; width: 550px;">
+				<tr style="width: 550px;">
+					<td style="padding-top: 5px; width: 70px; font-size: 12px;">
+						Consultation:</td>
+					<td style="font-weight: bold;"> <?php 
+					echo $form->get('id_cons')->getValue();?></td>
+					<td style="font-weight: bold; width: 10px;">|</td>
+					<td style="padding-top: 5px; width: 80px; font-size: 12px;">Date ET
+						Heure:</td>
+					<td style="font-weight: bold;"> <?php echo $Control->convertDate($form->get('dateonly')->getValue());?>  -  <?php echo $form->get('heure_cons')->getValue();?></td>
+				</tr>
+			</table>
+
+		</div>
+		
+		
+		
+		   	    <!-- ******************** SOUS-DOSSIERS TEMPORAIRE ******************-->
+				<!-- ******************** SOUS-DOSSIERS TEMPORAIRE ******************-->
+				<!-- ******************** SOUS-DOSSIERS TEMPORAIRE******************-->
+        
+    
+
+				<div id="sous_dossier_click" style='font-family: police2; font-size: 17px; font-weight: bold;'>Sous-Dossiers </div>
+				
+	            <div style="max-height: 100px; padding-bottom: 0px;">
+				
+				  <table   class="sous_dossier" style="width: 20%;">
+				
+					 <tr class="form-rendezvous" style="width: 100%;">
+					
+					   <th class="form-rendezvous2" style="width: 17%;"> <?php echo $this->formRow($form->get('sous_dossier'));?> </th>
+					
+					 </tr>
+				
+				  </table>
+          
+	            </div>
+		
+
+</div>
+
+			<table style="width: 100%; margin-top: 20px;">
+				<tr>
+					<td style="background-color: #eeeeee; height: 40px; width: 100%;">
+						<p style="text-align: center;">
+							<button id="annuler2"
+								style="font-family: police2; font-size: 18px; font-weight: bold;">
+								Annuler</button>
+							<button id="boutonTerminer"
+								style="font-family: police2; font-size: 18px; font-weight: bold;">
+								Terminer</button>
+						</p>
+					</td>
+				</tr>
+			</table>
+
+			<!-- POP UP pour Confirmation Annulation -->
+			<div id="confirmation2" title="Confirmation de l'annulation"
+				style="display: none;">
+				<p style="font-size: 16px;">
+					<span style="float: left; margin: 0 0px 20px 0;"> <img
+						src="<?php echo $this->basePath().'/images_icons/warning_16.png';?>" />
+
+						Etes-vous s&ucirc;r de vouloir annuler les modifications ?
+					</span>
+				</p>
+			</div>
+
+    <?php echo $this->form()->closeTag();?>
+</div>
+
+
+
+
+		<form id="FormulaireUpdateComplementConsultation"
+			style="display: none;">
+			<button id="UpdateComplementConsultation"></button>
+		</form>
+
+
+		<script>
+jsPagination();
+sousDossier();
+</script>
+		<!-- SCRIPT LOURD -->
+<?php echo $this->headScript()->appendFile($this->basePath().'/js/jquery.maskedinput.cons.js');?>
+ 
