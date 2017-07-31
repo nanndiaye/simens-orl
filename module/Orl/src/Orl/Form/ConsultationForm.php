@@ -1129,6 +1129,18 @@ class ConsultationForm extends Form {
 						'id' => 'examen_para_clinique'
 				)
 		) );
+		
+		$this->add ( array (
+				'name' => 'surveillance',
+				'type' => 'Textarea',
+				'options' => array (
+						'label' => 'Surveillance :'
+				),
+				'attributes' => array (
+						'id' => 'surveillance'
+				)
+		) );
+		
 		$this->add ( array (
 				'name' => ' ',
 				'type' => 'Textarea',
@@ -1911,6 +1923,18 @@ class ConsultationForm extends Form {
 						'id' => 'histoire_maladie'
 				)
 		) );
+		
+		$this->add ( array (
+				'name' => 'antecedents_specifiques',
+				'type' => 'Textarea',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Antécédents spécifiques' )
+				),
+				'attributes' => array (
+						'id' => 'antecedents_specifiques'
+				)
+		) );
+		
 		$this->add ( array (
 				'name' => 'examen_complementaire',
 				'type' => 'Textarea',
@@ -2616,6 +2640,18 @@ class ConsultationForm extends Form {
 						'id' => 'laryngoscopie_indirecte'
 				)
 		) );
+		
+		$this->add ( array (
+				'name' => 'reste_examen_clinique',
+				'type' => 'Textarea',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Reste examen clinique:' )
+				),
+				'attributes' => array (
+						'id' => 'reste_examen_clinique'
+				)
+		) );
+		
 		$this->add ( array (
 				'name' => 'palpation_cou',
 				'type' => 'Textarea',

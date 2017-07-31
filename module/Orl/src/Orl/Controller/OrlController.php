@@ -822,6 +822,15 @@ class OrlController extends AbstractActionController {
 			
 		}
 		
+		$consultation = $this->getConsultation()->getConsultation($id);
+		if($consultation){
+			$data['id_cons'] = $consultation['id_cons'];
+			$data['id_medecin'] = $consultation['id_medecin'];
+			$data['id_patient'] = $consultation['id_patient'];
+				
+		}
+		
+		
 		//POUR LES INFORMATIONS OPERATOIRES
 		//POUR LES INFORMATIONS OPERATOIRES
 		//POUR LES INFORMATIONS OPERATOIRES
@@ -5984,15 +5993,21 @@ class OrlController extends AbstractActionController {
 		$form = new ConsultationForm ();
 		$formData = $this->getRequest ()->getPost ();
 		$form->setData ( $formData );
-		//var_dump($this->params()->fromPost('groupeIa'));exit();
-		//var_dump($this->params()->fromPost('plainte'));exit();
-		//var_dump($this->params()->fromPost('histologie));exit();
-		//var_dump($this->params()->fromPost('loboithmectomie'));exit();
+		
+		//consultation
+		$this->getConsultationTable()->addConsultation($id_cons, $id_medecin, $id_patient);
+		
+		 //var_dump($id_cons);exit();
+		
+		
+		
+		//var_dump($this->params()->fromPost('$id_cons'));exit();
 		//Insertion des antécédents ORL
 		//Insertion des antécédents ORL
 		//Insertion des antécédents ORL
 		$this->getAntecedentOrl() ->deleteAntecedentsOrl($id_cons);
 		$this->getAntecedentOrl() ->addAntecedentsOrl($formData, $id_cons, $id_medecin);
+
 		
 		//Insertion des motifs dhospitalisation ORL
 		//Insertion des motifs dhospitalisation ORL
@@ -6008,11 +6023,11 @@ class OrlController extends AbstractActionController {
 		$this->getHistoireMaladie()->addHistoireMaladie($formData, $id_cons, $id_medecin);
 		
 		//Sous Dossier
-		$listeSousDossier = $this->getSousDossierTable ()->listeSousDossier ();
-		//var_dump($listeSousDossier);exit();
-		$afficheTous = array ("" => 'Tous');
-		$tab_sous_dossier = array_merge ( $afficheTous, $listeSousDossier );
-		$form->get ( 'sous_dossier' )->setValueOptions ( $tab_sous_dossier );
+// 		$listeSousDossier = $this->getSousDossierTable ()->listeSousDossier ();
+// 		//var_dump($listeSousDossier);exit();
+// 		$afficheTous = array ("" => 'Tous');
+// 		$tab_sous_dossier = array_merge ( $afficheTous, $listeSousDossier );
+// 		$form->get ( 'sous_dossier' )->setValueOptions ( $tab_sous_dossier );
 		
 		
 		//Examen complementaires
@@ -6042,8 +6057,9 @@ class OrlController extends AbstractActionController {
 		//Sous dossier
 		
 		$this->getSousDossier()->deleteSousDossier($id_cons);
-		$this->getSousDossier()->addSousDossier($formData, $id_cons, $id_medecin);
 		
+		$this->getSousDossier()->addSousDossier($formData, $id_cons, $id_medecin);
+		//var_dump($formData); exit();
 		
 		//informations opératoires
 		//informations operatoires 
@@ -7070,6 +7086,7 @@ class OrlController extends AbstractActionController {
 		
 		$form = new ConsultationForm();
 		$form->get('id_cons')->setValue($id);
+		$form->get('id_patient')->setValue($id_pat);
 		// instancier la Consultation et rï¿½cupï¿½rer enregistrement
 		//$consult = $this->getConsultationTable()->getConsult ( $id );
 		//var_dump($id);exit();

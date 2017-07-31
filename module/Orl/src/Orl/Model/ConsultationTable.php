@@ -18,9 +18,7 @@ class ConsultationTable {
 				'ID_CONS' => $id
 		) );
 		$row =  $rowset->current ();
- 		if (! $row) {
- 			throw new \Exception ( "Could not find row $id" );
- 		}
+		
 		return $row;
 	}
 	
@@ -125,31 +123,31 @@ class ConsultationTable {
 		);
 		$this->tableGateway->update($donnees, array('ID_CONS'=> $values['ID_CONS']));
 	}
-	public function addConsultation($values , $IdDuService){
-		$this->tableGateway->getAdapter()->getDriver()->getConnection()->beginTransaction();
-		try {
-				$dataconsultation = array(
-					'ID_CONS'=> $values->get ( "id_cons" )->getValue (), 
-					'ID_SURVEILLANT'=> $values->get ( "id_surveillant" )->getValue (), 
-					'ID_PATIENT'=> $values->get ( "id_patient" )->getValue (), 
-					'DATE'=> $values->get ( "date_cons" )->getValue (), 
-					'POIDS' => $values->get ( "poids" )->getValue (), 
-					'TAILLE' => $values->get ( "taille" )->getValue (), 
-					'TEMPERATURE' => $values->get ( "temperature" )->getValue (), 
-					'PRESSION_ARTERIELLE' => $values->get ( "pressionarterielle" )->getValue (), 
-					'POULS' => $values->get ( "pouls" )->getValue (), 
-					'FREQUENCE_RESPIRATOIRE' => $values->get ( "frequence_respiratoire" )->getValue (), 
-					'GLYCEMIE_CAPILLAIRE' => $values->get ( "glycemie_capillaire" )->getValue (), 
-					'DATEONLY' => $values->get ( "dateonly" )->getValue (),
-					'HEURECONS' => $values->get ( "heure_cons" )->getValue (),
-					'ID_SERVICE' => $IdDuService
-			);
-			$this->tableGateway->insert($dataconsultation);
-			$this->tableGateway->getAdapter()->getDriver()->getConnection()->commit();
-		} catch (\Exception $e) {
-			$this->tableGateway->getAdapter()->getDriver()->getConnection()->rollback();
-		}
-	}
+// 	public function addConsultation($values , $IdDuService){
+// 		$this->tableGateway->getAdapter()->getDriver()->getConnection()->beginTransaction();
+// 		try {
+// 				$dataconsultation = array(
+// 					'ID_CONS'=> $values->get ( "id_cons" )->getValue (), 
+// 					'ID_SURVEILLANT'=> $values->get ( "id_surveillant" )->getValue (), 
+// 					'ID_PATIENT'=> $values->get ( "id_patient" )->getValue (), 
+// 					'DATE'=> $values->get ( "date_cons" )->getValue (), 
+// 					'POIDS' => $values->get ( "poids" )->getValue (), 
+// 					'TAILLE' => $values->get ( "taille" )->getValue (), 
+// 					'TEMPERATURE' => $values->get ( "temperature" )->getValue (), 
+// 					'PRESSION_ARTERIELLE' => $values->get ( "pressionarterielle" )->getValue (), 
+// 					'POULS' => $values->get ( "pouls" )->getValue (), 
+// 					'FREQUENCE_RESPIRATOIRE' => $values->get ( "frequence_respiratoire" )->getValue (), 
+// 					'GLYCEMIE_CAPILLAIRE' => $values->get ( "glycemie_capillaire" )->getValue (), 
+// 					'DATEONLY' => $values->get ( "dateonly" )->getValue (),
+// 					'HEURECONS' => $values->get ( "heure_cons" )->getValue (),
+// 					'ID_SERVICE' => $IdDuService
+// 			);
+// 			$this->tableGateway->insert($dataconsultation);
+// 			$this->tableGateway->getAdapter()->getDriver()->getConnection()->commit();
+// 		} catch (\Exception $e) {
+// 			$this->tableGateway->getAdapter()->getDriver()->getConnection()->rollback();
+// 		}
+// 	}
 	
 	public function addConsultationEffective($id_cons){
 		$db = $this->tableGateway->getAdapter();
@@ -939,5 +937,35 @@ class ConsultationTable {
  		$requete = $sql->prepareStatementForSqlObject($sQuery);
  		$requete->execute();
  	}
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+	
+	public function addConsultation($id_cons, $id_medecin, $id_patient){
+		$today = new \DateTime ();
+		$date_enregistrement = $today->format ( 'Y-m-d H:i:s' );
+
+		if(!$this->getConsult($id_cons)){
+			$donnees = array(
+					'id_cons' => $id_cons,
+					'id_medecin' => $id_medecin,
+					'id_patient' => $id_patient,
+			);
+			
+			$this->tableGateway->insert( $donnees );
+		}
+	}
+	
+	public function deleteConsultation($id){
+		$this->tableGateway->delete(array('id_cons'=>$id));
+	}
+ 	
+ 	
+ 	
+ 	
+ 	
  	
 }
