@@ -563,6 +563,7 @@ return array(
     								'choix-dossier' => 'medecin',
     								'fiche-observation-clinique' => 'medecin',
     								'thyroide' => 'medecin',
+    								'liste-consultation-precedente-ajax' => 'medecin',
     							
     								
     						),

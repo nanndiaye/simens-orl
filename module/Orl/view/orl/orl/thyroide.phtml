@@ -769,9 +769,12 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								</div>
 							</td>
 						</tr>
-						<tr class="form-chirurgical" style="width: 100%;">
-							<td style="width: 33%;"> <?php //echo $this->formRow($form->get('observation'));?> </td>
+							<tr id="ajustementChampsTextarea" class="comment-form-author textareaHT">
+							
+							<th style="width: 45%;"><?php echo $this->formRow($form->get('ant_chirurgicaux'));?></th>
+						
 						</tr>
+								
 
 						<tr style="width: 100%;">
 							<td class='block' id='thoughtbot'
@@ -1059,6 +1062,8 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 					<!-- LISTE DES CONSULTATIONS DU PATIENT -->
 					<!-- LISTE DES CONSULTATIONS DU PATIENT -->
 					<!-- LISTE DES CONSULTATIONS DU PATIENT -->
+					
+					<?php echo  $this->headScript()->appendFile($this->basePath().'/js/orl/scriptListeAntecedents.js'); ?>
 
 					<div id="titreTableauConsultation"
 						style="width: 100%; font-family: Times New Roman; color: green; font-size: 17px; font-weight: bold; padding-bottom: 5px;">
@@ -1079,20 +1084,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							</thead>
 
 							<tbody>
-			  <?php foreach($this->liste as $donnees) :?>
-                 <tr style="width: 100%;">
-									<td style="width: 25%;"> <?php echo $Control->convertDateTime($donnees['DATE']);?> </td>
-									<td style="width: 35%;"> <?php echo $donnees['PrenomSurveillant'];?>  <?php echo $donnees['NomSurveillant'];?></td>
-									<td style="width: 35%;"> <?php echo $donnees['PRENOM'];?>  <?php echo $donnees['NOM'];?> </td>
-									<td style="width: 5%;"><a
-										href="<?php echo $this->url('orl', array('action'=>'visualisation-consultation'),  array('query'=>array('id_patient'=>$this->escapeHtml($donnees['ID_PATIENT']),'id_cons'=>$this->escapeHtml($donnees['ID_CONS']))));?>"
-										target="_blank"> <img style="display: inline;"
-											src='<?php echo $this->basepath().'/images_icons/voird.PNG'?>'
-											alt='Constantes'
-											title="Voir les d&eacute;tails de la consultation" />
-									</a>&nbsp;</td>
-								</tr>
-              <?php endforeach; ?>
+			 
               </tbody>
 						</table>
 					</div>
@@ -1107,6 +1099,11 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 						<tr>
 					
 					</table>
+					
+					<script>
+   					   sciptListeAntecedent();
+					</script>
+					
 					<!-- FIN LISTE DES CONSULTATIONS DU PATIENT -->
 					<!-- FIN LISTE DES CONSULTATIONS DU PATIENT -->
 					<!-- FIN LISTE DES CONSULTATIONS DU PATIENT -->
