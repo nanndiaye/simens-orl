@@ -1924,6 +1924,19 @@ class ConsultationForm extends Form {
 				)
 		) );
 		
+		/*Antécédent chirugicaux */
+		$this->add ( array (
+				'name' => 'ant_chirurgicaux',
+				'type' => 'Textarea',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Atécédents chirurgicaux' )
+				),
+				'attributes' => array (
+						'id' => 'ant_chirurgicaux'
+				)
+		) );
+		
+		
 		$this->add ( array (
 				'name' => 'antecedents_specifiques',
 				'type' => 'Textarea',

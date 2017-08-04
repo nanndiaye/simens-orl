@@ -7058,6 +7058,8 @@ class OrlController extends AbstractActionController {
 
 	
 	public function ficheObservationCliniqueAction() {
+		//$output = $this->getPatientTable ()->getListeAntecedentsConsultationsAjax();
+		//var_dump($output);exit();
 
 		$this->layout ()->setTemplate ( 'layout/orl' );
 		
@@ -7156,6 +7158,11 @@ class OrlController extends AbstractActionController {
 		//Recuperer la liste des actes
 		$listeActes = $this->getConsultationTable()->getListeDesActes();
 		$form->populateValues ( array_merge($donneesAntecedentsPersonnels,$donneesAntecedentsFamiliaux) );
+
+		//$output = $this->getPatientTable ()->getListePatientsAdmisAjax();
+		//var_dump($output); exit();
+		
+		//$this->listeConsultationPrecedenteAjaxAction();
 		
 		return array (
 				'lesdetails' => $liste,
@@ -7177,6 +7184,18 @@ class OrlController extends AbstractActionController {
 				'listeActes' => $listeActes,
 		);
 		
+	}
+	
+	
+	public function listeConsultationPrecedenteAjaxAction() {
+
+		$id_pat = $this->params ()->fromQuery ( 'id_patient', 0 );
+		$id = $this->params ()->fromQuery ( 'id_cons', 0 );
+		
+		$output = $this->getPatientTable ()->getListeAntecedentsConsultationsAjax($id_pat, $id);
+		return $this->getResponse ()->setContent ( Json::encode ( $output, array (
+				'enableJsonExprFinder' => true
+		) ) );
 	}
 	
 	

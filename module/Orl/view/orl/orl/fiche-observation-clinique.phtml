@@ -761,9 +761,13 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								</div>
 							</td>
 						</tr>
-						<tr class="form-chirurgical" style="width: 100%;">
-							<td style="width: 33%;"> <?php //echo $this->formRow($form->get('observation'));?> </td>
+						
+						<tr id="ajustementChampsTextarea" class="comment-form-author textareaHT">
+							
+							<th style="width: 45%;"><?php echo $this->formRow($form->get('ant_chirurgicaux'));?></th>
+						
 						</tr>
+								
 
 						<tr style="width: 100%;">
 							<td class='block' id='thoughtbot'
@@ -1005,6 +1009,9 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 					<!-- LISTE DES CONSULTATIONS DU PATIENT -->
 					<!-- LISTE DES CONSULTATIONS DU PATIENT -->
 					<!-- LISTE DES CONSULTATIONS DU PATIENT -->
+					
+					 
+                    <?php echo  $this->headScript()->appendFile($this->basePath().'/js/orl/scriptListeAntecedents.js'); ?>
 
 					<div id="titreTableauConsultation"
 						style="width: 100%; font-family: Times New Roman; color: green; font-size: 17px; font-weight: bold; padding-bottom: 5px;">
@@ -1013,33 +1020,20 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 					</div>
 
 					<div id='ListeCons'>
-						<table class="table table-bordered  tab_list_mini"
-							id="ListeConsultationPatient" style="width: 100%;">
+						<table class="table table-bordered  tab_list_mini"  id="listeAntecedentsConsultations" style="width: 100%;">
 							<thead>
 								<tr style="height: 40px; width: 100%;">
-									<th style="width: 25%;">DATE ET HEURE</th>
-									<th style="width: 35%;">SURVEILLANT DE SERVICE</th>
-									<th style="width: 35%;">M&Eacute;DECIN CONSULTANT</th>
-									<th style="width: 5%;">Vue</th>
+									<th style="width: 100px;">DATE ET HEURE</th>
+									<th style="width: 200px;">SECRETAIRE</th>
+									<th style="width: 200px;">M&Eacute;DECIN CONSULTANT</th>
+									<th style="width: 50px;">Vue</th>
 								</tr>
 							</thead>
 
 							<tbody>
-			  <?php foreach($this->liste as $donnees) :?>
-                 <tr style="width: 100%;">
-									<td style="width: 25%;"> <?php echo $Control->convertDateTime($donnees['DATE']);?> </td>
-									<td style="width: 35%;"> <?php echo $donnees['PrenomSurveillant'];?>  <?php echo $donnees['NomSurveillant'];?></td>
-									<td style="width: 35%;"> <?php echo $donnees['PRENOM'];?>  <?php echo $donnees['NOM'];?> </td>
-									<td style="width: 5%;"><a
-										href="<?php echo $this->url('orl', array('action'=>'visualisation-consultation'),  array('query'=>array('id_patient'=>$this->escapeHtml($donnees['ID_PATIENT']),'id_cons'=>$this->escapeHtml($donnees['ID_CONS']))));?>"
-										target="_blank"> <img style="display: inline;"
-											src='<?php echo $this->basepath().'/images_icons/voird.PNG'?>'
-											alt='Constantes'
-											title="Voir les d&eacute;tails de la consultation" />
-									</a>&nbsp;</td>
-								</tr>
-              <?php endforeach; ?>
-              </tbody>
+							
+                            </tbody>
+						
 						</table>
 					</div>
 
@@ -1053,6 +1047,10 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 						<tr>
 					
 					</table>
+					
+					<script>
+   					   sciptListeAntecedent();
+					</script>
 					<!-- FIN LISTE DES CONSULTATIONS DU PATIENT -->
 					<!-- FIN LISTE DES CONSULTATIONS DU PATIENT -->
 					<!-- FIN LISTE DES CONSULTATIONS DU PATIENT -->
@@ -3028,5 +3026,5 @@ jsPagination();
 sousDossier();
 </script>
 		<!-- SCRIPT LOURD -->
-<?php echo $this->headScript()->appendFile($this->basePath().'/js/jquery.maskedinput.cons.js');?>
+<?php //echo $this->headScript()->appendFile($this->basePath().'/js/jquery.maskedinput.cons.js');?>
  
