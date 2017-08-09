@@ -105,6 +105,16 @@ class OrlController extends AbstractActionController {
 		return $this->ConsultationTable;
 	}
 	
+	
+	public function getSousDossierTable() {
+		if (! $this->SousDossierTable) {
+			$sm = $this->getServiceLocator ();
+			$this->SousDossierTable = $sm->get ( 'Orl\Model\SousDossierTable' );
+		}
+		return $this->SousDossierTable;
+	}
+	
+	
 	public function getMotifAdmissionTable() {
 		if (! $this->motifAdmissionTable) {
 			$sm = $this->getServiceLocator ();
@@ -5982,10 +5992,11 @@ class OrlController extends AbstractActionController {
 		$this->getDateHelper();
 		$id_cons = $this->params()->fromPost('id_cons');
 		$id_patient = $this->params()->fromPost('id_patient');
+ 		$id_admission = $this->params()->fromPost('id_admission');
+ 		$sous_dossier = $this->params()->fromPost('sous_dossier');
 		$user = $this->layout()->user;
 		$IdDuService = $user['IdService'];
 		$id_medecin = $user['id_personne'];
-		
 		
 		//**********-- MODIFICATION DES CONSTANTES --********
 		//**********-- MODIFICATION DES CONSTANTES --********
@@ -5995,10 +6006,15 @@ class OrlController extends AbstractActionController {
 		$form->setData ( $formData );
 		
 		//consultation
-		$this->getConsultationTable()->addConsultation($id_cons, $id_medecin, $id_patient);
+		$this->getConsultationTable()->addConsultation($id_cons, $id_medecin, $id_patient, $id_admission, $sous_dossier);
 		
-		 //var_dump($id_cons);exit();
+		var_dump($id_cons);exit();
 		
+		 //Sous Dossier
+// 		 $this->getSousDossierTable() ->deleteSousDossier($id_cons);
+// 		 $this->getSousDossierTable() ->addSousDossier($id_cons);
+		 
+		 
 		
 		
 		//var_dump($this->params()->fromPost('$id_cons'));exit();
@@ -7004,8 +7020,11 @@ class OrlController extends AbstractActionController {
 		$IdDuService = $user['IdService'];
 		$id_medecin = $user['id_personne'];
 	
-		$id_pat = $this->params ()->fromRoute ( 'id_patient', 0 );
-	
+		$id_admission = $this->params ()->fromRoute ( 'val', 0 );
+		
+		$info_admission = $this->getAdmissionTable()->getPatientAdmis($id_admission);
+		$id_pat = $info_admission->id_patient;
+		
 		$listeMedicament = $this->getConsultationTable()->listeDeTousLesMedicaments();
 	
 		$listeForme = $this->getConsultationTable()->formesMedicaments();
@@ -7022,6 +7041,9 @@ class OrlController extends AbstractActionController {
 		$sous_dossier = $this->getSousDossier() ->fetchSousDossier();
 		$form->get ( 'sous_dossier' )->setValueOptions ( $sous_dossier );
 		$form->get ( 'id_patient' )->setValue ($id_pat);
+		$form->get ( 'id_admission' )->setValue ($id_admission);
+		
+		//var_dump($form); exit();
 	
 		return array (
 				'lesdetails' => $liste,
@@ -7031,18 +7053,15 @@ class OrlController extends AbstractActionController {
 	}
 	
 	public function choixDossierAction() {
-		//$id_cons = $this->params()->fromPost ($this->id_cons);
-		//$id = $this->params ()->fromRoute ( 'id_cons', 0 );
 		
-		$id_patient = $this->params()->fromPost ( 'id_patient', 0 );
+		$id_admission = $this->params()->fromPost ( 'id_admission', 0 );
 		$id_cons = $this->params()->fromPost ( 'id_cons', 0 );
 		$sous_dossier = $this->params()->fromPost ( 'sous_dossier', 0 );
-		//var_dump($id_cons);exit();
 		
 		if($sous_dossier == 1){
-			return $this->redirect ()->toUrl ($this->baseUrl().'public/orl/fiche-observation-clinique?id_patient='.$id_patient.'&id_cons='.$id_cons);
+			return $this->redirect ()->toUrl ($this->baseUrl().'public/orl/fiche-observation-clinique?id_admission='.$id_admission.'&id_cons='.$id_cons);
 		}else if($sous_dossier == 2){
-			return $this->redirect ()->toUrl ($this->baseUrl().'public/orl/thyroide?id_patient='.$id_patient.'&id_cons='.$id_cons);
+			return $this->redirect ()->toUrl ($this->baseUrl().'public/orl/thyroide?id_admission='.$id_admission.'&id_cons='.$id_cons);
 		}else if($sous_dossier == 3){
 			var_dump('tumeur parotidienne'); exit();
 			
@@ -7067,9 +7086,12 @@ class OrlController extends AbstractActionController {
 		$IdDuService = $user['IdService'];
 		$id_medecin = $user['id_personne'];
 		
-		$id_pat = $this->params ()->fromQuery ( 'id_patient', 0 );
+		$id_admission = $this->params ()->fromQuery ( 'id_admission', 0 );
 		$id = $this->params ()->fromQuery ( 'id_cons', 0 );
 		
+		$info_admission = $this->getAdmissionTable()->getPatientAdmis($id_admission);
+		$id_pat = $info_admission->id_patient;
+
 		$listeMedicament = $this->getConsultationTable()->listeDeTousLesMedicaments();
 		
 		$listeForme = $this->getConsultationTable()->formesMedicaments();
@@ -7089,6 +7111,8 @@ class OrlController extends AbstractActionController {
 		$form = new ConsultationForm();
 		$form->get('id_cons')->setValue($id);
 		$form->get('id_patient')->setValue($id_pat);
+		$form->get('id_admission')->setValue($id_admission);
+		$form->get('sous_dossier')->setValue(1);
 		// instancier la Consultation et r�cup�rer enregistrement
 		//$consult = $this->getConsultationTable()->getConsult ( $id );
 		//var_dump($id);exit();
@@ -7210,8 +7234,11 @@ class OrlController extends AbstractActionController {
 		$IdDuService = $user['IdService'];
 		$id_medecin = $user['id_personne'];
 		
-		$id_pat = $this->params ()->fromQuery ( 'id_patient', 0 );
+		$id_admission = $this->params ()->fromQuery ( 'id_admission', 0 );
 		$id = $this->params ()->fromQuery ( 'id_cons', 0 );
+		
+		$info_admission = $this->getAdmissionTable()->getPatientAdmis($id_admission);
+		$id_pat = $info_admission->id_patient;
 		
 		$listeMedicament = $this->getConsultationTable()->listeDeTousLesMedicaments();
 		
@@ -7228,9 +7255,10 @@ class OrlController extends AbstractActionController {
 		if(array_key_exists($id_pat, $tabPatientRV)){
 			$resultRV = $tabPatientRV[ $id_pat ];
 		}
-		
+
 		$form = new ConsultationForm();
 		$form->get('id_cons')->setValue($id);
+		$form->get('id_patient')->setValue($id_pat);
 		// instancier la Consultation et r�cup�rer enregistrement
 		//$consult = $this->getConsultationTable()->getConsult ( $id );
 		//var_dump($id);exit();

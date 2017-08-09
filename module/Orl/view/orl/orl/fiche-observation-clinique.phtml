@@ -1026,6 +1026,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 									<th style="width: 100px;">DATE ET HEURE</th>
 									<th style="width: 200px;">SECRETAIRE</th>
 									<th style="width: 200px;">M&Eacute;DECIN CONSULTANT</th>
+									<th style="width: 100px;">SOUS-DOSSIER</th>
 									<th style="width: 50px;">Vue</th>
 								</tr>
 							</thead>
@@ -1136,8 +1137,9 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 		<div style='max-height: 460px;'>
 
            <?php echo $this->formHidden($form->get('id_patient'));?>
-           <?php //echo $this->formHidden($form->get('id_medecin'));?>
+           <?php echo $this->formHidden($form->get('id_admission'));?>
            <?php echo $this->formHidden($form->get('id_cons'));?>
+           <?php echo $this->formHidden($form->get('sous_dossier'));?>
 
           <!--**************************************************************************************** -->
 			<!-- SOUS ACCORDEON MOTIF D'ADMISSION ET CONSTANTES -->
@@ -1288,19 +1290,15 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 			</div>
 			
 			<!-- ********************************-Examen clinique *******************************************-->
-			
+			<!-- ********************************-Examen clinique *******************************************-->
+			<!-- ********************************-Examen clinique *******************************************-->
 			
         
-    		<div style='font-family: police2; font-size: 17px; font-weight: bold;'>Examen clinique</div>
-				<div style='max-height: 320px;'>
-
-					<div id="accordionsss_exam_clinik" style=''>
-						<!--******************* DEMANDE ************************-->
-						<!--*******************DEMANDE ************************-->
+    	
 						<div
 							style='font-family: police2; font-size: 17px; font-weight: bold;'> Examen clinique
 						</div> 
-            <div style='height: 475px;'>
+            <div style='max-height: 350px;'>
 					 <table id="hospitalisation" style="width: 63%;">
                                         <tr>
                                             <th class="form-hospitalisation" style="width: 60%;"> <?php echo $this->formRow($form->get('examen_clinique'));?> </th>
@@ -1381,8 +1379,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 
 					</div>
 						
-				     </div> 
-				  	</div>  
+				     
         
 
 				<!-- ********************************-DOSSIERS *******************************************-->
@@ -3022,9 +3019,8 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 
 
 		<script>
-jsPagination();
 sousDossier();
 </script>
 		<!-- SCRIPT LOURD -->
-<?php //echo $this->headScript()->appendFile($this->basePath().'/js/jquery.maskedinput.cons.js');?>
+<?php echo $this->headScript()->appendFile($this->basePath().'/js/jquery.maskedinput.cons.js');?>
  

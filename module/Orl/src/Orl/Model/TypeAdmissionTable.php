@@ -29,6 +29,7 @@ class TypeAdmissionTable{
 		$select->from(array('t'=>'type_admission'));
 		$select->columns(array('type'));
 	    //$select->where(array('DOMAINE' => 'MEDECINE'));
+		$select->where(array('type'=>'Normale'));
 		$select->order('id_type_admission ASC');
 		$stat = $sql->prepareStatementForSqlObject($select);
 		$result = $stat->execute();

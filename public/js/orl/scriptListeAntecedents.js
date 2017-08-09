@@ -9,8 +9,6 @@ function sciptListeAntecedent(){
 		$id_cons = $('#id_cons').val();
 		$id_patient = $('#id_patient').val();
 		
-		//alert($id_cons);
-
 		$('#listeAntecedentsConsultations').dataTable
 		( {
 						"sPaginationType": "full_numbers",

@@ -45,6 +45,18 @@ class ConsultationForm extends Form {
 						'id' => 'id_medecin'
 				)
 		) );
+		
+		$this->add ( array (
+				'name' => 'id_admission',
+				'type' => 'Hidden',
+				'options' => array (
+						'decorators' => $this->decor
+				),
+				'attributes' => array (
+						'id' => 'id_admission'
+				)
+		) );
+		
 		$this->add ( array (
 				'name' => 'id_surveillant',
 				'type' => 'Hidden',
@@ -55,6 +67,7 @@ class ConsultationForm extends Form {
 						'id' => 'id_surveillant'
 				)
 		) );
+		
 		$this->add ( array (
 				'name' => 'id_patient',
 				'type' => 'Hidden',
@@ -65,6 +78,7 @@ class ConsultationForm extends Form {
 						'id' => 'id_patient'
 				)
 		) );
+		
 		$this->add ( array (
 				'name' => 'dateonly',
 				'type' => 'Hidden',
