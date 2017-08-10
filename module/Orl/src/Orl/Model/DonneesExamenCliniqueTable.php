@@ -31,6 +31,7 @@ class DonneesExamenCliniqueTable {
 		$donnees = array(
 				'id_cons' => $id_cons,
 				'examen_clinique' => $data->examen_clinique,
+				'examen_para_clinique' => $data->examen_para_clinique,
 				);
 				$this->tableGateway->insert( $donnees );
 	}

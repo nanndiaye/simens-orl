@@ -973,8 +973,7 @@ class ConsultationTable {
 			
 			$this->tableGateway->insert( $donnees );
 			$this->addConsultationOrl($id_cons);
-			
-			var_dump($donnees);exit();
+			//var_dump($donnees);exit();
 		}
 	}
 	

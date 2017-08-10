@@ -1227,14 +1227,13 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								</tr>
 							</table>
 
-							<script>
-                            var nbMotif = "<?php echo $this->nbMotifs;?>";
-                            cacherToutMotif();
-                            if(nbMotif == 0){ nbMotif = 1; }
-                            afficherMotif(nbMotif);
-                            supprimerUnMotif();
-                         </script>
-
+				        <script>
+                        var nbMotif = "<?php echo $this->nbMotifs;?>";
+                        if(nbMotif == 0){ nbMotif = 1;}
+                        cacherToutMotif();
+                        afficherMotif(nbMotif);
+                        supprimerUnMotif();
+                       </script>
 						</div>
 
 						<div style='width: 27%; float: left;'>
@@ -1369,11 +1368,13 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                 </th>
               </tr>
          </table>
-         <script>
-         var nbexamendonnee = 1;
-          cacherTouteDonnee();
-          afficher(nbexamendonnee);
-          supprimerUneDonnee();
+         
+        <script>
+         var nbexamendonnee = '<?php echo $this->nbDonneesExamensPhysiques;?>';
+         if(nbexamendonnee == 0) { nbexamendonnee = 1; }
+         cacherTouteDonnee();
+         afficher(nbexamendonnee);
+         supprimerUneDonnee();
          </script>
 		 
 
@@ -2382,12 +2383,13 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 						</tr>
 					</table>
 
-			<script>
-              var nbdiagnostic = 1;
+			 <script>
+              var nbdiagnostic = '<?php echo $this->nbDiagnostics;?>';
+              if(nbdiagnostic == 0) { nbdiagnostic = 1; }
               cacherTout();
               afficher(nbdiagnostic);
               supprimerUnDiagnostic();
-         </script>
+         </script> 
 
 				</div>
 

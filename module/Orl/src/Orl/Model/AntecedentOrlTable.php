@@ -35,6 +35,8 @@ class AntecedentOrlTable {
 				'id_cons' => $id_cons,
 				'irradiation_cervical_anterieur' => $data->irradiation_cervical_anterieur,
 				'goitre_atcd' => $data->goitre_atcd,
+				'ant_chirurgicaux' => $data->ant_chirurgicaux,
+				'antecedents_specifiques' => $data->antecedents_specifiques,
 				'date_enregistrement' => $date_enregistrement,
 				'id_employe' => $id_employe,
 				

@@ -696,6 +696,7 @@ $(function(){
 	    
 	 // **********-- Donnees de l'examen clinique --*******
 	    donnees['examen_clinique'] = $("#examen_clinique").val();
+	    donnees['examen_para_clinique'] = $("#examen_para_clinique").val();
 	    
 	    //**********-- ANALYSE BIOLOGIQUE --************
         //**********-- ANALYSE BIOLOGIQUE --************
@@ -943,6 +944,8 @@ $(function(){
 		// **=== ANTECEDENTS
 		donnees['irradiation_cervical_anterieur'] = $("#irradiation_cervical_anterieur").val();
 		donnees['goitre_atcd'] = $("#goitre_atcd").val();
+		donnees['ant_chirurgicaux'] = $("#ant_chirurgicaux").val();
+		donnees['antecedents_specifiques'] = $("#antecedents_specifiques").val();
 		donnees['autresAntecedent'] = $("#autres").val();
 		// **=== MOTIFS DHOSPITALISATION
 	

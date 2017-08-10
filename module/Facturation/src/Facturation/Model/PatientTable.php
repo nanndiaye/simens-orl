@@ -2006,7 +2006,13 @@ class PatientTable {
 				}
 			}
 		}
-		//var_dump("trfdxshtgdrcf"); exit();
+		
+	
+		$sql2 = new Sql($db);
+		$sQuery2 = $sql2->select()
+		->from(array('cons' => 'consultation'))->columns(array('ID_PATIENT'))
+		->where(array('cons.DATEONLY' => $date));
+		
 		/*
 		 * SQL queries
 		*/
@@ -2015,7 +2021,7 @@ class PatientTable {
 		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Age'=>'AGE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
 		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
 		->join(array('a' => 'admission') , 'a.id_patient = pat.ID_PERSONNE', array('*'))
-		->where(array('a.date_admis' => $date))
+		->where(array('a.date_admis' => $date, new NotIn ( 'pat.ID_PERSONNE', $sQuery2 )))
 		->order('id_admission ASC');
 		/* Data set length after filtering */
 		$stat = $sql->prepareStatementForSqlObject($sQuery);
@@ -2083,16 +2089,90 @@ class PatientTable {
 			$output['aaData'][] = $row;
 		}
 		
+		
+		
 		/*
 		 * La liste des patients déja consulter par le medecin
 		 */
 		
+		/*
+		 * SQL queries
+		*/
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Age'=>'AGE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
+		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
+		->join(array('a' => 'admission') , 'a.id_patient = pat.ID_PERSONNE', array('*'))
+		->join(array('cons' => 'consultation') , 'cons.id_admission = a.id_admission', array('Id_cons' => 'ID_CONS'))
+		->where(array('a.date_admis' => $date))
+		->order('a.id_admission ASC');
+		/* Data set length after filtering */
+		$stat = $sql->prepareStatementForSqlObject($sQuery);
+		$rResultFt = $stat->execute();
+		$iFilteredTotal = count($rResultFt);
+		
+		//var_dump($rResultFt->count()); exit();
+		
+		$rResult = $rResultFt;
+		
+		/*
+		 * $Control pour convertir la date en franï¿½ais
+		*/
+		$Control = new DateHelper();
+		
+		/*
+		 * ADRESSE URL RELATIF
+		*/
+		$baseUrl = $_SERVER['REQUEST_URI'];
+		$tabURI  = explode('public', $baseUrl);
+		
+		/*
+		 * Prï¿½parer la liste liste des patients à consulter par le medecin
+		*/
+		foreach ( $rResult as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					if ($aColumns[$i] == 'Nom'){
+						$row[] = "<khass id='nomMaj'>".$aRow[ $aColumns[$i]]."</khass>";
+					}
+		
+					else if ($aColumns[$i] == 'Datenaissance') {
+						$row[] = $Control->convertDate($aRow[ $aColumns[$i] ]);
+					}
+		
+					else if ($aColumns[$i] == 'Adresse') {
+						$row[] = $this->adresseText($aRow[ $aColumns[$i] ]);
+					}
+		
+					else if ($aColumns[$i] == 'id') {
+						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/orl/maj-fiche-observation-clinique?id_patient=".$aRow[ 'id' ]."&id_cons=".$aRow[ 'Id_cons' ]."'>";
+						$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/modifier.png' title='d&eacute;tails'></a> </infoBulleVue>";
+		
+						$html .="<img style='display: inline; margin-right: 15%; color: white; opacity: 0.15;' src='".$tabURI[0]."public/images_icons/modifier.png'>";
+		
+						$row[] = $html;
+					}
+		
+					else {
+						$row[] = $aRow[ $aColumns[$i] ];
+					}
+		
+				}
+			}
+			$output['aaData'][] = $row;
+		}
 		
 		
 		return $output;
+		
 	}
 	
-	
+
 	
 	
 	public function getListeAntecedentsConsultationsAjax($id_pat=null, $id_cons=null){
