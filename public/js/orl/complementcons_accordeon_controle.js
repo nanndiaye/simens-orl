@@ -682,6 +682,8 @@ $(function(){
 		$('#bouton_Acte_valider_demande button, #bouton_ExamenBio_valider_demande button, #bouton_morpho_valider_demande button').trigger('click');
 	    var donnees = new Array();
 	    donnees['id_cons']    = $("#id_cons").val();
+	    donnees['id_admission'] = $("#id_admission").val();
+	    donnees['sous_dossier'] = $("#sous_dossier").val();
 	    donnees['terminer'] = 'save';
 	    
 	    // **********-- Donnees de l'examen physique --*******
@@ -694,6 +696,7 @@ $(function(){
 	    
 	 // **********-- Donnees de l'examen clinique --*******
 	    donnees['examen_clinique'] = $("#examen_clinique").val();
+	    donnees['examen_para_clinique'] = $("#examen_para_clinique").val();
 	    
 	    //**********-- ANALYSE BIOLOGIQUE --************
         //**********-- ANALYSE BIOLOGIQUE --************
@@ -941,6 +944,8 @@ $(function(){
 		// **=== ANTECEDENTS
 		donnees['irradiation_cervical_anterieur'] = $("#irradiation_cervical_anterieur").val();
 		donnees['goitre_atcd'] = $("#goitre_atcd").val();
+		donnees['ant_chirurgicaux'] = $("#ant_chirurgicaux").val();
+		donnees['antecedents_specifiques'] = $("#antecedents_specifiques").val();
 		donnees['autresAntecedent'] = $("#autres").val();
 		// **=== MOTIFS DHOSPITALISATION
 	
@@ -1067,7 +1072,7 @@ $(function(){
 		//CONSULTATION
 		//CONSULTATION
 		$("#titreTableauConsultation").toggle(false);
-		$("#ListeConsultationPatient").toggle(false);
+		$("#listeAntecedentsConsultations").toggle(false);
 		$("#ListeCons").toggle(false);
 		$("#boutonTerminerConsultation").toggle(false);
 		$(".pager").toggle(false);
@@ -1086,7 +1091,7 @@ $(function(){
 			
 			 $("#MenuAntecedent").fadeOut(function(){ 
 				 $("#titreTableauConsultation").fadeIn("fast");
-				 $("#ListeConsultationPatient").fadeIn("fast"); 
+				 $("#listeAntecedentsConsultations").fadeIn("fast"); 
 				 $("#ListeCons").fadeIn("fast");
 			     $("#boutonTerminerConsultation").toggle(true);
 			     $(".pager").toggle(true);
@@ -1098,7 +1103,7 @@ $(function(){
 			$(".pager").fadeOut();
 			$("#titreTableauConsultation").fadeOut();
 			$("#ListeCons").fadeOut();
-			$("#ListeConsultationPatient").fadeOut(function(){ 
+			$("#listeAntecedentsConsultations").fadeOut(function(){ 
 			    $("#MenuAntecedent").fadeIn("fast");
 			});
 		});
@@ -1498,7 +1503,7 @@ $(function(){
  function pagination(){
 	  $(function(){
  		//CODE POUR INITIALISER LA LISTE 
- 		$('#ListeConsultationPatient').each(function() {
+ 		$('#listeAntecedentsConsultations').each(function() {
              var currentPage = 0;
              var numPerPage = 3;
              var $table = $(this);
@@ -1507,7 +1512,7 @@ $(function(){
                  .show();
  		});
  		//CODE POUR LA PAGINATION
-         $('#ListeConsultationPatient').each(function() {
+         $('#listeAntecedentsConsultations').each(function() {
              var currentPage = 0;
              var numPerPage = 3;
              var $table = $(this);
@@ -1538,7 +1543,7 @@ $(function(){
  }
  
  function jsPagination() {
-	    $('#ListeConsultationPatient, #ListeHospitalisation').dataTable
+	    $('#listeAntecedentsConsultations, #ListeHospitalisation').dataTable
 		( {
 						"sPaginationType": "full_numbers",
 						"aaSorting": [], //pour trier la liste affichee

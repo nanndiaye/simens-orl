@@ -159,6 +159,7 @@ class ConsultationTable {
 		$requete->execute();
 	}
 	
+	
 	public function getInfoPatientMedecin($idcons){
 		$adapter = $this->tableGateway->getAdapter ();
 		$sql = new Sql ( $adapter );
@@ -940,22 +941,39 @@ class ConsultationTable {
  	
  	
  	
+
  	
  	
  	
-	
-	public function addConsultation($id_cons, $id_medecin, $id_patient){
+ 	
+ 	
+ 	public function addConsultationOrl($id_cons){
+ 		$db = $this->tableGateway->getAdapter();
+ 		$sql = new Sql($db);
+ 		$sQuery = $sql->insert()
+ 		->into('consultation_orl')
+ 		->values(array('ID_CONS' => $id_cons));
+ 		$requete = $sql->prepareStatementForSqlObject($sQuery);
+ 		$requete->execute();
+ 	}
+
+	public function addConsultation($id_cons, $id_medecin, $id_patient, $id_admission, $sous_dossier){
 		$today = new \DateTime ();
-		$date_enregistrement = $today->format ( 'Y-m-d H:i:s' );
+		$date = $today->format ( 'Y-m-d' );
 
 		if(!$this->getConsult($id_cons)){
 			$donnees = array(
-					'id_cons' => $id_cons,
-					'id_medecin' => $id_medecin,
-					'id_patient' => $id_patient,
+					'ID_CONS' => $id_cons,
+					'ID_MEDECIN' => $id_medecin,
+					'ID_PATIENT' => $id_patient,
+					'id_admission'=> $id_admission,
+					'id_sous_dossier'=> $sous_dossier,
+					'DATEONLY' => $date,
 			);
 			
 			$this->tableGateway->insert( $donnees );
+			$this->addConsultationOrl($id_cons);
+			//var_dump($donnees);exit();
 		}
 	}
 	

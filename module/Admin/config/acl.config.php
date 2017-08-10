@@ -564,6 +564,7 @@ return array(
     								'fiche-observation-clinique' => 'medecin',
     								'thyroide' => 'medecin',
     								'liste-consultation-precedente-ajax' => 'medecin',
+    								'maj-fiche-observation-clinique' => 'medecin',
     							
     								
     						),

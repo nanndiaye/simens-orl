@@ -168,7 +168,7 @@ class AdmissionTable {
 		) );
 		$row =  $rowset->current ();
 		if (! $row) {
-			throw new \Exception ( "Could not find row $id" );
+			return null;
 		}
 		return $row;
 	}

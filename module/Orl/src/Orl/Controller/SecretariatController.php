@@ -432,8 +432,8 @@ class SecretariatController extends AbstractActionController {
 		//Type Admission
 		$listeTypeAdmission = $this->getTypeAdmissionTable ()->listeTypeAdmission ();
 		//var_dump($listeTypeAdmission);exit();
-		$afficheTous = array ("" => 'Tous');
-		$tab_type_admission = array_merge ( $afficheTous, $listeTypeAdmission );
+		//$afficheTous = array ("" => 'Choisir un type d"admission');
+		$tab_type_admission = array_merge ( $listeTypeAdmission );
 		$formAdmission->get ( 'type_admission' )->setValueOptions ( $tab_type_admission );
 		//$formAdmission->get ( 'liste_type_admission' )->setValueOptions ( $tab_type_admission );
 		

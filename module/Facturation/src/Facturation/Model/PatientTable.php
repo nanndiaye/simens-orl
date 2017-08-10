@@ -1977,7 +1977,7 @@ class PatientTable {
 		$today = new \DateTime();
 		$date = $today->format('Y-m-d');
 		$db = $this->tableGateway->getAdapter();
-		$aColumns = array('Nom','Prenom','Datenaissance','Sexe', 'Adresse', 'Nationalite', 'id');
+		$aColumns = array('Nom','Prenom','Age','Sexe', 'Adresse', 'Nationalite', 'id');
 		/* Indexed column (used for fast and accurate table cardinality) */
 		$sIndexColumn = "id";
 		/*
@@ -2006,16 +2006,22 @@ class PatientTable {
 				}
 			}
 		}
-		//var_dump("trfdxshtgdrcf"); exit();
+		
+	
+		$sql2 = new Sql($db);
+		$sQuery2 = $sql2->select()
+		->from(array('cons' => 'consultation'))->columns(array('ID_PATIENT'))
+		->where(array('cons.DATEONLY' => $date));
+		
 		/*
 		 * SQL queries
 		*/
 		$sql = new Sql($db);
 		$sQuery = $sql->select()
-		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Datenaissance'=>'DATE_NAISSANCE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
+		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Age'=>'AGE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
 		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
 		->join(array('a' => 'admission') , 'a.id_patient = pat.ID_PERSONNE', array('*'))
-		->where(array('a.date_admis' => $date))
+		->where(array('a.date_admis' => $date, new NotIn ( 'pat.ID_PERSONNE', $sQuery2 )))
 		->order('id_admission ASC');
 		/* Data set length after filtering */
 		$stat = $sql->prepareStatementForSqlObject($sQuery);
@@ -2066,7 +2072,7 @@ class PatientTable {
 					}
 	
 					else if ($aColumns[$i] == 'id') {
-						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/orl/consultation-orl/".$aRow[ $aColumns[$i] ]."'>";
+						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/orl/consultation-orl/".$aRow[ 'id_admission' ]."'>";
 						$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/doctor_16.png' title='d&eacute;tails'></a> </infoBulleVue>";
 	
 						$html .="<img style='display: inline; margin-right: 15%; color: white; opacity: 0.15;' src='".$tabURI[0]."public/images_icons/modifier.png'>";
@@ -2083,23 +2089,97 @@ class PatientTable {
 			$output['aaData'][] = $row;
 		}
 		
+		
+		
 		/*
 		 * La liste des patients déja consulter par le medecin
 		 */
 		
+		/*
+		 * SQL queries
+		*/
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Age'=>'AGE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
+		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
+		->join(array('a' => 'admission') , 'a.id_patient = pat.ID_PERSONNE', array('*'))
+		->join(array('cons' => 'consultation') , 'cons.id_admission = a.id_admission', array('Id_cons' => 'ID_CONS'))
+		->where(array('a.date_admis' => $date))
+		->order('a.id_admission ASC');
+		/* Data set length after filtering */
+		$stat = $sql->prepareStatementForSqlObject($sQuery);
+		$rResultFt = $stat->execute();
+		$iFilteredTotal = count($rResultFt);
+		
+		//var_dump($rResultFt->count()); exit();
+		
+		$rResult = $rResultFt;
+		
+		/*
+		 * $Control pour convertir la date en franï¿½ais
+		*/
+		$Control = new DateHelper();
+		
+		/*
+		 * ADRESSE URL RELATIF
+		*/
+		$baseUrl = $_SERVER['REQUEST_URI'];
+		$tabURI  = explode('public', $baseUrl);
+		
+		/*
+		 * Prï¿½parer la liste liste des patients à consulter par le medecin
+		*/
+		foreach ( $rResult as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					if ($aColumns[$i] == 'Nom'){
+						$row[] = "<khass id='nomMaj'>".$aRow[ $aColumns[$i]]."</khass>";
+					}
+		
+					else if ($aColumns[$i] == 'Datenaissance') {
+						$row[] = $Control->convertDate($aRow[ $aColumns[$i] ]);
+					}
+		
+					else if ($aColumns[$i] == 'Adresse') {
+						$row[] = $this->adresseText($aRow[ $aColumns[$i] ]);
+					}
+		
+					else if ($aColumns[$i] == 'id') {
+						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/orl/maj-fiche-observation-clinique?id_patient=".$aRow[ 'id' ]."&id_cons=".$aRow[ 'Id_cons' ]."'>";
+						$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/modifier.png' title='d&eacute;tails'></a> </infoBulleVue>";
+		
+						$html .="<img style='display: inline; margin-right: 15%; color: white; opacity: 0.15;' src='".$tabURI[0]."public/images_icons/modifier.png'>";
+		
+						$row[] = $html;
+					}
+		
+					else {
+						$row[] = $aRow[ $aColumns[$i] ];
+					}
+		
+				}
+			}
+			$output['aaData'][] = $row;
+		}
 		
 		
 		return $output;
+		
 	}
 	
-	
+
 	
 	
 	public function getListeAntecedentsConsultationsAjax($id_pat=null, $id_cons=null){
 		$today = new \DateTime();
 		$date = $today->format('Y-m-d');
 		$db = $this->tableGateway->getAdapter();
-		$aColumns = array('Date_cons','NomSecretaire','NomMedecin', 'id');
+		$aColumns = array('Date_cons','NomSecretaire','NomMedecin', 'Id_sous_dossier', 'id');
 		/* Indexed column (used for fast and accurate table cardinality) */
 		$sIndexColumn = "id";
 		/*
@@ -2136,13 +2216,14 @@ class PatientTable {
 		$sQuery = $sql->select()
 		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Datenaissance'=>'DATE_NAISSANCE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
 		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
-		->join(array('cons' => 'consultation') , 'cons.ID_PATIENT = pat.ID_PERSONNE', array('Id' => 'ID_PATIENT', 'Id_cons' => 'ID_CONS', 'Date_cons' => 'DATEONLY'))
+		->join(array('cons' => 'consultation') , 'cons.ID_PATIENT = pat.ID_PERSONNE', array('Id' => 'ID_PATIENT', 'Id_cons' => 'ID_CONS', 'Date_cons' => 'DATEONLY', 'Id_sous_dossier' => 'id_sous_dossier'))
 		->join(array('consOrl' => 'consultation_orl') , 'consOrl.ID_CONS = cons.ID_CONS', array('*'))
 		->join(array('admis' => 'admission') , 'cons.id_admission = admis.id_admission', array('*'))
 		->join(array('secretaire' => 'personne'), 'secretaire.ID_PERSONNE = admis.id_employe' , array('NomSecretaire'=>'NOM','PrenomSecretaire'=>'PRENOM'))
 		->join(array('medecin' => 'personne'), 'medecin.ID_PERSONNE = cons.ID_MEDECIN' , array('NomMedecin'=>'NOM','PrenomMedecin'=>'PRENOM'))
 		
-		->where(array('pers.ID_PERSONNE' => $id_pat, 'consOrl.ID_CONS != ?' => $id_cons,  'cons.DATEONLY  != ? ' => $date));
+		->where(array('pers.ID_PERSONNE' => $id_pat, 'consOrl.ID_CONS != ?' => $id_cons, 'consOrl.ID_CONS != ?' => "",  'cons.DATEONLY  != ? ' => $date))
+		->order('Date_cons DESC');
 		
 		/* Data set length after filtering */
 		$stat = $sql->prepareStatementForSqlObject($sQuery);
@@ -2192,11 +2273,32 @@ class PatientTable {
 						$row[] = $aRow[ 'PrenomMedecin' ].' '.$aRow[ 'NomMedecin' ] ;
 					}
 	
+					else if($aColumns[$i] == 'Id_sous_dossier') {
+
+						if($aRow[ 'Id_sous_dossier' ] == 1){
+							$row[] = '<span title="Dossier fiche d\'observation clinique" style="cursor:pointer;"> F.O.C </span>';
+						}elseif($aRow[ 'Id_sous_dossier' ] == 2){
+							$row[] = '<span title="Dossier thyroide" style="cursor:pointer;"> Thyroide </span>';
+						}else{
+							$row[] = '';
+						}
+
+						
+					}
+					
 					else if ($aColumns[$i] == 'id') {
-						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/orl/consultation-orl/".$aRow[ $aColumns[$i] ]."'>";
-						$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/voir2.png' title='d&eacute;tails'></a> </infoBulleVue>";
-	
-						$html .="<img style='display: inline; margin-right: 15%; color: white; opacity: 0.15;' src='".$tabURI[0]."public/images_icons/modifier.png'>";
+						
+						$html ="";
+						
+						if($aRow[ 'Id_sous_dossier' ] == 1){
+							$html .="<infoBulleVue> <a href='".$tabURI[0]."public/orl/visualisation-fiche-observation-clinique?id_patient=".$aRow[ $aColumns[$i] ]."&id_cons=".$aRow[ 'Id_cons' ]."' target='_blank'>";          
+							$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/voir2.png' title='d&eacute;tails'></a> </infoBulleVue>";
+							
+						}else if($aRow[ 'Id_sous_dossier' ] == 2){
+							$html .="<infoBulleVue> <a href='".$tabURI[0]."public/orl/visualisation-thyroide?id_patient=".$aRow[ $aColumns[$i] ]."&id_cons=".$aRow[ 'Id_cons' ]."' target='_blank'>";          
+							$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/voir2.png' title='d&eacute;tails'></a> </infoBulleVue>";
+							
+						}
 	
 						$row[] = $html;
 					}

@@ -11,10 +11,10 @@ return array (
 						'orl' => array (
 								'type' => 'segment',
 								'options' => array (
-										'route' => '/orl[/][:action][/:id_patient][/:id_cons]',
+										'route' => '/orl[/][:action][/:val][/:id_cons]',
 										'constraints' => array (
 												'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-												'id_patient' => '[0-9]+',
+												'val' => '[0-9]+',
 												'id_cons' => '[a-zA-Z][a-zA-Z0-9_-]*'
 										),
 										'defaults' => array (
