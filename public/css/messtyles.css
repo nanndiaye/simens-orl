@@ -182,6 +182,7 @@ box-shadow: 0pt 0pt 12px rgba(0, 0, 0, 0.1);
 }
 
 
+
 /*-----Début style-----*/
 
 #respond label 
@@ -4373,5 +4374,65 @@ padding-left: 10px;
 position: relative;
 
 font-family: time new romans;
+
+}
+
+
+
+
+
+
+.form_patient .comment-form-patient label, #form_patient .comment-form-email label, #form_patient .comment-form-url label, #form_patient .comment-form-comment label 
+
+{/* le label*/
+line-height: 1.5em;
+
+background-color: #eeeeee;
+
+background-image: none;
+
+background-repeat: repeat;
+
+background-attachment: scroll;
+
+background-position: 0% 0%;
+
+background-clip: border-box;
+
+background-origin: padding-box;
+
+/*border-top-left-radius: 15px; */
+
+border-top-right-radius: 15px;
+
+background-size: auto auto;
+
+box-shadow: 1px 2px 2px rgba(204, 204, 204, 0.8);
+
+color: black;
+
+display: inline-block;
+
+font-size: 17px;
+
+left: 0px; /*déplacer le label*/
+
+min-width: 60px;
+
+padding-top: 4px;
+
+padding-right: 10px;
+
+padding-bottom: 4px;
+
+padding-left: 10px;
+
+position: relative;
+
+top: 5px;
+
+z-index: 1;
+         
+font-family: Goudy Old Style;
 
 }
