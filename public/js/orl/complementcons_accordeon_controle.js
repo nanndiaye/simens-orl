@@ -4,6 +4,8 @@
  $(function(){
 	$( "#accordionsssss").accordion();
 	$( "#accordionsTyroide").accordion();
+	$( "#accordionsSuivi").accordion();
+	$( "#accordionsNoteMedicale").accordion();
   });
   
   $(function(){
@@ -20,7 +22,7 @@
   });
 
   $(function() {
-		$( "#accordionsss_paraclinik" ).accordion();
+		$( "#accordionsss_op" ).accordion();
 	
 	  });
   
