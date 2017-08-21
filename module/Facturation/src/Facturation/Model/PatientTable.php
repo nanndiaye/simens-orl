@@ -2291,7 +2291,7 @@ class PatientTable {
 						$html ="";
 						
 						if($aRow[ 'Id_sous_dossier' ] == 1){
-							$html .="<infoBulleVue> <a href='".$tabURI[0]."public/orl/visualisation-fiche-observation-clinique?id_patient=".$aRow[ $aColumns[$i] ]."&id_cons=".$aRow[ 'Id_cons' ]."' target='_blank'>";          
+							$html .="<infoBulleVue> <a href='".$tabURI[0]."public/orl/visualisation-note-medicale-precedente?id_patient=".$aRow[ $aColumns[$i] ]."&id_cons=".$aRow[ 'Id_cons' ]."' target='_blank'>";          
 							$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/voir2.png' title='d&eacute;tails'></a> </infoBulleVue>";
 							
 						}else if($aRow[ 'Id_sous_dossier' ] == 2){

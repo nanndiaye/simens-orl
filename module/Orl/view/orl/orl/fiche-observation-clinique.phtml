@@ -8,9 +8,6 @@
     echo $this->headLink()->appendStylesheet($this->basePath().'/css/pikachoose/bottom.css');
     echo  $this->headScript()->appendFile($this->basePath().'/js/plugins/pikachoose/jquery.jcarousel.min.js');
     echo  $this->headScript()->appendFile($this->basePath().'/js/plugins/pikachoose/jquery.pikachoose.min.js');
-//     echo $this->headScript()->appendFile($this->basePath().'/js/orl/protocoleOperatoireImg.js');
-//     echo $this->headScript()->appendFile($this->basePath().'/js/orl/protocoleOperatoireMp3.js');
-//     echo $this->headScript()->appendFile($this->basePath().'/js/orl/jsProtocoleOperatoire.js');
 ?>
 
 <!-- les scripts des images dans examen morphologique   -->
@@ -461,13 +458,13 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 		<!-- ********************Antécédents ou Terrain particulier ******************-->
 
 		<div style='font-family: police2; font-size: 17px; font-weight: bold;'>Ant&eacutec&eacutedents
-			ou Suivie</div>
+			</div>
 		<div style='max-height: 410px;'>
 			<div id="tabsAntecedents">
 				<ul>
 					<li><a href="#tabss-1">Ant&eacutec&eacutedents G&eacuten&eacuteraux</a></li>
 					<li><a href="#tabss-2">Ant&eacutec&eacutedents Sp&eacutecifiques</a></li>
-					<li><a href="#tabss-3">Suivie</a></li>
+					<li><a href="#tabss-3">Suivi</a></li>
 				</ul>
 
 				<div id="tabss-1">
@@ -978,28 +975,22 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 				<div id="tabss-3">
 					<table id="MenuAntecedent" style="width: 100%;">
 						<tr style="width: 100%;">
-							<td style="width: 25%;">
-								<div>
-									<img class="image1"
-										style='cursor: pointer; width: 100%; height: 200px;'
-										src='<?php echo $this->basepath().'/images_icons/Consultant_logo.jpg'?>' />
-								</div>
-							</td>
-							<td style="width: 25%;">
+							
+							<td style="width: 33%;">
 								<div>
 									<img class="image2"
 										style='cursor: pointer; width: 100%; height: 200px;'
 										src='<?php echo $this->basepath().'/images_icons/hospitalisatione.jpg'?>' />
 								</div>
 							</td>
-							<td style="width: 25%;">
+							<td style="width: 33%;">
 								<div>
 									<img class="image3"
 										style='cursor: pointer; width: 100%; height: 200px;'
 										src='<?php echo $this->basepath().'/images_icons/examens.jpg'?>' />
 								</div>
 							</td>
-							<td style="width: 25%;">
+							<td style="width: 33%;">
 								<div>
 									<img class="image4"
 										style='cursor: pointer; width: 100%; height: 200px;'
@@ -1053,7 +1044,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 					</table>
 					
 					<script>
-   					   sciptListeAntecedent();
+   					   //sciptListeAntecedent();
 					</script>
 					<!-- FIN LISTE DES CONSULTATIONS DU PATIENT -->
 					<!-- FIN LISTE DES CONSULTATIONS DU PATIENT -->
@@ -1278,20 +1269,17 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 		
 
 		<div style='font-family: police2; font-size: 17px; font-weight: bold;'>Histoire de la maladie</div>
-		<div style='max-height: 150px;'>
+		<div style='max-height: 200px;'>
 		
-		
-
-                        <div class='infos_tyroide' id='infos_tyroide_contenu_histoireMaladiez'>
-								<table id="transfert" style="width: 100%;">
-									<tr class="form-transfert" style="width: 100%;">
-										<th style="width: 45%;"><?php echo $this->formRow($form->get('histoire_maladie'));?></th>
-									</tr>
-								</table>
-							</div>
+           <div class='infos_tyroide' id='infos_tyroide_contenu_histoireMaladiez'>
+			   <table id="transfert" style="width: 100%;">
+				     <tr class="form-transfert" style="width: 100%;">
+					    <th style="width: 45%;"><?php echo $this->formRow($form->get('histoire_maladie'));?></th>
+				     </tr>
+			   </table>
+		   </div>
 			
-			</div>
-			
+		</div>
 			
 			
 			
@@ -1299,57 +1287,97 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 			    <!-- ******************** Suivi ( Notes Médicales )******************-->
 				<!-- ********************Suivi ( Notes Médicales )******************-->
 				<!-- ********************Suivi ( Notes Médicales )******************-->
-				<!--*4*-->
-				<div
-					style='font-family: police2; font-size: 17px; font-weight: bold;'>Suivi ( Notes M&eacute;dicales )</div>
-				<div style='max-height: 300px;'>
-
-					<div id="accordionsSuivi" style=''>
-					<div>
+			
+		<div style='font-family: police2; font-size: 17px; font-weight: bold;'>Suivi (Notes m&eacute;dicales)</div>
+		<div style='max-height: 250px;'>
+		
+		
+		
+		
+							
 					
+					
+					<!-- LISTE DES NOTES MEDICALES DU PATIENT -->
+					<!-- LISTE DES NOTES MEDICALES DU PATIENT -->
+					<!-- LISTE DES NOTES MEDICALES DU PATIENT -->
+					
+					 
+                    <?php echo  $this->headScript()->appendFile($this->basePath().'/js/orl/scriptListeAntecedents.js'); ?>
+
+					<div id="titreTableauConsultation"
+						style="width: 100%; font-family: Times New Roman; color: green; font-size: 17px; font-weight: bold; padding-bottom: 5px;">
+						<iS style='font-size: 25px;'>&curren;</iS>
+						LISTE DES NOTES MEDICALES PR&Eacute;C&Eacute;DENTES
+					</div>
+
+					<div id='ListeCons'>
+						<table class="table table-bordered  tab_list_mini"  id="listeAntecedentsNoteMedical" style="width: 100%;">
+							<thead>
+								<tr style="height: 40px; width: 100%;">
+									<th style="width: 100px;">DATE ET HEURE</th>
+									<th style="width: 200px;">SECRETAIRE</th>
+									<th style="width: 200px;">M&Eacute;DECIN CONSULTANT</th>
+									<th style="width: 100px;">SOUS-DOSSIER</th>
+									<th style="width: 50px;">Vue</th>
+								</tr>
+							</thead>
+
+							<tbody>
+							
+                            </tbody>
+						
+						</table>
 					</div>
 					
+						
+					
+					<script>
+   					   sciptListeAntecedent();
+					</script>
+					
+		
+		
+		
+		</div>	
 			
-			    </div>
-			    </div>
-			
-			
-			
-			
-			
-			
-			
-			    <!-- ******************** Notes Médicales ******************-->
+			  <!-- ******************** Notes Médicales ******************-->
 				<!-- ******************** Notes Médicales ******************-->
 				<!-- ******************** Notes Médicales ******************-->
-				<!--*4*-->
-				<div
-					style='font-family: police2; font-size: 17px; font-weight: bold;'> Notes M&eacute;dicales </div>
-				<div style='max-height: 800px;'>
-
-					<div id="accordionsNoteMedicale" style=''>
-					
-					
 			
+	    <div style='font-family: police2; font-size: 17px; font-weight: bold;'>Notes m&eacute;dicales</div>
+		<div style='max-height: 700px;'>
+		    <div id="accordionsNoteMedical" style=''>
+		    
+		    
+		         
+		        <!-- ********************************-Plaintes(Motif de consultation) *******************************************-->
+			    <!-- ********************************-Plaintes(Motif de consultation) *******************************************-->
+			    <!-- ********************************-Plaintes(Motif de consultation) *******************************************-->
 			
+		        <div style='font-family: police2; font-size: 17px; font-weight: bold;'> Plaintes (Motifs de consultation)	</div> 
+                <div style='max-height:  200px;'>
+                
+                               <table id="hospitalisation" style="width: 63%;">
+                                        <tr>
+                                            <th class="form-hospitalisation" style="width: 60%;"> <?php echo $this->formRow($form->get('plainte_motif'));?> </th>
+                                        </tr>
+                                    </table>
+                
+                </div>
+		    
+		    
+		    
+		    
+		    
+		        
+		        <!-- ********************************-Examen clinique *******************************************-->
+			    <!-- ********************************-Examen clinique *******************************************-->
+			    <!-- ********************************-Examen clinique *******************************************-->
 			
-			
-			
-			
-			<div>
-			
-			
-			<!-- ********************************-Examen clinique *******************************************-->
-			<!-- ********************************-Examen clinique *******************************************-->
-			<!-- ********************************-Examen clinique *******************************************-->
-			
-        
-    	
-						<div
-							style='font-family: police2; font-size: 17px; font-weight: bold;'> Examen clinique
-						</div> 
-            <div style='max-height: 350px;'>
-					 <table id="hospitalisation" style="width: 63%;">
+		        <div style='font-family: police2; font-size: 17px; font-weight: bold;'> Examen clinique	</div> 
+                <div style='max-height: 350px;'>
+                    <!-- Code à indenter --> <!-- Code à indenter --><!-- Code à indenter -->
+                    <table id="hospitalisation" style="width: 63%;">
                                         <tr>
                                             <th class="form-hospitalisation" style="width: 60%;"> <?php echo $this->formRow($form->get('examen_clinique'));?> </th>
                                         </tr>
@@ -1425,27 +1453,17 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
           afficher(nbexamendonnee);
           supprimerUneDonnee();
          </script>
-		 
-
-					</div>
-						
-				     
-        
-
-				<!-- ********************************-DOSSIERS *******************************************-->
-
-
-
-
-				<!-- ********************Examen complementaire (examen et analyse)******************-->
-				<!-- ********************Examen complementaire (examen et analyse)******************-->
-				<!-- ********************Examen complementaire (examen et analyse)******************-->
-				<!--*4*-->
-				<div
-					style='font-family: police2; font-size: 17px; font-weight: bold;'>Examen paraclinique</div>
+         <!-- Code à indenter --><!-- Code à indenter --><!-- Code à indenter -->
+                </div>
+                
+             <!-- ********************************-Examen paraclinique *******************************************-->
+			<!-- ********************************-Examen paraclinique *******************************************-->
+			<!-- ********************************-Examen paraclinique *******************************************-->
+        <!--*4*-->
+				<div style='font-family: police2; font-size: 17px; font-weight: bold;'>Examen paraclinique</div>
 				<div style='max-height: 600px;'>
-
-					<div id="accordionsss" style=''>
+                <!-- Code à indenter --><!-- Code à indenter --><!-- Code à indenter -->
+                <div id="accordionsss" style=''>
 						<!--******************* DEMANDE ************************-->
 						<!--*******************DEMANDE ************************-->
 						<div
@@ -1466,6 +1484,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							<div id="accordions_demande">
                           
 
+                          
                           
                           
                           <?php 
@@ -2087,11 +2106,9 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 									</table>
                             <?php ?>
                             
-                                    <!--********************* BOUTON VALIDER OU MODIFIER ************************-->
+                            <!--********************* BOUTON VALIDER OU MODIFIER ************************-->
 									<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
 									<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-									
-									
 									<table class="bouton_valider_examen_morpho" style="width: 90%;">
 										<tr style="width: 90%;">
 											<th style="width: 31%;"></th>
@@ -2114,13 +2131,16 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							</div>
 
 						</div>
-
-					</div>
-
-				</div>
-				
-  
-
+                   <!-- Code à indenter --><!-- Code à indenter --><!-- Code à indenter -->
+                   </div>
+                
+                
+                </div>
+                
+           
+    	
+                
+                
 				<!-- *******************************Diagnostic***********************************-->
 				<!-- *******************************Diagnostic***********************************-->
 				<!-- *******************************Diagnostic***********************************-->
@@ -2212,8 +2232,9 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
          </script>
 
 				</div>
-
-
+                
+                
+                
 				<!-- **************************Traitements(ordonnance)**************************-->
 				<!-- **************************Traitements(ordonnance)**************************-->
 				<!-- **************************Traitements(ordonnance)**************************-->
@@ -2256,7 +2277,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							</div>
 
 							<div
-								style="padding-bottom: 80px; margin-bottom: 10px; border-bottom: 1px dashed green; margin-left: 0px; margin-right: 0px;"></div>
+								style="padding-bottom: 40px; margin-bottom: 10px; border-bottom: 1px dashed green; margin-left: 0px; margin-right: 0px;"></div>
 
 							<!--******* ======= MEDICAMENTS MEDICAMENTS =======  ******-->
 							<!--******* ======= MEDICAMENTS MEDICAMENTS =======  ******-->
@@ -2378,13 +2399,19 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 						</div>
 
 
+						<!-- ************** Traitement Chirurgical **************** -->
+						<!-- **2** -->
+
+
 
 
 
 					</div>
 
 				</div>
-				
+                
+                
+                
 		<!-- ********************************Operation avec tabs *******************************************-->
 		<!-- ********************************Operation avec tabs *******************************************-->
 		<!-- ********************************Operation avec tabs *******************************************-->
@@ -2611,27 +2638,9 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 				
 				
 		</div>
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-  
 				 
-
-
+                
+                
 				<!-- *************Autres(Transfert/Hospitalisation/ Rendez-Vous )***************-->
 				<!-- *************Autres(Transfert/Hospitalisation/ Rendez-Vous )***************-->
 				<!-- *************Autres(Transfert/Hospitalisation/ Rendez-Vous )***************-->
@@ -2812,6 +2821,37 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 					</div>
 
 				</div>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+		    </div>
+		</div>
+			
+			
+			
+			
+			
+			
+			
+
 			</div>
 
 
@@ -2846,9 +2886,6 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 
 
     <?php echo $this->form()->closeTag();?>
-    </div>
-    </div>
-    </div>
 </div>
 
 
