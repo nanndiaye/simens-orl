@@ -255,7 +255,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
     	$('#wait').toggle(false);
     	$('#contenu').fadeIn().css({'visibility':'visible'});
 
-    	$('#divEtatcivil').css({'height':'350px'});
+    	$('#divEtatcivil').css({'height':'400px'});
 
     	$('#boutonTerminer').click(function(){ 
 
@@ -287,7 +287,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
      <?php echo $this->formHidden($form->get('id_patient'));?>
      <?php echo $this->formHidden($form->get('id_cons'));?>
      <?php echo $this->formHidden($form->get('id_admission'));?>
-           
+          
 <div id="accordions">
 		<!-- couleur bleu du logo//#49afcd-->
 
@@ -298,6 +298,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 		<div
 			style='width: 160px; font-family: police2; font-size: 17px; font-weight: bold;'>Etat
 			Civil</div>
+			
 		<div id="divEtatcivil" >
 
 			<img id="faces"
@@ -459,36 +460,28 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 					<td style="font-weight: bold;"> <?php echo $Control->convertDate($form->get('dateonly')->getValue());?>  -  <?php echo $form->get('heure_cons')->getValue();?></td>
 				</tr>
 			</table>
-
-		</div>
-		
-		
-		
-		   	    <!-- ******************** SOUS-DOSSIERS TEMPORAIRE ******************-->
-				<!-- ******************** SOUS-DOSSIERS TEMPORAIRE ******************-->
-				<!-- ******************** SOUS-DOSSIERS TEMPORAIRE******************-->
-        
-    
-
-				<div id="sous_dossier_click" style='font-family: police2; font-size: 17px; font-weight: bold;'>Sous-Dossiers </div>
-				
-	            <div style="max-height: 100px; padding-bottom: 0px;">
-				
-				  <table   class="sous_dossier" style="width: 20%;">
+			
+			
+			
+			
+			  <table   class="sous_dossier" style="width: 70%;">
 				
 					 <tr class="form-rendezvous" style="width: 100%;">
+					 <td class="form-rendezvous2" style="width: 50%;"> </td>
+					 
 					
-					   <th class="form-rendezvous2" style="width: 17%;"> <?php echo $this->formRow($form->get('sous_dossier'));?> </th>
+					   <td class="form-rendezvous2" style="width: 50%;"> <?php echo $this->formRow($form->get('sous_dossier'));?> </td>
 					
 					 </tr>
 				
 				  </table>
-          
-	            </div>
+
+		</div>
+			           
 		
 
 </div>
-
+</div>
 			<table style="width: 100%; margin-top: 20px;">
 				<tr>
 					<td style="background-color: #eeeeee; height: 40px; width: 100%;">

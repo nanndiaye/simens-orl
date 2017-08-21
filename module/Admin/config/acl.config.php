@@ -533,6 +533,7 @@ return array(
     								'enregistrer-protocole-operatoire' => 'medecin',
     								'recherche-dossier-patient' => 'medecin',
     								'demande-operation' => 'medecin',
+    								//'visualisation-fiche-observation-clinique'=> 'medecin',
     								
     								//POUR LE BLOC OPERATOIRE
     								//POUR LE BLOC OPERATOIRE

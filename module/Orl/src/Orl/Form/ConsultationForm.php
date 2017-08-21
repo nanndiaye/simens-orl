@@ -1134,6 +1134,17 @@ class ConsultationForm extends Form {
 		) );
 		
 		$this->add ( array (
+				'name' => 'plainte_motif',
+				'type' => 'Textarea',
+				'options' => array (
+						'label' => 'Plaintes :'
+				),
+				'attributes' => array (
+						'id' => 'plainte_motif'
+				)
+		) );
+		
+		$this->add ( array (
 				'name' => 'examen_para_clinique',
 				'type' => 'Textarea',
 				'options' => array (
