@@ -159,7 +159,7 @@ $(window).load(function () {
 });
 </script>
 
-<div id="titre" style='font-family: police2; text-decoration:none; color: green; font-size: 20px; font-weight: bold; padding-left: 20px;'><iS style='font-size: 25px;'>&curren;</iS>  MODIFIER LE RENDEZ-VOUS</div>
+<div id="titre" style='font-family: police2; text-decoration:none; color: green; font-size: 20px; font-weight: bold; padding-left: 20px;'><iS style='font-size: 25px;'>&curren;</iS>  PROGRAMMER UN RENDEZ-VOUS</div>
 <div id="wait" style="color: gray; font-size: 20px; text-align: center; margin-top: 80px;" > <span> Chargement ... </span> </div>
 <div id="contenu" style='min-height:530px;'>
   <div style='width: 100%;'>
@@ -250,14 +250,13 @@ $(window).load(function () {
  <?php 
     $form = $this->form;
     $form->setName('AVIS');
-    $form->setAttribute('action', $this->url('secretariat', array('action'=>'modifier-infos-patient-rv')));
+    $form->setAttribute('action', $this->url('secretariat', array('action'=>'enregistrer-rendervous-programmer')));
     $form->setAttribute('method', 'post');
     $form->prepare();
     echo $this->form()->openTag($form); ?>
                      
                      <?php 
-                       echo $this->formHidden($form->get('id_rv'));
-                      ?>
+                      echo $this->formHidden($form->get('id_patient'));?>
                                           
                    
                   </div>
@@ -275,7 +274,7 @@ $(window).load(function () {
                                         </tr>
                                         <tr style="width: 100%;">
                                             <th colspan='4'>
-                                                 <div class='block' id='thoughtbot' style=' vertical-align: bottom; padding-left:60%; padding-top: 35px; font-size: 18px; font-weight: bold;'><button id='terminer' name= 'terminer'>Terminer</button></div>
+                                                 <div class='block' id='thoughtbot' style=' vertical-align: bottom; padding-left:60%; padding-top: 35px; font-size: 18px; font-weight: bold;'><button id='terminer' >Terminer</button></div>
                                             </th>
                                         </tr>
                                   </table>
@@ -289,13 +288,12 @@ $(window).load(function () {
 <script type="text/javascript">
 var base_url = window.location.toString();
 var tabUrl = base_url.split("public");
-
-
+ 
 
 //POUR LE MENU GAUCHE dans -elementgauche.phtml
 $('#plus_rendez_vous_orl').toggle(true);
 $("#rendez_vous_orl").replaceWith("<li id='rendez_vous_orl' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='"+tabUrl[0]+"public/images_icons/moin-green2.png' alt='Liste' /> Rendez-vous </span></a></li>");
 dep_rendez_vous_orl1();
-$('#liste_rendez_vous_style').css({'font-weight':'bold','color':'white','font-size':'18px'});
+$('#programmer_style').css({'font-weight':'bold','color':'white','font-size':'18px'});
 
 </script>

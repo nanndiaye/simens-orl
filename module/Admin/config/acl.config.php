@@ -599,6 +599,13 @@ return array(
     								'liste-rendez-vous-ajax' => array('secretaire','medecin'),
     								'info-patient-rv' => array('secretaire','medecin'),
     								'modifier-infos-patient-rv' => array('secretaire','medecin'),
+    								'fixer-rendez-vous' => array('secretaire','medecin'),
+    								'fixer-rendez-vous-ajax' => array('secretaire','medecin'),
+    								'programmer-rendez-vous' => array('secretaire','medecin'),
+    								'programmer-rendez-vous-ajax' => array('secretaire','medecin'),
+    								'info-programmer-rendez-vous' => array('secretaire','medecin'),
+    								'enregistrer-rendervous-programmer' => array('secretaire','medecin'),
+    								
     						),
     						
     				),

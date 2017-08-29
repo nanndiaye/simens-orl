@@ -458,7 +458,7 @@ $(function(){
 /***BOITE DE DIALOG POUR LA CONFIRMATION DE SUPPRESSION**/
 /***BOITE DE DIALOG POUR LA CONFIRMATION DE SUPPRESSION**/
 
-	var theHREF = tabUrl[0]+"public/consultation/consultation-medecin";
+	var theHREF = tabUrl[0]+"public/orl/liste-consultation";
 	function confirmation(){
 		
  		$( "#confirmation2" ).dialog({

@@ -1,4 +1,4 @@
- var nb="_TOTAL_";
+    var nb="_TOTAL_";
     var asInitVals = new Array();
     var base_url = window.location.toString();
 	var tabUrl = base_url.split("public");
@@ -131,3 +131,5 @@
     	vart=tabUrl[0]+'public/secretariat/modifier/id_patient/'+id;
         $(location).attr("href",vart);
     }
+    
+    
