@@ -1,8 +1,3 @@
-
-<!-- MES STYLES -->
-<?php echo $this->headLink()->appendStylesheet($this->basePath().'/css/orl/styleListePatient.css');?>
-
-
 <script>
 var base_url = window.location.toString();
 var tabUrl = base_url.split("public");
@@ -10,28 +5,17 @@ var tabUrl = base_url.split("public");
 $('#plus_rendez_vous_orl').toggle(true);
 $("#rendez_vous_orl").replaceWith("<li id='rendez_vous_orl' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='"+tabUrl[0]+"public/images_icons/moin-green2.png' alt='Liste' /> Rendez-vous </span></a></li>");
 dep_rendez_vous_orl1();
-$('#liste_rendez_vous_style').css({'font-weight':'bold','color':'white','font-size':'18px'});
+$('#fixer_rendez_vous_style').css({'font-weight':'bold','color':'white','font-size':'18px'});
 </script>
-
-<style>
-#contenu{ visibility: hidden; }
-#donnees tr{ bacjground: #f1f1f1; }
-</style>
-
-<script type="text/javascript">
-$(window).load(function () {
-	$('#wait').toggle(false);
-	$('#contenu').fadeIn().css({'visibility':'visible'});
-});
-</script>
-
-
 <div id="titre"
 	style='font-family: police2; text-decoration: none; color: green; font-size: 20px; font-weight: bold; padding-left: 20px;'>
 	<iS style='font-size: 25px;'>&curren;</iS>
 	LISTE DES RENDEZ-VOUS
 </div>
-<div id="wait" style="color: gray; font-size: 20px; text-align: center; margin-top: 80px;" > <span> Chargement ... </span> </div>
+
+<!-- MES STYLES -->
+<?php echo $this->headLink()->appendStylesheet($this->basePath().'/css/orl/styleListePatient.css');?>
+
 <div id="contenu">
 <table class="table table-bordered tab_list_mini" id="patient">
 		<thead>
@@ -42,8 +26,8 @@ $(window).load(function () {
 				<th id="date" style='cursor: pointer;'>Age</th>
 				<th id="sexe" style='cursor: pointer;'>Sexe</th>
 				<th id="adresse" style='cursor: pointer;'>Adresse</th>
-				<th id="nationalite" style='cursor: pointer;'>Date RV</th>
-				<th id="effectuer" style='cursor: pointer;'>Options</th>
+				<th id="nationalite" style='cursor: pointer;'>Nationalite</th>
+				<th id="effectuer">Options</th>
 			</tr>
 		</thead>
 
@@ -65,7 +49,7 @@ $(window).load(function () {
 				<th id="adresse_" style='width: 20%;'><input type="text"
 					name="search_browser" value=" Adresse" class="search_init" /></th>
 				<th id="nationalite_" style='width: 11%;'><input type="text"
-					name="search_browser" value=" Date RV" class="search_init" /></th>
+					name="search_browser" value=" Nationalite" class="search_init" /></th>
 				<th id="effectuer_" style='width: 9%;'><input type="hidden"
 					name="search_browser" value="" class="" /></th>
 			</tr>
@@ -95,7 +79,7 @@ $('#patient').dataTable
 						"sLast":     ">|"
 						}
 				   },
-				"sAjaxSource":  "<?php echo $this->url('secretariat', array('action' => 'liste-rendez-vous-ajax', 'format' => 'json')); ?>",
+				"sAjaxSource":  "<?php echo $this->url('secretariat', array('action' => 'fixer-rendez-vous-ajax', 'format' => 'json')); ?>",
 				
 } );
 </script>

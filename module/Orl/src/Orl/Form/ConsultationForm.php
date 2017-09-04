@@ -35,6 +35,15 @@ class ConsultationForm extends Form {
 						'value' => $heure
 				)
 		) );
+		
+		$this->add ( array (
+				'name' => 'id_rv',
+				'type' => 'Hidden',
+				'attributes' => array (
+						'id' => 'id_rv'
+				)
+		) );
+		
 		$this->add ( array (
 				'name' => 'id_medecin',
 				'type' => 'Hidden',

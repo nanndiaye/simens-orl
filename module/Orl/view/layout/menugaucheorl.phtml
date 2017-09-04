@@ -55,25 +55,51 @@ $(window).load(function () {
 	</li>
 	<!-- MENU ***ADMISSION ORL*** -->
 	<li id="admission_orl"><a href="">
-	   <span style="margin-left:0px; color: #48ce77; font-weight:bold; font-size:20px; font-family:Times New Roman;"> <img id="image" style="display: inline;" src='<?php echo $this->basePath().'/images_icons/plus-green1.png'?>' alt='Liste' /> Orl </span></a> 
+	   <span style="margin-left:0px; color: #48ce77; font-weight:bold; font-size:20px; font-family:Times New Roman;"> <img id="image" style="display: inline;" src='<?php echo $this->basePath().'/images_icons/plus-green1.png'?>' alt='Liste' /> Admission </span></a> 
 	</li>
 
 	<li id="plus_admission_orl" style="background: #4a5765;" >
 
 	   <div style="margin-left:30px; height:40px; padding-top:20px;"><a href="<?php echo $this->basePath()."/secretariat/admission";?>"  >
-	      <span id="admission_style" style="margin-left:5px; color: white; font-size:15px; font-family:Times New Roman;"><img style="display: inline;" src='<?php echo $this->basePath().'/images_icons/dossier.PNG'?>' alt='Liste' /> Admission</span></a>
+	      <span id="admission_style" style="margin-left:5px; color: white; font-size:15px; font-family:Times New Roman;"><img style="display: inline;" src='<?php echo $this->basePath().'/images_icons/dossier.PNG'?>' alt='Liste' /> Admettre</span></a>
 	   </div>
 
 	   <div style="margin-left:30px; height:40px;"><a href="<?php echo $this->basePath()."/secretariat/liste-patients-admis";?>">
 	      <img style="margin-left:5px; display: inline;" src='<?php echo $this->basePath().'/images_icons/liste.PNG'?>' alt='Liste' />
 	      <span id="liste_admission_style" style="font-size:15px; color: white; font-family:Times New Roman;">Liste des admis</span></a>
 	   </div>
+	  
+	</li>
+	
+	
+	
+	
+	
+		<!-- MENU ***RENDEZ-VOUS*** -->
+	<li id="rendez_vous_orl"><a href="">
+	   <span style="margin-left:0px; color: #48ce77; font-weight:bold; font-size:20px; font-family:Times New Roman;"> <img id="image" style="display: inline;" src='<?php echo $this->basePath().'/images_icons/plus-green1.png'?>' alt='Liste' /> Rendez-vous </span></a>
+	</li>
+	
+		<li id="plus_rendez_vous_orl" style="background: #4a5765;" >
+
+	   <div style="margin-left:30px; height:40px; padding-top:20px;"><a href="<?php echo $this->basePath()."/secretariat/fixer-rendez-vous";?>"  >
+	      <span id="fixer_rendez_vous_style" style="margin-left:5px; color: white; font-size:15px; font-family:Times New Roman;"><img style="display: inline;" src='<?php echo $this->basePath().'/images_icons/dossier.PNG'?>' alt='Liste' /> Fixer RV</span></a>
+	   </div>
+	   
+	   	<div style="margin-left:30px; height:40px;"><a href="<?php echo $this->basePath()."/secretariat/programmer-rendez-vous";?>">
+	      <img style="margin-left:5px; display: inline;" src='<?php echo $this->basePath().'/images_icons/liste.PNG'?>' alt='Liste' />
+	      <span id="programmer_style" style="font-size:15px; color: white; font-family:Times New Roman;">Programmer RV</span></a>
+	   </div>
 	   <div style="margin-left:30px; height:40px;"><a href="<?php echo $this->basePath()."/secretariat/liste-rendez-vous";?>">
 	      <img style="margin-left:5px; display: inline;" src='<?php echo $this->basePath().'/images_icons/liste.PNG'?>' alt='Liste' />
 	      <span id="liste_rendez_vous_style" style="font-size:15px; color: white; font-family:Times New Roman;">Liste des rendez-vous</span></a>
 	   </div> 
-	  
-	</li>
+	   
+	   </li>
+	
+	
+	
+	
 	<!-- MENU ***SURVEILLANT DE SERVICE*** -->
 	<!-- MENU ***SURVEILLANT DE SERVICE*** -->
 	<!-- MENU ***SURVEILLANT DE SERVICE*** -->
@@ -282,7 +308,7 @@ return false;
 //admission-orl
 function dep_admission_orl1(){
 	$('#admission_orl').click(function(){
-		$("#admission_orl").replaceWith("<li id='admission_orl'><a href=''><span style='margin-left:0px; color: #48ce77; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='../images_icons/plus-green1.png' alt='Liste' /> Orl </span></a></li>");
+		$("#admission_orl").replaceWith("<li id='admission_orl'><a href=''><span style='margin-left:0px; color: #48ce77; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='../images_icons/plus-green1.png' alt='Liste' /> Admission </span></a></li>");
 		dep_admission_orl2();
 	    $('#plus_admission_orl').animate({
 	        height : 'toggle'
@@ -293,7 +319,7 @@ function dep_admission_orl1(){
 
 function dep_admission_orl2(){
 	$('#admission_orl').click(function(){
-		$("#admission_orl").replaceWith("<li id='admission_orl' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='../images_icons/moin-green2.png' alt='Liste' /> Orl </span></a></li>");
+		$("#admission_orl").replaceWith("<li id='admission_orl' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='../images_icons/moin-green2.png' alt='Liste' /> Admission </span></a></li>");
 		dep_admission_orl1();
 	    $('#plus_admission_orl').animate({
 	        height : 'toggle'
@@ -304,14 +330,53 @@ function dep_admission_orl2(){
 
 $('#plus_admission_orl').toggle(false);
 $('#admission_orl').click(function(){
-	$("#admission_orl").replaceWith("<li id='admission_orl' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='../images_icons/moin-green2.png' alt='Liste' /> Orl </span></a></li>");
+	$("#admission_orl").replaceWith("<li id='admission_orl' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='../images_icons/moin-green2.png' alt='Liste' /> Admission </span></a></li>");
 	dep_admission_orl1();
 $('#plus_admission_orl').animate({
 height : 'toggle'
 },1000);
 return false;
 });
+//********************************************************************************************************************************
+//Rendez_vous_orl
+
+function dep_rendez_vous_orl1(){
+	$('#rendez_vous_orl').click(function(){
+		$("#rendez_vous_orl").replaceWith("<li id='rendez_vous_orl'><a href=''><span style='margin-left:0px; color: #48ce77; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='../images_icons/plus-green1.png' alt='Liste' /> Rendez-vous </span></a></li>");
+		dep_rendez_vous_orl2();
+	    $('#plus_rendez_vous_orl').animate({
+	        height : 'toggle'
+	    },1000);
+	 return false;
+	});
+}
+
+function dep_rendez_vous_orl2(){
+	$('#rendez_vous_orl').click(function(){
+		$("#rendez_vous_orl").replaceWith("<li id='rendez_vous_orl' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='../images_icons/moin-green2.png' alt='Liste' />Rendez-vous </span></a></li>");
+		dep_rendez_vous_orl1();
+	    $('#plus_rendez_vous_orl').animate({
+	        height : 'toggle'
+	    },1000);
+	 return false;
+	});
+}
+
+$('#plus_rendez_vous_orl').toggle(false);
+$('#rendez_vous_orl').click(function(){
+	$("#rendez_vous_orl").replaceWith("<li id='rendez_vous_orl' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='../images_icons/moin-green2.png' alt='Liste' /> Rendez-vous </span></a></li>");
+	dep_rendez_vous_orl1();
+$('#plus_rendez_vous_orl').animate({
+height : 'toggle'
+},1000);
+return false;
+});
+
 //*******************************************************************************************************************************
+
+
+
+
 
 
 
