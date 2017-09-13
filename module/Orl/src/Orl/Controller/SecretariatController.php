@@ -874,6 +874,48 @@ class SecretariatController extends AbstractActionController {
 		
 	}
 	
+	
+	
+	
+	public function enregistrerRendervousFixerAction() {
+	
+		$formData = $this->getRequest ()->getPost ();
+		$id_cons = $formData['id_cons']; 
+		var_dump($id_cons);exit();
+		
+			
+		$date_RV_Recu = $formData['date_rv'];
+		$date_RV = "";
+		if($date_RV_Recu){
+			$date_RV = (new DateHelper())->convertDateInAnglais($formData['date_rv']);
+		}
+			
+		$infos_rv = array(
+				'ID_CONS' => $id_cons,
+				'NOTE'    => $formData['motif_rv'],
+				'HEURE'   => $formData['heure_rv'],
+				'DATE'    => $date_RV,
+				'DELAI'   => $formData['delai_rv'],
+		);
+		$idRV = $this->getRvPatientConsTable()->addRendezVous($infos_rv);
+			
+		$rv_consultation = array(
+				'ID_RV' => $idRV,
+				'ID_CONS' => $id_cons,
+		);
+			
+		$this->getRvPatientConsTable()->addRendezVousFixer($rv_consultation);
+			
+	
+		return $this->redirect ()->toRoute ( 'secretariat', array (
+				'action' => 'liste-rendez-vous'
+		) );
+	
+	}
+	
+	
+	
+	
 
 	public function modifierInfosPatientRvAction() {
 		$id_pat = $this->params()->fromQuery ( 'id_patient', 0 );

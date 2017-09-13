@@ -2319,4 +2319,147 @@ class PatientTable {
 	
 	
 	
+	
+	public function getListeAntecedentsNotesMedicalesAjax($id_pat=null, $id_cons=null){
+		$today = new \DateTime();
+		$date = $today->format('Y-m-d');
+		$db = $this->tableGateway->getAdapter();
+		$aColumns = array('Date_cons','NomSecretaire','NomMedecin', 'Id_sous_dossier', 'id');
+		/* Indexed column (used for fast and accurate table cardinality) */
+		$sIndexColumn = "id";
+		/*
+		 * Paging
+		*/
+		$sLimit = array();
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$sLimit[0] = $_GET['iDisplayLength'];
+			$sLimit[1] = $_GET['iDisplayStart'];
+		}
+	
+		/*
+		 * Ordering
+		*/
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			$sOrder = array();
+			$j = 0;
+			for ( $i=0 ; $i<intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($_GET['iSortCol_'.$i]) ] == "true" )
+				{
+					$sOrder[$j++] = $aColumns[ intval( $_GET['iSortCol_'.$i] ) ]."
+								 	".$_GET['sSortDir_'.$i];
+				}
+			}
+		}
+		//var_dump("trfdxshtgdrcf"); exit();
+		/*
+		 * SQL queries
+		*/
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Datenaissance'=>'DATE_NAISSANCE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
+		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
+		->join(array('cons' => 'consultation') , 'cons.ID_PATIENT = pat.ID_PERSONNE', array('Id' => 'ID_PATIENT', 'Id_cons' => 'ID_CONS', 'Date_cons' => 'DATEONLY', 'Id_sous_dossier' => 'id_sous_dossier'))
+		->join(array('consOrl' => 'consultation_orl') , 'consOrl.ID_CONS = cons.ID_CONS', array('*'))
+		->join(array('admis' => 'admission') , 'cons.id_admission = admis.id_admission', array('*'))
+		->join(array('secretaire' => 'personne'), 'secretaire.ID_PERSONNE = admis.id_employe' , array('NomSecretaire'=>'NOM','PrenomSecretaire'=>'PRENOM'))
+		->join(array('medecin' => 'personne'), 'medecin.ID_PERSONNE = cons.ID_MEDECIN' , array('NomMedecin'=>'NOM','PrenomMedecin'=>'PRENOM'))
+	
+		->where(array('pers.ID_PERSONNE' => $id_pat, 'consOrl.ID_CONS != ?' => $id_cons, 'consOrl.ID_CONS != ?' => "",  'cons.DATEONLY  != ? ' => $date))
+		->order('Date_cons DESC');
+	
+		/* Data set length after filtering */
+		$stat = $sql->prepareStatementForSqlObject($sQuery);
+		$rResultFt = $stat->execute();
+		$iFilteredTotal = count($rResultFt);
+	
+		//var_dump($rResultFt->count()); exit();
+	
+		$rResult = $rResultFt;
+	
+		$output = array(
+				"iTotalDisplayRecords" => $iFilteredTotal,
+				"aaData" => array()
+		);
+	
+		/*
+		 * $Control pour convertir la date en franï¿½ais
+		*/
+		$Control = new DateHelper();
+	
+		/*
+		 * ADRESSE URL RELATIF
+		*/
+		$baseUrl = $_SERVER['REQUEST_URI'];
+		$tabURI  = explode('public', $baseUrl);
+	
+		/*
+		 * Prï¿½parer la liste liste des patients à consulter par le medecin
+		*/
+		foreach ( $rResult as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					if ($aColumns[$i] == 'Date_cons'){
+						$row[] = $Control->convertDate($aRow[ $aColumns[$i]]);
+					}
+	
+					else if ($aColumns[$i] == 'NomSecretaire') {
+						$row[] = $aRow[ 'PrenomSecretaire' ].' '.$aRow[ 'NomSecretaire' ] ;
+					}
+						
+					else if ($aColumns[$i] == 'NomMedecin') {
+						$row[] = $aRow[ 'PrenomMedecin' ].' '.$aRow[ 'NomMedecin' ] ;
+					}
+	
+					else if($aColumns[$i] == 'Id_sous_dossier') {
+	
+						if($aRow[ 'Id_sous_dossier' ] == 1){
+							$row[] = '<span title="Dossier fiche d\'observation clinique" style="cursor:pointer;"> F.O.C </span>';
+						}elseif($aRow[ 'Id_sous_dossier' ] == 2){
+							$row[] = '<span title="Dossier thyroide" style="cursor:pointer;"> Thyroide </span>';
+						}else{
+							$row[] = '';
+						}
+	
+	
+					}
+						
+					else if ($aColumns[$i] == 'id') {
+	
+						$html ="";
+	
+						if($aRow[ 'Id_sous_dossier' ] == 1){
+							$html .="<infoBulleVue> <a href='".$tabURI[0]."public/orl/visualisation-note-medicale-precedente?id_patient=".$aRow[ $aColumns[$i] ]."&id_cons=".$aRow[ 'Id_cons' ]."' target='_blank'>";
+							$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/pdf.png' title='Imprimer'></a> </infoBulleVue>";
+								
+						}else if($aRow[ 'Id_sous_dossier' ] == 2){
+							$html .="<infoBulleVue> <a href='".$tabURI[0]."public/orl/visualisation-thyroide?id_patient=".$aRow[ $aColumns[$i] ]."&id_cons=".$aRow[ 'Id_cons' ]."' target='_blank'>";
+							$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/pdf.png' title='Imprimer'></a> </infoBulleVue>";
+								
+						}
+	
+						$row[] = $html;
+					}
+	
+					else {
+						$row[] = $aRow[ $aColumns[$i] ];
+					}
+	
+				}
+			}
+			$output['aaData'][] = $row;
+		}
+	
+		return $output;
+	}
+	
+	
+	
 }

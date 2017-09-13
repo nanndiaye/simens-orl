@@ -2349,8 +2349,10 @@ class OrlController extends AbstractActionController {
 		//**********TRAITEMENT CHIRURGICAL*****************
 		if(isset($_POST['traitement_chirurgical'])){ 
 			//Récupération des données
-			$donneesDemande['diagnostic'] = $this->params ()->fromPost ( 'diagnostic_traitement_chirurgical' );
+			$donneesDemande['indication'] = $this->params ()->fromPost ( 'indication' );
 			$donneesDemande['intervention_prevue'] = $this->params ()->fromPost (  'intervention_prevue' );
+			$donneesDemande['type_anesthesie'] = $this->params()->fromPost('type_anesthesie');
+			$donneesDemande['numero_vpa'] = $this->params()->fromPost('numero_vpa');
 			$donneesDemande['observation'] = $this->params()->fromPost('observation');
 			
 			//CREATION DU DOCUMENT PDF
@@ -2573,6 +2575,7 @@ class OrlController extends AbstractActionController {
 					//**********DEMANDES D'EXAMENS****************
 					//**********DEMANDES D'EXAMENS****************
 					if(isset ($_POST['demandeExamenBioMorpho'])){
+						var_dump('test');exit();
 						$i = 1; $j = 1;
 						$donneesExamensBio = array();
 						$notesExamensBio = array();
@@ -2595,7 +2598,7 @@ class OrlController extends AbstractActionController {
 							}
 						}
 
-						
+					
 						//CREATION DU DOCUMENT PDF
 						//Créer le document
 						$DocPdf = new DocumentPdf();
@@ -7204,6 +7207,28 @@ class OrlController extends AbstractActionController {
 				'enableJsonExprFinder' => true
 		) ) );
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	public function listeNotesMedicalesPrecedenteAjaxAction() {
+	
+		$id_pat = $this->params ()->fromQuery ( 'id_patient', 0 );
+		$id = $this->params ()->fromQuery ( 'id_cons', 0 );
+	
+		$output = $this->getPatientTable ()->getListeAntecedentsNotesMedicalesAjax($id_pat, $id);
+		return $this->getResponse ()->setContent ( Json::encode ( $output, array (
+				'enableJsonExprFinder' => true
+		) ) );
+	}
+	
+	
+	
+	
 	
 	
 	

@@ -1297,7 +1297,7 @@ class ConsultationForm extends Form {
 				),
 				'attributes' => array (
 						'id' => 'date_rv',
-						'required'=> true,
+						//'required'=> true,
 				)
 		) );
 		$this->add ( array (
@@ -1958,6 +1958,19 @@ class ConsultationForm extends Form {
 				)
 		) );
 		
+		
+		/*notes médicales */
+		$this->add ( array (
+				'name' => 'notes_medicales',
+				'type' => 'Textarea',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Notes médicales' )
+				),
+				'attributes' => array (
+						'id' => 'notes_medicales'
+				)
+		) );
+		
 		/*Antécédent chirugicaux */
 		$this->add ( array (
 				'name' => 'ant_chirurgicaux',
@@ -2317,7 +2330,7 @@ class ConsultationForm extends Form {
 				),
 				'attributes' => array (
 						'id' => 'indication_preoperatoire',
-						'required' => true,
+						//'required' => true,
     				    'tabindex' => 2,
 				)
 		) );
@@ -2329,7 +2342,7 @@ class ConsultationForm extends Form {
 				),
 				'attributes' => array (
 						'id' => 'indication_peroperatoire',
-						'required' => true,
+						//'required' => true,
     				    'tabindex' => 2,
 				)
 		) );
@@ -2840,7 +2853,7 @@ class ConsultationForm extends Form {
 				),
 				'attributes' => array (
 						'id' => 'anesthesiste',
-						'required' => true,
+						//'required' => true,
 						'tabindex' => 1,
 				)
 		) );
@@ -2852,7 +2865,7 @@ class ConsultationForm extends Form {
 				),
 				'attributes' => array (
 						'id' => 'indication',
-						'required' => true,
+						//'required' => true,
 						'tabindex' => 2,
 				)
 		) );
@@ -2864,7 +2877,7 @@ class ConsultationForm extends Form {
 				),
 				'attributes' => array (
 						'id' => 'type_anesthesie',
-						'required' => true,
+						//'required' => true,
 						'tabindex' => 3,
 				)
 		) );
@@ -2876,7 +2889,7 @@ class ConsultationForm extends Form {
 				),
 				'attributes' => array (
 						'id' => 'protocole_operatoire',
-						'required' => true,
+						//'required' => true,
 						'maxlength' => 1500,
 						'tabindex' => 4,
 				)
@@ -2890,7 +2903,7 @@ class ConsultationForm extends Form {
 				'attributes' => array (
 						'id' => 'soins_post_operatoire',
 						'maxlength' => 400,
-						'required' => true,
+						//'required' => true,
 						'tabindex' => 5,
 				)
 		) );

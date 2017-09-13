@@ -66,6 +66,14 @@ class RvPatientConsTable{
 		$sql->prepareStatementForSqlObject($sQuery)->execute();
 	}
 	
+	public function addRendezVousFixer($rv_consultation){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->insert()
+		->into('rv_consultation')
+		->values( $rv_consultation );
+		$sql->prepareStatementForSqlObject($sQuery)->execute();
+	}
 	
 	public function getRendezVousProgrammer($id_rv){
 		$db = $this->tableGateway->getAdapter();
@@ -238,6 +246,19 @@ class RvPatientConsTable{
 	
 		return $sql->prepareStatementForSqlObject($sQuery)->execute()->current();
 	}
+	
+	
+
+	public function getRvConsultation($id_rv){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('rvc' => 'rv_consultation'))->columns( array( '*' ))
+		->where(array('ID_RV'  => $id_rv));
+	
+		return $sql->prepareStatementForSqlObject($sQuery)->execute()->current();
+	}
+	
 	
 	
 	
