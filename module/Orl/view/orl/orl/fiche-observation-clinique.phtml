@@ -148,7 +148,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 .transf,.rendezvous,.ordonnance {
 	width: 32px;
 	height: 32px;
-	background: url(<? php //echo $ this- > basePath()."/images_icons/pdf.PNG"?>)
+	background: url(<?php echo  $this->basePath()."/images_icons/pdf.PNG"?>)
 		no-repeat right top;
 }
 
@@ -1474,9 +1474,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
 							<!-- LE PDF POUR IMPRESSION-->
 							<div class="rendezvous">
-								<hass>
-								<input type="submit" title="Imprimer"
-									name="demandeExamenBioMorpho" id="demandeExamenBioMorpho"> </hass>
+								<hass><input type="submit" title="Imprimer"name="demandeExamenBioMorpho" id="demandeExamenBioMorpho"> </hass>
 							</div>
 							<div
 								style="padding-bottom: 40px; margin-bottom: 10px; border-bottom: 1px dashed green; margin-left: 0px; margin-right: 0px;"></div>
@@ -2258,11 +2256,11 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							<!--******* ======= MENU MENU MENU =======  ******-->
 							<div
 								style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
-							<!-- LE PDF POUR IMPRESSION-->
-							<div class="ordonnance">
-								<input type="submit" name="ordonnance" id="ordonnance" />
-
-							</div>
+              <!-- LE PDF POUR IMPRESSION-->
+                 <div class="ordonnance">
+                     <hass><input type="submit" alt="Constantes" Title="Imprimer" name="ordonnance" id="ordonnance"></hass>
+                      
+                 </div>
 
 							<!-- LE CHAMP POUR LA DUREE DU TRAITEMENT DE L'ORDONNANCE-->
 							<div id="duree_traitement">

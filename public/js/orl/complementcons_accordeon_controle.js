@@ -20,6 +20,7 @@
 	$( "#accordions_demande" ).accordion();
 	$( "#accordionsss" ).accordion();
 	$( "#accordionsNoteMedical" ).accordion();
+	$( "#accordionsNoteMedicalTyroide" ).accordion();
   });
 
   $(function() {
@@ -717,7 +718,6 @@ $(function(){
 	    donnees['fibroscopie_']  = $("#fibrocospie").val();
 	    donnees['scanner_']      = $("#scanner").val();
 	    donnees['irm_']          = $("#irm").val();
-	    
 	    //*********** DIAGNOSTICS ************
 	    //*********** DIAGNOSTICS ************
 	    donnees['diagnostic1'] = $("#diagnostic1").val();
