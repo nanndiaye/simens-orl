@@ -82,7 +82,7 @@ class OrdonnancePdf
 				$this->_leftMargin,
 				$this->_pageHeight - 65);
 		$this->_page->setFont($this->_newTime, 10);
-		$this->_page->drawText('Polyclinique de l\'UGB de Saint-Louis',
+		$this->_page->drawText('Centre Hospitalier Régional de Saint-Louis(CHRSL)',
 				$this->_leftMargin,
 				$this->_pageHeight - 80);
 		$this->_page->setFont($this->_newTime, 10);
@@ -166,7 +166,19 @@ class OrdonnancePdf
 		
 		//-----------------------------------------------
 		$value = $this->_DonneesPatient;
+		
+		   //--------------------------------------------
+		$this->_page->setFont($this->_newTimeGras, 9);
+		$this->_page->drawText('Numéro Dossier :',
+				$this->_leftMargin+123,
+				$this->_yPosition);
+		$this->_page->setFont($this->_newTime, 10);
+		$this->_page->drawText(iconv ('UTF-8' ,'ISO-8859-1' , $value['NUMERO_DOSSIER']),
+				$this->_leftMargin+210,
+				$this->_yPosition);
 			//-----------------------------------------------
+		    $this->_yPosition -= 15;// allez a ligne suivante
+		   //------------------------------------------------
 			$this->_page->setFont($this->_newTimeGras, 9);
 			$this->_page->drawText('PRENOM & NOM :',
 					$this->_leftMargin+123,

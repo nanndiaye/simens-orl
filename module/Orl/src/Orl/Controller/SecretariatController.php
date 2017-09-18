@@ -168,9 +168,156 @@ class SecretariatController extends AbstractActionController {
 				) );
 			}
 		}
-		return $this->redirect ()->toRoute ( 'secretariat', array (
-				'action' => 'liste-patient'
-		) );
+		
+		
+		
+		
+		else
+			//**********Terminer et Admettre*****************
+			//**********Terminer et Admettre*****************
+			//**********Terminer et Admettre*****************	
+
+			
+			
+			if (isset ( $_POST ['terminer_admettre'] ))  // si formulaire soumis
+			{
+				$Control = new DateHelper();
+				//var_dump('tet');exit();
+				$form = new PatientForm ();
+				$Patient = $this->getPatientTable ();
+				$today = new \DateTime ( 'now' );
+				$nomfile = $today->format ( 'dmy_His' );
+				$date_enregistrement = $today->format ( 'Y-m-d H:i:s' );
+				$fileBase64 = $this->params ()->fromPost ( 'fichier_tmp' );
+				$fileBase64 = substr ( $fileBase64, 23 );
+					
+				if($fileBase64){
+					$img = imagecreatefromstring(base64_decode($fileBase64));
+				}else {
+					$img = false;
+				}
+			
+			
+				$date_naissance = $this->params ()->fromPost ( 'DATE_NAISSANCE' );
+				if($date_naissance){ $date_naissance = $Control->convertDateInAnglais($this->params ()->fromPost ( 'DATE_NAISSANCE' )); }else{ $date_naissance = null;}
+					
+				$donnees = array(
+							
+						//'NUMERO_DOSSIER' => $this->params ()->fromPost ( 'NUMERO_DOSSIER' ),
+						'LIEU_NAISSANCE' => $this->params ()->fromPost ( 'LIEU_NAISSANCE' ),
+						'EMAIL' => $this->params ()->fromPost ( 'EMAIL' ),
+						'NOM' => $this->params ()->fromPost ( 'NOM' ),
+						'TELEPHONE' => $this->params ()->fromPost ( 'TELEPHONE' ),
+						'NATIONALITE_ORIGINE' => $this->params ()->fromPost ( 'NATIONALITE_ORIGINE' ),
+						'PRENOM' => $this->params ()->fromPost ( 'PRENOM' ),
+						'PROFESSION' => $this->params ()->fromPost ( 'PROFESSION' ),
+						'NATIONALITE_ACTUELLE' => $this->params ()->fromPost ( 'NATIONALITE_ACTUELLE' ),
+						'DATE_NAISSANCE' => $date_naissance,
+						'ADRESSE' => $this->params ()->fromPost ( 'ADRESSE' ),
+						'SEXE' => $this->params ()->fromPost ( 'SEXE' ),
+						'AGE' => $this->params ()->fromPost ( 'AGE' ),
+						//'NUMERO_DOSSIER' => $this->params ()->fromPost ( 'NUMERO_DOSSIER' ),
+				);
+			
+				if ($img != false) {
+			
+					$donnees['PHOTO'] = $nomfile;
+					//ENREGISTREMENT DE LA PHOTO
+					imagejpeg ( $img, 'C:\wamp\www\simens\public\img\photos_patients\\' . $nomfile . '.jpg' );
+					//ENREGISTREMENT DES DONNEES
+					$Patient->addPatient ( $donnees , $date_enregistrement , $id_employe );
+						
+					return $this->redirect ()->toRoute ( 'secretariat', array (
+							'action' => 'admission'
+					) );
+				} else {
+					// On enregistre sans la photo
+					$Patient->addPatient ( $donnees , $date_enregistrement , $id_employe );
+			
+					return $this->redirect ()->toRoute ( 'secretariat', array (
+							'action' => 'admission'
+					) );
+				}
+			}
+
+			
+			
+			
+			
+			
+			else
+			//**********Terminer et Rendez-vous*****************
+			//**********Terminer et Rendez-vous*****************
+			//**********Terminer et Rendez-vous*****************
+			
+				
+				
+			if (isset ( $_POST ['terminer_rv'] ))  // si formulaire soumis
+			{
+				$Control = new DateHelper();
+				//var_dump('tet');exit();
+				$form = new PatientForm ();
+				$Patient = $this->getPatientTable ();
+				$today = new \DateTime ( 'now' );
+				$nomfile = $today->format ( 'dmy_His' );
+				$date_enregistrement = $today->format ( 'Y-m-d H:i:s' );
+				$fileBase64 = $this->params ()->fromPost ( 'fichier_tmp' );
+				$fileBase64 = substr ( $fileBase64, 23 );
+					
+				if($fileBase64){
+					$img = imagecreatefromstring(base64_decode($fileBase64));
+				}else {
+					$img = false;
+				}
+					
+					
+				$date_naissance = $this->params ()->fromPost ( 'DATE_NAISSANCE' );
+				if($date_naissance){ $date_naissance = $Control->convertDateInAnglais($this->params ()->fromPost ( 'DATE_NAISSANCE' )); }else{ $date_naissance = null;}
+					
+				$donnees = array(
+							
+						//'NUMERO_DOSSIER' => $this->params ()->fromPost ( 'NUMERO_DOSSIER' ),
+						'LIEU_NAISSANCE' => $this->params ()->fromPost ( 'LIEU_NAISSANCE' ),
+						'EMAIL' => $this->params ()->fromPost ( 'EMAIL' ),
+						'NOM' => $this->params ()->fromPost ( 'NOM' ),
+						'TELEPHONE' => $this->params ()->fromPost ( 'TELEPHONE' ),
+						'NATIONALITE_ORIGINE' => $this->params ()->fromPost ( 'NATIONALITE_ORIGINE' ),
+						'PRENOM' => $this->params ()->fromPost ( 'PRENOM' ),
+						'PROFESSION' => $this->params ()->fromPost ( 'PROFESSION' ),
+						'NATIONALITE_ACTUELLE' => $this->params ()->fromPost ( 'NATIONALITE_ACTUELLE' ),
+						'DATE_NAISSANCE' => $date_naissance,
+						'ADRESSE' => $this->params ()->fromPost ( 'ADRESSE' ),
+						'SEXE' => $this->params ()->fromPost ( 'SEXE' ),
+						'AGE' => $this->params ()->fromPost ( 'AGE' ),
+						//'NUMERO_DOSSIER' => $this->params ()->fromPost ( 'NUMERO_DOSSIER' ),
+				);
+					
+				if ($img != false) {
+						
+					$donnees['PHOTO'] = $nomfile;
+					//ENREGISTREMENT DE LA PHOTO
+					imagejpeg ( $img, 'C:\wamp\www\simens\public\img\photos_patients\\' . $nomfile . '.jpg' );
+					//ENREGISTREMENT DES DONNEES
+					$Patient->addPatient ( $donnees , $date_enregistrement , $id_employe );
+			
+					return $this->redirect ()->toRoute ( 'secretariat', array (
+							'action' => 'programmer-rendez-vous'
+					) );
+				} else {
+					// On enregistre sans la photo
+					$Patient->addPatient ( $donnees , $date_enregistrement , $id_employe );
+						
+					return $this->redirect ()->toRoute ( 'secretariat', array (
+							'action' => 'programmer-rendez-vous'
+					) );
+				}
+			}
+		
+		
+		
+// 		return $this->redirect ()->toRoute ( 'secretariat', array (
+// 				'action' => 'liste-patient'
+// 		) );
 	}
 	public function listePatientAjaxAction() {
 		
@@ -874,7 +1021,25 @@ class SecretariatController extends AbstractActionController {
 		
 	}
 	
+	public function enregistrerRvConsultationAction(){
 	
+		$formData = $this->getRequest ()->getPost ();
+		$infos_rv = array(
+				'NOTE'    => $formData['motif_rv'],
+				'HEURE'   => $formData['heure_rv'],
+				'DATE'    => (new DateHelper())->convertDateInAnglais($formData['date_rv']),
+				'DELAI'   => $formData['delai_rv'],
+		);
+		
+		$id_rv = $formData['id_rv'];
+		//var_dump($id_rv );exit();
+		$this->getRvPatientConsTable()->updateRendezVousProgrammer($infos_rv, $id_rv);
+	
+		return $this->redirect ()->toRoute ( 'secretariat', array (
+				'action' => 'liste-rendez-vous'
+		) );
+	
+	}
 	
 	
 	public function enregistrerRendervousFixerAction() {
@@ -987,7 +1152,7 @@ class SecretariatController extends AbstractActionController {
 	
 	
     public function fixerRendezVousAjaxAction() {
-		$output = $this->getRvPatientConsTable()->getFixerRV();
+		$output = $this->getRvPatientConsTable()->fixerRendezVousConsultation();
 		// var_dump("$leRendezVous"); exit();
 		//$patient = $this->getPatientTable ();
 		return $this->getResponse ()->setContent ( Json::encode ( $output, array (
@@ -1110,30 +1275,37 @@ class SecretariatController extends AbstractActionController {
 	
 	
 	
-	
 	public function infoPatientRvAction() {
+		$this->layout ()->setTemplate ( 'layout/orl' );
 		$id_pat = $this->params()->fromQuery ( 'id_patient', 0 );
 		$id_cons = $this->params()->fromQuery ( 'id_cons' );
-		
-		$this->layout ()->setTemplate ( 'layout/orl' );
 	
 		$form = new ConsultationForm();
 		$form->populateValues(array('id_cons' => $id_cons));
 	
-		//var_dump($form); exit();
-		
-	    $user = $this->layout()->user;
-	    $IdDuService = $user['IdService'];
+		$user = $this->layout()->user;
+		$IdDuService = $user['IdService'];
 	
 		$patient = $this->getPatientTable ();
-		//var_dump( new \DateTime ( 'now' ));exit(); date d'aujourd'hui
 			
 		$unPatient = $patient->getInfoPatient( $id_pat );
-		//var_dump($unPatient);exit();
-
-		$rv = $patient->getRvPatientParIdcons($id_cons);
-		$form->populateValues(array('delai_rv' => $rv['DELAI']));
-		//var_dump($rv);exit();
+	
+		$data = array();
+		$rv_consultation = $this->getRvPatientConsTable()->getRendezVousConsultation($id_cons);
+		$leRendezVous = $this->getRvPatientConsTable()->getInfosRendezVousConsultation($rv_consultation['ID_RV']);
+	
+		if($leRendezVous) {
+			$date_rv = "";
+			if ($leRendezVous['DATE']){ $date_rv = (new DateHelper())->convertDate($leRendezVous['DATE']); }
+	
+			$data['heure_rv'] = $leRendezVous['HEURE'];
+			$data['date_rv']  = $date_rv;
+			$data['motif_rv'] = $leRendezVous['NOTE'];
+			$data['delai_rv'] = $leRendezVous['DELAI'];
+		}
+		$data['id_rv'] = $rv_consultation['ID_RV'];
+		$form->populateValues($data);
+	
 		return array (
 				'form'=>$form,
 				'lesdetails' => $unPatient,

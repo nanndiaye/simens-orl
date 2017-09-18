@@ -577,6 +577,7 @@ return array(
     								
     								'ajouter-patient' => array('secretaire', 'medecin'),
     								'enregistrement-patient' => array('secretaire', 'medecin'),
+    								'enregistrement-patient-admettre' => array('secretaire', 'medecin'),
     								'liste-patient' => array('secretaire', 'medecin'),
     								'liste-patient-ajax' => array('secretaire', 'medecin'),
     								'info-patient' => array('secretaire', 'medecin'),
@@ -606,6 +607,7 @@ return array(
     								'programmer-rendez-vous-ajax' => array('secretaire','medecin'),
     								'info-programmer-rendez-vous' => array('secretaire','medecin'),
     								'enregistrer-rendervous-programmer' => array('secretaire','medecin'),
+    								'enregistrer-rv-consultation' => array('secretaire','medecin'),
     								
     						),
     						
