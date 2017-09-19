@@ -1950,9 +1950,7 @@ class ConsultationForm extends Form {
 		$this->add ( array (
 				'name' => 'histoire_maladie',
 				'type' => 'Textarea',
-				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'histoire de la maladie' )
-				),
+				
 				'attributes' => array (
 						'id' => 'histoire_maladie'
 				)
@@ -1963,9 +1961,7 @@ class ConsultationForm extends Form {
 		$this->add ( array (
 				'name' => 'notes_medicales',
 				'type' => 'Textarea',
-				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Notes médicales' )
-				),
+				
 				'attributes' => array (
 						'id' => 'notes_medicales'
 				)
@@ -2705,9 +2701,7 @@ class ConsultationForm extends Form {
 		$this->add ( array (
 				'name' => 'reste_examen_clinique',
 				'type' => 'Textarea',
-				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Reste examen clinique:' )
-				),
+				
 				'attributes' => array (
 						'id' => 'reste_examen_clinique'
 				)

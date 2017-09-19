@@ -383,4 +383,187 @@ class RvPatientConsTable{
 		return $output;
 		
 	}
+	
+	
+	//NOUVEAUX CODES AJOUTES
+	//NOUVEAUX CODES AJOUTES
+	//NOUVEAUX CODES AJOUTES
+	
+	public function addInfosRendezVousConsultation($infos_rv, $id_cons){
+		if(!$this->getRendezVousConsultation($id_cons)){
+			if($infos_rv['NOTE']){
+				$db = $this->tableGateway->getAdapter();
+				$sql = new Sql($db);
+				$sQuery = $sql->insert()
+				->into('rendezvous')
+				->values( $infos_rv );
+				return $sql->prepareStatementForSqlObject($sQuery)->execute()->getGeneratedValue();
+			}
+		}else{
+			$rvcons = $this->getRendezVousConsultation($id_cons);
+			$db = $this->tableGateway->getAdapter();
+			$sql = new Sql($db);
+			$sQuery = $sql->delete()->from('rendezvous')->where(array('ID_RV' => $rvcons['ID_RV']));
+			$sql->prepareStatementForSqlObject($sQuery)->execute();
+			if($infos_rv['NOTE']){
+				$db = $this->tableGateway->getAdapter();
+				$sql = new Sql($db);
+				$sQuery = $sql->insert()
+				->into('rendezvous')
+				->values( $infos_rv );
+				return $sql->prepareStatementForSqlObject($sQuery)->execute()->getGeneratedValue();
+			}
+		}
+	}
+	
+	public function addRendezVousConsultation($rv_consultation, $id_rv){
+		if(!$this->getRendezVousConsultation($rv_consultation['ID_CONS']) && $this->getInfosRendezVousConsultation($id_rv)){
+			$db = $this->tableGateway->getAdapter();
+			$sql = new Sql($db);
+			$sQuery = $sql->insert()
+			->into('rv_consultation')
+			->values( $rv_consultation );
+			$sql->prepareStatementForSqlObject($sQuery)->execute();
+		}
+	}
+	
+	public function getRendezVousConsultation($id_cons){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('rvc' => 'rv_consultation'))->columns(array('*'))
+		->where(array('ID_CONS' => $id_cons));
+		return $sql->prepareStatementForSqlObject($sQuery)->execute()->current();
+	}
+	
+	public function getInfosRendezVousConsultation($id_rv){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('rvc' => 'rendezvous'))->columns(array('*'))
+		->where(array('ID_RV' => $id_rv ));
+		return $sql->prepareStatementForSqlObject($sQuery)->execute()->current();
+	}
+	
+	
+	
+	public function fixerRendezVousConsultation(){
+	
+		$db = $this->tableGateway->getAdapter();
+		$aColumns = array('NUMERO_DOSSIER', 'Nom','Prenom','Age','Sexe', 'Adresse', 'Nationalite', 'id', 'id2');
+		/* Indexed column (used for fast and accurate table cardinality) */
+		$sIndexColumn = "id";
+		/*
+		 * Paging
+		*/
+		$sLimit = array();
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$sLimit[0] = $_GET['iDisplayLength'];
+			$sLimit[1] = $_GET['iDisplayStart'];
+		}
+		/*
+		 * Ordering
+		*/
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			$sOrder = array();
+			$j = 0;
+			for ( $i=0 ; $i<intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($_GET['iSortCol_'.$i]) ] == "true" )
+				{
+					$sOrder[$j++] = $aColumns[ intval( $_GET['iSortCol_'.$i] ) ]."
+								 	".$_GET['sSortDir_'.$i];
+				}
+			}
+		}
+	
+		/*
+		 * SQL queries
+		*/
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pat' => 'patient'))->columns(array('*'))
+		->join(array('p' => 'personne'), 'pat.id_personne = p.id_personne' , array('Nom'=>'NOM','Prenom'=>'PRENOM','Datenaissance'=>'DATE_NAISSANCE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE', 'id2'=>'ID_PERSONNE', 'Age'=>'AGE'))
+		->join(array('cons' => 'consultation'), 'p.ID_PERSONNE = cons.ID_PATIENT', array('Id_cons' => 'ID_CONS'))
+		->join(array('rvc' => 'rv_consultation') , 'rvc.ID_CONS = cons.ID_CONS', array('*'))
+		->join(array('rv'  => 'rendezvous') , 'rv.ID_RV = rvc.ID_RV', array('Id_rv'=>'ID_RV'))
+		->order('rv.HEURE_ENREG ASC')
+		->where(array( 'rv.DATE' => null));
+	
+	
+		/* Data set length after filtering */
+		$stat = $sql->prepareStatementForSqlObject($sQuery);
+		$rResultFt = $stat->execute();
+		$iFilteredTotal = count($rResultFt);
+	
+		$rResult = $rResultFt;
+	
+		$output = array(
+				//"sEcho" => intval($_GET['sEcho']),
+				//"iTotalRecords" => $iTotal,
+				"iTotalDisplayRecords" => $iFilteredTotal,
+				"aaData" => array()
+		);
+	
+		/*
+		 * $Control pour convertir la date en fran�ais
+		*/
+		$Control = new DateHelper();
+	
+		/*
+		 * ADRESSE URL RELATIF
+		*/
+		$baseUrl = $_SERVER['REQUEST_URI'];
+		$tabURI  = explode('public', $baseUrl);
+	
+		/*
+		 * Pr�parer la liste
+		*/
+		foreach ( $rResult as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					if ($aColumns[$i] == 'Nom'){
+						$row[] = "<khass id='nomMaj'>".$aRow[ $aColumns[$i]]."</khass>";
+					}
+	
+					else if ($aColumns[$i] == 'Datenaissance') {
+	
+						$date_naissance = $aRow[ $aColumns[$i] ];
+						if($date_naissance){ $row[] = $Control->convertDate($aRow[ $aColumns[$i] ]); }else{ $row[] = null;}
+					}
+					else if ($aColumns[$i] == 'Adresse') {
+						$row[] = $aRow[ $aColumns[$i] ];
+					}
+					else if ($aColumns[$i] == 'id') {
+	
+						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/secretariat/info-patient-rv?id_cons=".$aRow[ 'Id_cons' ]."&id_patient=".$aRow[ $aColumns[$i] ]."'>";
+						$html .="<img style='display: inline; margin-right: 10%;' src='".$tabURI[0]."public/images_icons/voir2.png' title='d&eacute;tails'></a></infoBulleVue>";
+	
+						//$html .= "<infoBulleVue> <a href='".$tabURI[0]."public/secretariat/modifier/id_patient/".$aRow[ $aColumns[$i] ]."'>";
+						//$html .="<img style='display: inline; margin-right: 10%;' src='".$tabURI[0]."public/images_icons/pencil_16.png' title='Modifier'></a></infoBulleVue>";
+	
+						// 						if(!$this->verifierExisteAdmission($aRow[ $aColumns[$i] ])){
+						// 							$html .= "<infoBulleVue> <a id='".$aRow[ $aColumns[$i] ]."' href='javascript:supprimer(".$aRow[ $aColumns[$i] ].");'>";
+						// 							$html .="<img style='display: inline;' src='".$tabURI[0]."public/images_icons/symbol_supprimer.png' title='Supprimer'></a></infoBulleVue>";
+						// 						}
+						$row[] = $html;
+					}
+					else {
+						$row[] = $aRow[ $aColumns[$i] ];
+					}
+				}
+			}
+			$output['aaData'][] = $row;
+		}
+	
+		return $output;
+	}
+	
 }

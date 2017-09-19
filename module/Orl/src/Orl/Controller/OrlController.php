@@ -6320,12 +6320,13 @@ class OrlController extends AbstractActionController {
 		$this->getConsultationTable()->addCompteRenduOperatoire($note_compte_rendu1, 1, $id_cons);
 		$this->getConsultationTable()->addCompteRenduOperatoire($note_compte_rendu2, 2, $id_cons);
 		
-		//POUR LES RENDEZ VOUS
-		//POUR LES RENDEZ VOUS
-		//POUR LES RENDEZ VOUS
+        
+		//POUR LES RENDEZ VOUS *** POUR LES RENDEZ VOUS
+		//POUR LES RENDEZ VOUS *** POUR LES RENDEZ VOUS
+		//POUR LES RENDEZ VOUS *** POUR LES RENDEZ VOUS
+		
 		$id_patient = $this->params()->fromPost('id_patient');
 		$date_RV_Recu = $this->params()->fromPost('date_rv');
-		//var_dump($date_RV_Recu);exit();
 		
 		if($date_RV_Recu){
 			$date_RV = $this->controlDate->convertDateInAnglais($date_RV_Recu);
@@ -6334,18 +6335,26 @@ class OrlController extends AbstractActionController {
 			$date_RV = null;
 		}
 		
-		
 		$infos_rv = array(
-				'ID_CONS' => $id_cons,
+				'ID_PATIENT' => $id_patient,
 				'NOTE'    => $this->params()->fromPost('motif_rv'),
 				'HEURE'   => $this->params()->fromPost('heure_rv'),
 				'DATE'    => $date_RV,
 				'DELAI'   => $this->params()->fromPost('delai_rv'),
 		);
 		
-		if($this->params()->fromPost('delai_rv')){
-			$this->getRvPatientConsTable()->updateRendezVous($infos_rv);
-		}
+		//var_dump($infos_rv);exit();
+		$id_rv = null;
+		$id_rv = $this->getRvPatientConsTable()->addInfosRendezVousConsultation($infos_rv, $id_cons);
+		$rv_consultation = array('ID_RV' => $id_rv, 'ID_CONS' => $id_cons);
+		$this->getRvPatientConsTable()->addRendezVousConsultation($rv_consultation, $id_rv);
+
+		//var_dump($infos_rv); exit();
+		//var_dump('$id_rv'); exit();
+		
+		//*********************************************
+		//*********************************************
+		//*********************************************
 		
 		//-----------------------------------DEBUT DES PROBLEMES -----------
 		
@@ -7667,23 +7676,21 @@ public function majFicheObservationCliniqueAction() {
 		$form->get ( 'service_accueil' )->setValueOptions ($serviceHopital);
 	}
 	
-	//POUR LE RENDEZ VOUS
-	//POUR LE RENDEZ VOUS
-	//POUR LE RENDEZ VOUS
-	// RECUPERE LE RENDEZ VOUS
-	$leRendezVous = $this->getRvPatientConsTable()->getRendezVous($id);
-	//$comp_date=$this->controlDate->convertDate($leRendezVous->date);
+	/*CODES AJOUTES*/
+	$rv_consultation = $this->getRvPatientConsTable()->getRendezVousConsultation($id);
+	$leRendezVous = $this->getRvPatientConsTable()->getInfosRendezVousConsultation($rv_consultation['ID_RV']);
 	
 	if($leRendezVous) {
 		$date_rv = "";
-		if ($leRendezVous->date){ $date_rv =  $this->controlDate->convertDate($leRendezVous->date); }
+		if ($leRendezVous['DATE']){ $date_rv = (new DateHelper())->convertDate($leRendezVous['DATE']); }
 	
-		$data['heure_rv'] = $leRendezVous->heure;
+		$data['heure_rv'] = $leRendezVous['HEURE'];
 		$data['date_rv']  = $date_rv;
-		$data['motif_rv'] = $leRendezVous->note;
-		$data['delai_rv'] = $leRendezVous->delai;
+		$data['motif_rv'] = $leRendezVous['NOTE'];
+		$data['delai_rv'] = $leRendezVous['DELAI'];
 	}
-	//var_dump($data);exit();
+	
+	//var_dump($rv_consultation);exit();
 	// Pour recuper les bandelettes
 	$bandelettes = $this->getConsultationTable ()->getBandelette($id);
 	

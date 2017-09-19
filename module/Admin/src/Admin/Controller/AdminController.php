@@ -216,7 +216,7 @@ class AdminController extends AbstractActionController
     	}
     	else if($user['role'] == "secretaire")
     	{
-    		return $this->redirect()->toRoute('secretariat', array('action' => 'liste-patient'));
+    		return $this->redirect()->toRoute('secretariat', array('action' => 'admission'));
     	}
     	
     	 

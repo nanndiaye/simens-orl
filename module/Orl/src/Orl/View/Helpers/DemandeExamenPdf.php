@@ -78,12 +78,12 @@ class DemandeExamenPdf
 		$this->_page->restoreGS();
 	}
 	
-	public function setEnTete(){
-		$imageHeader = ZendPdf\Image::imageWithPath('C:\wamp\www\simens\public\img\polycliniquelogo.png');
-		$this->_page->drawImage($imageHeader, 505, //-x
-				$this->_pageHeight - 130, //-y
-				600, //+x
-				650); //+y
+ 	public function setEnTete(){
+// 		$imageHeader = ZendPdf\Image::imageWithPath('C:\wamp\www\simens\public\img\polycliniquelogo.png');
+// 		$this->_page->drawImage($imageHeader, 505, //-x
+// 				$this->_pageHeight - 130, //-y
+// 				600, //+x
+// 				650); //+y
 		
 		$this->_page->setFont($this->_newTime, 10);
 		$this->_page->drawText('République du Sénégal',

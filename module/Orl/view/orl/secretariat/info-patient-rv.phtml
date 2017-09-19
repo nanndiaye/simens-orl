@@ -250,14 +250,15 @@ $(window).load(function () {
  <?php 
     $form = $this->form;
     $form->setName('AVIS');
-    $form->setAttribute('action', $this->url('secretariat', array('action'=>'liste-rendez-vous')));
+    $form->setAttribute('action', $this->url('secretariat', array('action'=>'enregistrer-rv-consultation')));
     $form->setAttribute('method', 'post');
     $form->prepare();
     echo $this->form()->openTag($form); ?>
                      
                      <?php 
                      //$id_cons =  $this->lesdetails['ID_CONS'];
-                      echo $this->formHidden($form->get('id_cons'));?>
+                      echo $this->formHidden($form->get('id_cons'));
+                      echo $this->formHidden($form->get('id_rv'));?>
                                           
                    
                   </div>
@@ -300,6 +301,6 @@ var tabUrl = base_url.split("public");
 $('#plus_rendez_vous_orl').toggle(true);
 $("#rendez_vous_orl").replaceWith("<li id='rendez_vous_orl' style='background:#4a5765;'><a href=''><span style='margin-left:0px; color: #ffffff; font-weight:bold; font-size:20px; font-family:Times New Roman;'> <img style='display: inline;' src='"+tabUrl[0]+"public/images_icons/moin-green2.png' alt='Liste' /> Rendez-vous </span></a></li>");
 dep_rendez_vous_orl1();
-$('#liste_rendez_vous_style').css({'font-weight':'bold','color':'white','font-size':'18px'});
+$('#fixer_rendez_vous_style').css({'font-weight':'bold','color':'white','font-size':'18px'});
 
 </script>
