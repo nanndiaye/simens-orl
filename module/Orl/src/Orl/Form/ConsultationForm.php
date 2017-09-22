@@ -1325,11 +1325,14 @@ class ConsultationForm extends Form {
 						'label' => 'Delai :',
 						'empty_option' => 'Choisir',
 						'value_options' => array (
+								'10j' => '10j',
 								'15j' => '15j',
 								'1 mois' => '1 mois',
 								'1 mois 15j' => '1 mois 15j',
 								'2 mois' => '2 mois',
-								'3 mois' => '3 mois'
+								'3 mois' => '3 mois',
+								'6 mois' => '6 mois'
+								
 						)
 				),
 				'attributes' => array (

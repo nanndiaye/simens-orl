@@ -1961,23 +1961,25 @@ class PatientTable {
  			->where(array('ID_PERSONNE' => $pat['ID_PERSONNE'] ));
  			$sql->prepareStatementForSqlObject($sQuery)->execute();
  				
- 		} else {
+  		} 
+//else {
  			
- 			//POUR LES AGES SANS DATE DE NAISSANCE
- 			//POUR LES AGES SANS DATE DE NAISSANCE
+//  			//POUR LES AGES SANS DATE DE NAISSANCE
+//  			//POUR LES AGES SANS DATE DE NAISSANCE
  		
- 			$age = $this->nbAnnees($controle->convertDateInAnglais($controle->convertDate($pat['DATE_MODIFICATION'])), $today);
+//  			$age = $this->nbAnnees($controle->convertDateInAnglais($controle->convertDate($pat['DATE_MODIFICATION'])), $today);
+//  			var_dump($age);
  			
- 			if($age != 0) {
- 				$donnees = array('AGE' => $age+$pat['AGE'], 'DATE_MODIFICATION' =>$today);
- 				$sQuery = $sql->update()
- 				->table('personne')
- 				->set( $donnees )
- 				->where(array('ID_PERSONNE' => $pat['ID_PERSONNE'] ));
- 				$sql->prepareStatementForSqlObject($sQuery)->execute();
- 			}
+//  			if($age != 0) {
+//  				$donnees = array('AGE' => $age+$pat['AGE'], 'DATE_MODIFICATION' =>$today);
+//  				$sQuery = $sql->update()
+//  				->table('personne')
+//  				->set( $donnees )
+//  				->where(array('ID_PERSONNE' => $pat['ID_PERSONNE'] ));
+//  				$sql->prepareStatementForSqlObject($sQuery)->execute();
+//  			}
 
- 		}
+ //		}
 		
 	}
 	

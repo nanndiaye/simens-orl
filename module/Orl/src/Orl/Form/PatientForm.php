@@ -31,6 +31,41 @@ class PatientForm extends Form {
 				)
 		) );
 
+				
+
+		
+		$this->add ( array (
+				'name' => 'PRENOM',
+				'type' => 'Text',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Prénom' )
+				),
+				'attributes' => array (
+						'id' => 'PRENOM',
+						//'class' => 'only_Char',
+						'required' => true,
+						'tabindex' => 1,
+				)
+		) );
+		
+		
+		
+		$this->add ( array (
+				'name' => 'NOM',
+				'type' => 'Text',
+				'options' => array (
+						'label' => 'Nom'
+				),
+				'attributes' => array (
+				// 						'class' => 'only_Char',
+						'id' => 'NOM',
+						'required' => true,
+						'tabindex' => 2,
+				)
+		) );
+		
+
+		
 		$this->add ( array (
 				'name' => 'SEXE',
 				'type' => 'Zend\Form\Element\Select',
@@ -43,40 +78,13 @@ class PatientForm extends Form {
 						)
 				),
 				'attributes' => array (
+						//'placeholder' => 'Cliquer pour choisir',
 						'id' => 'SEXE',
-						'required' => true,
-						'tabindex' => 1,
-				)
-		) );
-		
-		$this->add ( array (
-				'name' => 'NOM',
-				'type' => 'Text',
-				'options' => array (
-						'label' => 'Nom'
-				),
-				'attributes' => array (
-// 						'class' => 'only_Char',
-						'id' => 'NOM',
-						'required' => true,
-						'tabindex' => 2,
-				)
-		) );
-		
-		$this->add ( array (
-				'name' => 'PRENOM',
-				'type' => 'Text',
-				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Prénom' )
-				),
-				'attributes' => array (
-						'id' => 'PRENOM',
-						//'class' => 'only_Char',
 						'required' => true,
 						'tabindex' => 3,
 				)
 		) );
-
+		
 		
 		$this->add ( array (
 				'name' => 'AGE',
