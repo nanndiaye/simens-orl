@@ -148,7 +148,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 .transf,.rendezvous,.ordonnance {
 	width: 32px;
 	height: 32px;
-	background: url(<? php //echo $ this- > basePath()."/images_icons/pdf.PNG"?>)
+	background: url(<?php echo  $this->basePath()."/images_icons/pdf.PNG"?>)
 		no-repeat right top;
 }
 
@@ -975,24 +975,22 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 				<div id="tabss-3">
 					<table id="MenuAntecedent" style="width: 100%;">
 						<tr style="width: 100%;">
-							<td style="width: 25%;">
-								
-							</td>
-							<td style="width: 25%;">
+							
+							<td style="width: 33%;">
 								<div>
 									<img class="image2"
 										style='cursor: pointer; width: 100%; height: 200px;'
 										src='<?php echo $this->basepath().'/images_icons/hospitalisatione.jpg'?>' />
 								</div>
 							</td>
-							<td style="width: 25%;">
+							<td style="width: 33%;">
 								<div>
 									<img class="image3"
 										style='cursor: pointer; width: 100%; height: 200px;'
 										src='<?php echo $this->basepath().'/images_icons/examens.jpg'?>' />
 								</div>
 							</td>
-							<td style="width: 25%;">
+							<td style="width: 33%;">
 								<div>
 									<img class="image4"
 										style='cursor: pointer; width: 100%; height: 200px;'
@@ -1477,7 +1475,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							<!-- LE PDF POUR IMPRESSION-->
 							<div class="rendezvous">
 								<hass>
-								<input type="submit" title="Imprimer"
+								<input  title="Imprimer"
 									name="demandeExamenBioMorpho" id="demandeExamenBioMorpho"> </hass>
 							</div>
 							<div
@@ -1746,7 +1744,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 
 										<div style="width: 82%; float: left; height: 1px;">
 											<table id="respondee" style="width: 100%;">
-												<tr id="groupe_sanguine" class="form-groupe"
+												<tr id="groupe_sanguin" class="form-groupe"
 													style="width: 100%;">
 													<th id="groupe"> <?php echo $this->formRow($form->get('groupe_sanguin'));?> </th>
 												</tr>
@@ -1775,6 +1773,32 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('bilan_inflammatoire'));?> </th>
 												</tr>
+												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
+													style="width: 100%;">
+													<th> <?php echo $this->formRow($form->get('creatine'));?> </th>
+												</tr>
+												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
+													style="width: 100%;">
+													<th> <?php echo $this->formRow($form->get('t4'));?> </th>
+												</tr>
+												
+												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
+													style="width: 100%;">
+													<th> <?php echo $this->formRow($form->get('tsh'));?> </th>
+												</tr>
+												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
+													style="width: 100%;">
+													<th> <?php echo $this->formRow($form->get('crp'));?> </th>
+												</tr>
+												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
+													style="width: 100%;">
+													<th> <?php echo $this->formRow($form->get('glycemie_a_jeun'));?> </th>
+												</tr>
+												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
+													style="width: 100%;">
+													<th> <?php echo $this->formRow($form->get('asco'));?> </th>
+												</tr>
+												
 											</table>
 										</div>
 										<div style="width: 18%; float: left;">
@@ -2262,10 +2286,11 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							<div
 								style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
 							<!-- LE PDF POUR IMPRESSION-->
-							<div class="ordonnance">
-								<input type="submit" name="ordonnance" id="ordonnance" />
-
-							</div>
+              <!-- LE PDF POUR IMPRESSION-->
+                 <div class="ordonnance">
+                     <hass><input type="submit" alt="Constantes" Title="Imprimer" name="ordonnance" id="ordonnance"></hass>
+                      
+                 </div>
 
 							<!-- LE CHAMP POUR LA DUREE DU TRAITEMENT DE L'ORDONNANCE-->
 							<div id="duree_traitement">
@@ -2440,7 +2465,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                                                 <div style=" padding-bottom:0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
                                        <!-- LE PDF POUR IMPRESSION-->
                                        <div class="rendezvous">
-                                           <hass><input type="submit" alt="Constantes" title="Imprimer" name="traitement_chirurgical" id="chirurgical1"></hass>
+                                           <hass><input  alt="Constantes" title="Imprimer" name="traitement_chirurgical" id="chirurgical1"></hass>
                                        </div>
 
                                        <div class="annulertransfert">

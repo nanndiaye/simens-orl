@@ -6005,6 +6005,7 @@ class OrlController extends AbstractActionController {
 		$form = new ConsultationForm ();
 		$formData = $this->getRequest ()->getPost ();
 		$form->setData ( $formData );
+		//var_dump($this->params()->fromPost('$infoOrdonnance'));exit();
 		
 		//consultation
 		$this->getConsultationTable()->addConsultation($id_cons, $id_medecin, $id_patient, $id_admission, $sous_dossier);
@@ -6016,7 +6017,7 @@ class OrlController extends AbstractActionController {
 		 
 		
 		
-		//var_dump($this->params()->fromPost('$id_cons'));exit();
+		
 		//Insertion des antécédents ORL
 		//Insertion des antécédents ORL
 		//Insertion des antécédents ORL
@@ -6257,6 +6258,7 @@ class OrlController extends AbstractActionController {
 				$nomMedicament = $this->params()->fromPost("medicament_0".$i);
 				$formeMedicament = $this->params()->fromPost("forme_".$i);
 				$quantiteMedicament = $this->params()->fromPost("quantite_".$i);
+				//var_dump($quantiteMedicament);exit();
 	
 				if($this->params()->fromPost("medicament_0".$i)){
 						
@@ -7820,6 +7822,7 @@ public function majFicheObservationCliniqueAction() {
 			//'dateonly' => $consult->dateonly,
 			'temoin' => $bandelettes['temoin'],
 			'listeForme' => $listeForme,
+			'listetypeQuantiteMedicament'  => $listetypeQuantiteMedicament,
 			'listetypeQuantiteMedicament'  => $listetypeQuantiteMedicament,
 			'donneesAntecedentsPersonnels' => $donneesAntecedentsPersonnels,
 			'donneesAntecedentsFamiliaux'  => $donneesAntecedentsFamiliaux,

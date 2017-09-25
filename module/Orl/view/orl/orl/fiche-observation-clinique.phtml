@@ -1800,19 +1800,14 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 
 										<div style="width: 82%; float: left; height: 1px;">
 											<table id="respondee" style="width: 100%;">
-												<tr id="groupe_sanguine" class="form-groupe"
+												<tr id="groupe_sanguin" class="form-groupe"
 													style="width: 100%;">
-													<th id="groupe"> <?php echo $this->formRow($form->get('groupe_sanguin'));?> </th>
+													<th > <?php echo $this->formRow($form->get('groupe_sanguin'));?> </th>
 												</tr>
 
 												<tr id="hemogramme_sanguin" class="form-analyse-biologique"
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('hemogramme_sanguin'));?> </th>
-												</tr>
-
-												<tr id="bilan_hemolyse" class="form-analyse-biologique"
-													style="width: 100%;">
-													<th> <?php echo $this->formRow($form->get('bilan_hemolyse'));?> </th>
 												</tr>
 
 												<tr id="bilan_hepatique" class="form-analyse-biologique"
@@ -1824,6 +1819,11 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('bilan_renal'));?> </th>
 												</tr>
+										        <tr id="bilan_hemolyse" class="form-analyse-biologique"
+													style="width: 100%;">
+													<th> <?php echo $this->formRow($form->get('bilan_hemolyse'));?> </th>
+												</tr>		
+												
 
 												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
 													style="width: 100%;">
