@@ -567,6 +567,7 @@ return array(
     								'liste-consultation-precedente-ajax' => 'medecin',
     								'liste-notes-medicales-precedente-ajax' => 'medecin',
     								'maj-fiche-observation-clinique' => 'medecin',
+    								'espace-recherche-med-ajax' =>'medecin'
     							
     								
     						),

@@ -469,10 +469,10 @@ class ConsultationForm extends Form {
 				'name' => 'groupe_sanguin',
 				'type' => 'Text',
 				'options' => array (
-						'label' => 'Groupe Sanguin: '
+							'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'NFS:' )
 				),
 				'attributes' => array (
-						'readonly' => 'readonly',
+						//'readonly' => 'readonly',
 						'id'  => 'groupe_sanguin'
 				)
 		) );
@@ -480,10 +480,10 @@ class ConsultationForm extends Form {
 				'name' => 'hemogramme_sanguin',
 				'type' => 'Text',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Hemogramme sanguin' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'GSRH:' )
 				),
 				'attributes' => array (
-						'readonly' => 'readonly',
+						//'readonly' => 'readonly',
 						'id'  => 'hemogramme_sanguin'
 				)
 		) );
@@ -491,10 +491,10 @@ class ConsultationForm extends Form {
 				'name' => 'bilan_hemolyse',
 				'type' => 'Text',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Bilan de l\'hémostase:' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'TEST D\'EMMEL:' )
 				),
 				'attributes' => array (
-						'readonly' => 'readonly',
+						//'readonly' => 'readonly',
 						'id'  => 'bilan_hemolyse'
 				)
 		) );
@@ -502,10 +502,10 @@ class ConsultationForm extends Form {
 				'name' => 'bilan_hepatique',
 				'type' => 'Text',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Bilan hépatique:' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'TP:' )
 				),
 				'attributes' => array (
-						'readonly' => 'readonly',
+						//'readonly' => 'readonly',
 						'id'  => 'bilan_hepatique'
 				)
 		) );
@@ -513,10 +513,10 @@ class ConsultationForm extends Form {
 				'name' => 'bilan_renal',
 				'type' => 'Text',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Bilan rénal:' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'TCK:' )
 				),
 				'attributes' => array (
-						'readonly' => 'readonly',
+						//'readonly' => 'readonly',
 						'id'  => 'bilan_renal'
 				)
 		) );
@@ -524,13 +524,86 @@ class ConsultationForm extends Form {
 				'name' => 'bilan_inflammatoire',
 				'type' => 'Text',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Bilan inflammatoire:' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'CALCEMIE:' )
 				),
 				'attributes' => array (
-						'readonly' => 'readonly',
+							//'readonly' => 'readonly',
 						'id'  => 'bilan_inflammatoire'
 				)
 		) );
+		$this->add ( array (
+				'name' => 'creatine',
+				'type' => 'Text',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'CREATINE:' )
+				),
+				'attributes' => array (
+						//'readonly' => 'readonly',
+						'id'  => 'creatine'
+				)
+		) );
+		
+		$this->add ( array (
+				'name' => 't4',
+				'type' => 'Text',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'T4:' )
+				),
+				'attributes' => array (
+						//'readonly' => 'readonly',
+						'id'  => 't4'
+				)
+		) );
+		
+		$this->add ( array (
+				'name' => 'tsh',
+				'type' => 'Text',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'TSH:' )
+				),
+				'attributes' => array (
+						//'readonly' => 'readonly',
+						'id'  => 'tsh'
+				)
+		) );
+		
+		$this->add ( array (
+				'name' => 'crp',
+				'type' => 'Text',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'CRP:' )
+				),
+				'attributes' => array (
+						//'readonly' => 'readonly',
+						'id'  => 'crp'
+				)
+		) );
+		
+		$this->add ( array (
+				'name' => 'glycemie_a_jeun',
+				'type' => 'Text',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'GLYCEMIE A JEUN:' )
+				),
+				'attributes' => array (
+						//'readonly' => 'readonly',
+						'id'  => 'glycemie_a_jeun'
+				)
+		) );
+		
+		
+		$this->add ( array (
+				'name' => 'asco',
+				'type' => 'Text',
+				'options' => array (
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'ASCO:' )
+				),
+				'attributes' => array (
+						//'readonly' => 'readonly',
+						'id'  => 'asco'
+				)
+		) );
+		
 		/* B)))*********EXAMEN MORPHOLOGIQUE******** */
 		/**
 		 * * Les balises images dans cette partie ne sont pas utilisï¿½es**
@@ -539,7 +612,7 @@ class ConsultationForm extends Form {
 				'name' => 'radio',
 				'type' => 'Textarea',
 				'options' => array (
-						'label' => 'Radio:'
+						'label' => 'Radiographie du CAVUM:'
 				),
 				'attributes' => array (
 						'readonly' => 'readonly',
@@ -558,7 +631,7 @@ class ConsultationForm extends Form {
 				'name' => 'ecographie',
 				'type' => 'Textarea',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Echographie: ' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Radiographie du THORAX: ' )
 				),
 				'attributes' => array (
 						'readonly' => 'readonly',
@@ -577,7 +650,7 @@ class ConsultationForm extends Form {
 				'name' => 'fibrocospie',
 				'type' => 'Textarea',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Fibroscopie: ' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Audiogramme tonal: ' )
 				),
 				'attributes' => array (
 						'readonly' => 'readonly',
@@ -596,7 +669,7 @@ class ConsultationForm extends Form {
 				'name' => 'scanner',
 				'type' => 'Textarea',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Scanner: ' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'TDM des Sinus: ' )
 				),
 				'attributes' => array (
 						'readonly' => 'readonly',
@@ -615,7 +688,7 @@ class ConsultationForm extends Form {
 				'name' => 'irm',
 				'type' => 'Textarea',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'IRM: ' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Echographie Cervicale: ' )
 				),
 				'attributes' => array (
 						'readonly' => 'readonly',
@@ -1325,11 +1398,14 @@ class ConsultationForm extends Form {
 						'label' => 'Delai :',
 						'empty_option' => 'Choisir',
 						'value_options' => array (
+								'10j' => '10j',
 								'15j' => '15j',
 								'1 mois' => '1 mois',
 								'1 mois 15j' => '1 mois 15j',
 								'2 mois' => '2 mois',
-								'3 mois' => '3 mois'
+								'3 mois' => '3 mois',
+								'6 mois' => '6 mois'
+								
 						)
 				),
 				'attributes' => array (

@@ -64,6 +64,7 @@ class SousDossierTable{
 		);
 		$this->tableGateway->insert( $donnees );
 	}
+	
 	public function deleteSousDossier($id){
 		$this->tableGateway->delete(array('id_cons'=>$id));
 	}

@@ -88,14 +88,14 @@ echo $this->form ()->openTag ( $form );
 				</tr>
 
 				<tr class="comment-form-patient">
-					<td> <?php echo $this->formRow($this->form->get('AGE'));?></td>
+					<td> <?php echo $this->formRow($this->form->get('SEXE'));?></td>
 					<td> <?php echo $this->formRow($this->form->get('PROFESSION'));?></td>
 					<td> <?php echo $this->formRow($this->form->get('NATIONALITE_ACTUELLE'));?></td>
 				</tr>
 
 				<tr class="comment-form-patient">
 					<td style="width: 33%;">
-						<div class="age" style="float: left; width: 33%;"> <?php echo $this->formRow($this->form->get('SEXE'));?> </div>
+						<div class="age" style="float: left; width: 33%;"> <?php echo $this->formRow($this->form->get('AGE'));?> </div>
 						<div class="date_naiss" style="float: left; width: 60%;"> <?php echo $this->formRow($this->form->get('DATE_NAISSANCE'));?> </div>
 					</td>
 					<td> <?php echo $this->formRow($this->form->get('ADRESSE'));?></td>

@@ -1188,7 +1188,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 		<div id='motifsAdmissionConstanteClick'
 			style='font-family: police2; font-size: 17px; font-weight: bold;'>
 			Motif de consultation</div>
-		<div style='max-height: 400px;'>
+		<div style='max-height: 300px;'>
 
            <?php echo $this->formHidden($form->get('id_patient'));?>
            <?php echo $this->formHidden($form->get('id_admission'));?>
@@ -1532,7 +1532,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
 							<!-- LE PDF POUR IMPRESSION-->
 							<div class="rendezvous">
-								<hass><input type="submit" title="Imprimer"name="demandeExamenBioMorpho" id="demandeExamenBioMorpho"> </hass>
+								<hass><input  title="Imprimer"name="demandeExamenBioMorpho" id="demandeExamenBioMorpho"> </hass>
 							</div>
 							<div
 								style="padding-bottom: 40px; margin-bottom: 10px; border-bottom: 1px dashed green; margin-left: 0px; margin-right: 0px;"></div>
@@ -1800,19 +1800,14 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 
 										<div style="width: 82%; float: left; height: 1px;">
 											<table id="respondee" style="width: 100%;">
-												<tr id="groupe_sanguine" class="form-groupe"
+												<tr id="groupe_sanguin" class="form-groupe"
 													style="width: 100%;">
-													<th id="groupe"> <?php echo $this->formRow($form->get('groupe_sanguin'));?> </th>
+													<th > <?php echo $this->formRow($form->get('groupe_sanguin'));?> </th>
 												</tr>
 
 												<tr id="hemogramme_sanguin" class="form-analyse-biologique"
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('hemogramme_sanguin'));?> </th>
-												</tr>
-
-												<tr id="bilan_hemolyse" class="form-analyse-biologique"
-													style="width: 100%;">
-													<th> <?php echo $this->formRow($form->get('bilan_hemolyse'));?> </th>
 												</tr>
 
 												<tr id="bilan_hepatique" class="form-analyse-biologique"
@@ -1824,6 +1819,11 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('bilan_renal'));?> </th>
 												</tr>
+										        <tr id="bilan_hemolyse" class="form-analyse-biologique"
+													style="width: 100%;">
+													<th> <?php echo $this->formRow($form->get('bilan_hemolyse'));?> </th>
+												</tr>		
+												
 
 												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
 													style="width: 100%;">
@@ -2308,7 +2308,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 						<div
 							style='font-family: police2; font-size: 17px; font-weight: bold;'>
 							M&eacute;dicamenteux</div>
-						<div>
+						<div style="min-height: 300px;">
 
 							<!--******* ======= MENU MENU MENU =======  ******-->
 							<!--******* ======= MENU MENU MENU =======  ******-->
@@ -2493,7 +2493,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                                                 <div style=" padding-bottom:0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
                                        <!-- LE PDF POUR IMPRESSION-->
                                        <div class="rendezvous">
-                                           <hass><input type="submit" alt="Constantes" title="Imprimer" name="traitement_chirurgical" id="chirurgical1"></hass>
+                                           <hass><input  alt="Constantes" title="Imprimer" name="traitement_chirurgical" id="chirurgical1"></hass>
                                        </div>
 
                                        <div class="annulertransfert">

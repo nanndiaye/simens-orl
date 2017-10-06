@@ -29,6 +29,8 @@ use Orl\Model\DemandeVisitePreanesthesiqueTable;
 use Orl\Model\DemandeVisitePreanesthesique;
 use Orl\Model\NotesExamensMorphologiquesTable;
 use Orl\Model\NotesExamensMorphologiques;
+use Orl\Model\NotesExamensBiologiquesTable;
+use Orl\Model\NotesExamensBiologiques;
 use Orl\Model\OrdonConsommableTable;
 use Orl\Model\OrdonConsommable;
 use Orl\Model\AntecedentPersonnelTable;
@@ -284,6 +286,18 @@ class Module implements AutoloaderProviderInterface {
 							$resultSetPrototype->setArrayObjectPrototype ( new NotesExamensMorphologiques());
 							return new TableGateway ( 'note_examen_morphologique', $dbAdapter, null, $resultSetPrototype );
 						},
+						'Orl\Model\NotesExamensBiologiquesTable' => function ($sm) {
+							$tableGateway = $sm->get ( 'NotesExamensBiologiquesTableGateway' );
+							$table = new NotesExamensBiologiquesTable($tableGateway);
+							return $table;
+						},
+						'NotesExamensBilogiquesTableGateway' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$resultSetPrototype = new ResultSet();
+							$resultSetPrototype->setArrayObjectPrototype ( new NotesExamensBiologiques());
+							return new TableGateway ( 'note_examen_biologique', $dbAdapter, null, $resultSetPrototype );
+						},
+						
 						'Orl\Model\OrdonConsommableTable' => function ($sm) {
 							$tableGateway = $sm->get ( 'OrdonConsommableTableGateway' );
 							$table = new OrdonConsommableTable($tableGateway);

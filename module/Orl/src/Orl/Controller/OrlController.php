@@ -47,6 +47,7 @@ class OrlController extends AbstractActionController {
 	protected $ordonnanceTable;
 	protected $demandeVisitePreanesthesiqueTable;
 	protected $notesExamensMorphologiquesTable;
+	protected $notesExamensBiologiquesTable;
 	protected $demandeExamensTable;
 	protected $ordonConsommableTable;
 	protected $antecedantPersonnelTable;
@@ -209,6 +210,15 @@ class OrlController extends AbstractActionController {
 			$this->notesExamensMorphologiquesTable = $sm->get ( 'Orl\Model\NotesExamensMorphologiquesTable' );
 		}
 		return $this->notesExamensMorphologiquesTable;
+	}
+	
+	
+	public function getNotesExamensBiologiquesTable() {
+		if (! $this->notesExamensBiologiquesTable) {
+			$sm = $this->getServiceLocator ();
+			$this->notesExamensBiologiquesTable = $sm->get ( 'Orl\Model\NotesExamensBiologiquesTable' );
+		}
+		return $this->notesExamensBiologiquesTable;
 	}
 	
 	public function demandeExamensTable() {
@@ -1427,6 +1437,19 @@ class OrlController extends AbstractActionController {
 	
 		////RESULTATS DES EXAMENS MORPHOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
 		$listeDemandesMorphologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensMorphologiquesEffectues($id);
+		
+		////RESULTATS DES EXAMENS BIOLOGIQUE
+		$examen_biologique = $this->getNotesExamensBiologiquesTable()->getNotesExamensBiologiques($id);
+		
+		$data['groupe_sanguin'] = $examen_morphologique['groupe_sanguin'];
+		$data['hemogramme_sanguin'] = $examen_morphologique['hemogramme_sanguin'];
+		$data['bilan_hepatique'] = $examen_morphologique['bilan_hepatique'];
+		$data['bilan_renal'] = $examen_morphologique['bilan_renal'];
+		$data['bilan_hemolyse'] = $examen_morphologique['bilan_hemolyse'];
+		
+		////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+		$listeDemandesBiologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectues($id);
+		
 	
 		//DIAGNOSTICS
 		//DIAGNOSTICS
@@ -1803,6 +1826,24 @@ class OrlController extends AbstractActionController {
 	
 		////RESULTATS DES EXAMENS MORPHOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
 		$listeDemandesMorphologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensMorphologiquesEffectues($id);
+		
+		
+		////RESULTATS DES EXAMENS BIOLOGIQUE
+		$examen_biologique = $this->getNotesExamensBiologiquesTable()->getNotesExamensBiologiques($id);
+		
+		$data['groupe_sanguin'] = $examen_morphologique['groupe_sanguin'];
+		$data['hemogramme_sanguin'] = $examen_morphologique['hemogramme_sanguin'];
+		$data['bilan_hepatique'] = $examen_morphologique['bilan_hepatique'];
+		$data['bilan_renal'] = $examen_morphologique['bilan_renal'];
+		$data['bilan_hemolyse'] = $examen_morphologique['bilan_hemolyse'];
+		
+		////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+		$listeDemandesBiologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectues($id);
+		
+		
+		
+		
+		
 	
 		//DIAGNOSTICS
 		//DIAGNOSTICS
@@ -2011,15 +2052,40 @@ class OrlController extends AbstractActionController {
 		);
 	}
 	//***$$$$***
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public function espaceRechercheMedAjaxAction() {
+		$output = $this->getConsultationTable()->getListePatientsConsultesAjax();
+		return $this->getResponse ()->setContent ( Json::encode ( $output, array (
+				'enableJsonExprFinder' => true
+		) ) );
+	}
+	
+	
+	
 	public function espaceRechercheMedAction() {
 		$this->layout ()->setTemplate ( 'layout/orl' );
-		//var_dump( uniqid(md5(rand()), true) ); //nombre aléatoire
+		
+		//$output = $this->getConsultationTable()->getListePatientsConsultesAjax();
+		//var_dump($output); exit(); //nombre aléatoire
+		
 		$user = $this->layout()->user;
 		$IdDuService = $user['IdService'];
 		
-		$tab = $this->getConsultationTable()->listePatientsConsMedecin ( $IdDuService );
+		//$tab = $this->getConsultationTable()->listePatientsConsMedecin ( $IdDuService );
 		return new ViewModel ( array (
-				'donnees' => $tab
 		) );
 	}
 	
@@ -6005,6 +6071,7 @@ class OrlController extends AbstractActionController {
 		$form = new ConsultationForm ();
 		$formData = $this->getRequest ()->getPost ();
 		$form->setData ( $formData );
+		//var_dump($this->params()->fromPost('$infoOrdonnance'));exit();
 		
 		//consultation
 		$this->getConsultationTable()->addConsultation($id_cons, $id_medecin, $id_patient, $id_admission, $sous_dossier);
@@ -6016,7 +6083,7 @@ class OrlController extends AbstractActionController {
 		 
 		
 		
-		//var_dump($this->params()->fromPost('$id_cons'));exit();
+		
 		//Insertion des antécédents ORL
 		//Insertion des antécédents ORL
 		//Insertion des antécédents ORL
@@ -6071,10 +6138,8 @@ class OrlController extends AbstractActionController {
 		
 		
 		//Sous dossier
-		
-		$this->getSousDossier()->deleteSousDossier($id_cons);
-		
-		$this->getSousDossier()->addSousDossier($formData, $id_cons, $id_medecin);
+		//$this->getSousDossier()->deleteSousDossier($id_cons);
+		//$this->getSousDossier()->addSousDossier($formData, $id_cons, $id_medecin);
 		//var_dump($formData); exit();
 		
 		//informations opératoires
@@ -6225,6 +6290,25 @@ class OrlController extends AbstractActionController {
 		);
 		$this->getNotesExamensMorphologiquesTable()->updateNotesExamensMorphologiques($info_examen_morphologique);
 		
+		
+		
+// 		//POUR LES RESULTATS DES EXAMENS BIOLOGIQUES
+// 		//POUR LES RESULTATS DES EXAMENS BIOLOGIQUES
+// 		//POUR LES RESULTATS DES EXAMENS BIOLOGIQUES
+		
+// 		$info_examen_biologique = array(
+// 				'id_cons'=> $id_cons,
+// 				'1'  => $this->params()->fromPost('groupe_sanguin'),
+// 				'2'  => $this->params()->fromPost('hemogramme_sanguin'),
+// 				'3' => $this->params()->fromPost('bilan_hepatique'),
+// 				'4' => $this->params()->fromPost('bilan_renal'),
+// 				'5' => $this->params()->fromPost('bilan_hemolyse'),
+// 		);
+		
+		
+// 		$this->getNotesExamensBiologiquesTable()->updateNotesExamensBiologiques($info_examen_biologique);
+		
+// 		//var_dump('ssss');exit();
 		//POUR LES DIAGNOSTICS
 		//POUR LES DIAGNOSTICS
 		//POUR LES DIAGNOSTICS
@@ -6257,6 +6341,7 @@ class OrlController extends AbstractActionController {
 				$nomMedicament = $this->params()->fromPost("medicament_0".$i);
 				$formeMedicament = $this->params()->fromPost("forme_".$i);
 				$quantiteMedicament = $this->params()->fromPost("quantite_".$i);
+				//var_dump($quantiteMedicament);exit();
 	
 				if($this->params()->fromPost("medicament_0".$i)){
 						
@@ -6718,6 +6803,20 @@ class OrlController extends AbstractActionController {
 		
 		////RESULTATS DES EXAMENS MORPHOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
 		$listeDemandesMorphologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensMorphologiquesEffectues($id);
+		
+		
+		////RESULTATS DES EXAMENS BIOLOGIQUE
+		$examen_biologique = $this->getNotesExamensBiologiquesTable()->getNotesExamensBiologiques($id);
+		
+		$data['groupe_sanguin'] = $examen_morphologique['groupe_sanguin'];
+		$data['hemogramme_sanguin'] = $examen_morphologique['hemogramme_sanguin'];
+		$data['bilan_hepatique'] = $examen_morphologique['bilan_hepatique'];
+		$data['bilan_renal'] = $examen_morphologique['bilan_renal'];
+		$data['bilan_hemolyse'] = $examen_morphologique['bilan_hemolyse'];
+		
+		////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+		$listeDemandesBiologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectues($id);
+		
 		
 		//DIAGNOSTICS
 		//DIAGNOSTICS
@@ -7549,6 +7648,20 @@ public function majFicheObservationCliniqueAction() {
 	$listeDemandesMorphologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensMorphologiquesEffectues($id);
 	
 	
+// 	////RESULTATS DES EXAMENS BIOLOGIQUE
+// 	//$examen_biologique = $this->getNotesExamensBiologiquesTable()->getNotesExamensBiologiques($id);
+	
+// 	$data['groupe_sanguin'] = $examen_morphologique['groupe_sanguin'];
+// 	$data['hemogramme_sanguin'] = $examen_morphologique['hemogramme_sanguin'];
+// 	$data['bilan_hepatique'] = $examen_morphologique['bilan_hepatique'];
+// 	$data['bilan_renal'] = $examen_morphologique['bilan_renal'];
+// 	$data['bilan_hemolyse'] = $examen_morphologique['bilan_hemolyse'];
+// 	var_dump('dddd');exit();
+	
+// 	////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+// 	$listeDemandesBiologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectues($id);
+	
+// 	var_dump('dddd');exit();
 	
 	//DIAGNOSTICS
 	//DIAGNOSTICS
@@ -7781,7 +7894,7 @@ public function majFicheObservationCliniqueAction() {
 	
 	
 	
-	
+	//var_dump($listeMedicamentsPrescrits); exit();
 	
 	
 	//POUR LES INFORMATIONS OPERATOIRES
@@ -7820,6 +7933,7 @@ public function majFicheObservationCliniqueAction() {
 			//'dateonly' => $consult->dateonly,
 			'temoin' => $bandelettes['temoin'],
 			'listeForme' => $listeForme,
+			'listetypeQuantiteMedicament'  => $listetypeQuantiteMedicament,
 			'listetypeQuantiteMedicament'  => $listetypeQuantiteMedicament,
 			'donneesAntecedentsPersonnels' => $donneesAntecedentsPersonnels,
 			'donneesAntecedentsFamiliaux'  => $donneesAntecedentsFamiliaux,
