@@ -53,75 +53,23 @@ $(window).load(function () {
         </div>
 		<table class="table table-bordered  tab_list_mini" id="patient">
 			<thead>
-				<tr style="height:50px; curor:pointer;">
-					<th id="nom" >Nom</th>
-					<th id="prenom" >Pr&eacute;nom</th>
-					<th id="date" >Date. naiss</th>
-					<th id="sexe" >Sexe</th>
-					<th id="adresse" >Adresse</th>
-					<th id="nationalite" >Nationalit&eacute;</th>
-					<th id="effectuer">Options</th>
+				<tr style="height:50px; width: 100%;">
+				    
+					<th id="nom" align="center">Nom</th>
+					<th id="prenom" align="center">Pr&eacute;nom</th>
+					<th id="date" align="center" name="date">Age</th>
+					<th id="sexe" align="center" name="sexe">Sexe</th>
+					<th id="adresse" align="center" name="adresse">Adresse</th>
+					<th id="nationalite" align="center" name="nationalite">Nationalit&eacute;</th>
+					<th id="effectuer" align="center">Options</th>
 				</tr>
 			</thead>
-
 			<tbody>
-
-			    <!-- *****************On affiche maintenant tous ceux pour qui on a pris les constantes depuis toujours*********** -->
-
-
-			    <?php foreach($this->donnees as $donnees) :?>
-			    
-			    <?php 
-	   		       $date_naissance = $donnees['Datenaissance'];
-	   		       if($date_naissance){ $date_naissance = $Control->convertDate($donnees['Datenaissance']); }else{ $date_naissance = "";}
-	   		     ?> 
-
-				<tr>
-				    <td id="nomMaj"><?php echo $this->escapeHtml($donnees['Nom']);?></td>
-				    <td><?php echo $this->escapeHtml($donnees['Prenom']);?></td>
-					<td><?php echo $this->escapeHtml($date_naissance);?></td>
-					<td><?php echo $this->escapeHtml($donnees['Sexe']);?></td>
-					<td><?php echo $this->escapeHtml(adresseText2($donnees['Adresse'])) ;?></td>
-					<td><?php echo $this->escapeHtml($donnees['Nationalite']);?></td>
-					<td>
-					    <a href="<?php echo $this->url('orl', array('action'=>'recherche-dossier-patient'), array('query'=>array('id_patient'=>$this->escapeHtml($donnees['Id']),'id_cons'=>$this->escapeHtml($donnees['Id_cons']))));?>">
-					    <hass> <img style="display: inline;" src='<?php echo $this->basePath().'/images_icons/voir2.png'?>' title=" Visualisation" >
-					    </hass></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-					    <a>
-					      <img style="display: inline;" src='<?php echo $this->basePath().'/images_icons/tick_16.png'?>' title="Terminer">
-					    </a>
-
-					    <a id='<?php $Id_cons = $this->escapeHtml($donnees['Id_cons']); echo 'cal'.$Id_cons ?>'>
-					    <?php echo $Control->convertDate($this->escapeHtml($donnees['Dateonly']));?>
-					    </a>
-					</td>
-				</tr>
-
-				<script>
-				  $("<?php echo '#cal'.$Id_cons ?>").toggle(false);
-
-
-				  $('#patient tbody tr').contextmenu({
-					target: '#context-menu',
-					onItem: function (context, e) {
-						
-						if($(e.target).text() == 'Visualisation' || $(e.target).is('#visualisationCTX')){
-							visualisation('<?php echo $donnees['Id']; ?>','<?php echo $donnees['Id_cons'];?>');
-						}
-					}
-
-				 })
-				</script>
-				 
-				<?php endforeach; ?>
-
-
-			    <!-- *************************************************************************** -->
+			
 			</tbody>
-
-			<tfoot  class="foot_style">
+			<tfoot class="foot_style">
 				<tr>
+				   
 					<th id="nom_" style='width: 13%;'><input type="text" name="search_browser" value=" Nom" class="search_init" /></th>
 					<th id="prenom_" style='width: 15%;'><input type="text" name="search_browser" value=" Prenom" class="search_init" /></th>
 					<th id="date_" style='width: 12%;'><input type="text" name="search_browser" value=" Date naissance" class="search_init" /></th>
@@ -129,7 +77,6 @@ $(window).load(function () {
 					<th id="adresse_" style='width: 28%;'><input type="text" name="search_browser" value=" Adresse" class="search_init" /></th>
 					<th id="nationalite_" style='width: 15%;'><input type="text" name="search_browser" value=" Nationalite" class="search_init" /></th>
 					<th id="effectuer_" style='width: 10%;'><input type="hidden" name="search_browser" value="" class="" /></th>
-
 				</tr>
 			</tfoot>
 		</table>
@@ -139,11 +86,94 @@ $(window).load(function () {
 
 <div id="context-menu">
     <ul class="dropdown-menu" >
-         <li><a style="cursor: pointer;" ><img id="visualisationCTX" style='margin-right: 10px; width: 19px; height: 16px;' src='/simens/public/images_icons/voir2.png'>Visualisation</a></li>
-         <li class="divider"></li>
-         <li><a id="quitterCTX"  style="cursor: pointer;">Quitter</a></li>
+         <li class="cm1" ><a style="cursor: pointer;" ><img id="consultationCTX" style='margin-right: 10px; width: 16px; height: 16px;' src='/simens/public/images_icons/doctor_16.png'>Consultation</a></li>
+         <li class="divider cm1"></li>
+         <li class="cm1"><a id="quitterCTX"  style="cursor: pointer;">Quitter</a></li>
     </ul>
 </div>
+<div id="context-menu2">
+    <ul class="dropdown-menu" >
+         <li class="cm2" ><a style="cursor: pointer;" ><img id="modifierConsultationCTX" style='margin-right: 10px; width: 16px; height: 16px;' src='/simens/public/images_icons/modifier.png'>Modifier</a></li>
+         <li class="divider cm2"></li>
+         <li class="cm2"><a id="quitter2CTX"  style="cursor: pointer;">Quitter</a></li>
+    </ul>
+</div>
+<script type="text/javascript">
+var base_url = window.location.toString();
+var tabUrl = base_url.split("public");
+			var asInitVals = new Array();
+			var oTable = $('#patient').dataTable
+			( {
+							//"bJQueryUI": true,
+							"sPaginationType": "full_numbers",
+							"aaSorting": "", //pour trier la liste affich�e
+							"oLanguage": {
+								//"sProcessing":   "Traitement en cours...",
+								//"sLengthMenu":   "Afficher _MENU_ &eacute;l&eacute;ments",
+								"sZeroRecords":  "Aucun &eacute;l&eacute;ment &agrave; afficher",
+								"sInfo": "_START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+								"sInfoEmpty": "0 &eacute;l&eacute;ment &agrave; afficher",
+								"sInfoFiltered": "",
+								"sInfoPostFix":  "",
+								"sSearch": "",
+								"sUrl": "",
+								"sWidth": "30px",
+								"oPaginate": {
+									"sFirst":    "|<",
+									"sPrevious": "<",
+									"sNext":     ">",
+									"sLast":     ">|"
+									}
+							   },
+							   "sAjaxSource": tabUrl[0]+"public/orl/espace-recherche-med-ajax",
+							   "iDisplayLength": 10,
+								"bProcessing": false,
+								"bSearch": false,
+								"aLengthMenu": [5,10,15],
+			} );
+			//le filtre du select
+			$('#filter_statut').change(function()
+			{
+				oTable.fnFilter( this.value, 7 );
+			});
+			$("tfoot input").keyup( function () {
+				/* Filter on the column (the index) of this element */
+				oTable.fnFilter( this.value, $("tfoot input").index(this) );
+			} );
+
+			/*
+			 * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+			 * the footer
+			 */
+			$("tfoot input").each( function (i) {
+				asInitVals[i] = this.value;
+			} );
+			$("tfoot input").focus( function () {
+				if ( this.className == "search_init" )
+				{
+					this.className = "";
+					this.value = "";
+				}
+			} );
+			$("tfoot input").blur( function (i) {
+				if ( this.value == "" )
+				{
+					this.className = "search_init";
+					this.value = asInitVals[$("tfoot input").index(this)];
+				}
+			} );
+			
+	    	function consultation(idPatient, id_cons){
+				vart=tabUrl[0]+'public/orl/complement-consultation?id_patient='+idPatient+'&id_cons='+id_cons;
+			    $(location).attr("href",vart);
+			}
+			function modifierConsultation(idPatient, id_cons){
+				vart=tabUrl[0]+'public/orl/maj-complement-consultation?id_patient='+idPatient+'&id_cons='+id_cons;
+			    $(location).attr("href",vart);
+			}
+</script>
+<?php echo $this->headScript()->appendFile($this->basePath().'/js/jquery-1.9.1.js');?>
+<?php echo $this->headScript()->appendFile($this->basePath().'/js/jquery-ui.js');?>
 
 
 

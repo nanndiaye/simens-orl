@@ -5,6 +5,8 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
+use Facturation\View\Helper\DateHelper;
+use Zend\Db\Sql\Predicate\NotIn;
 
 class ConsultationTable {
 
@@ -421,6 +423,182 @@ class ConsultationTable {
 	}
 	
 	//liste des patients deja consultÃ©s par le medecin pour l'espace recherche
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public function getListePatientsConsultesAjax(){
+		$today = new \DateTime();
+		$date = $today->format('Y-m-d');
+		$db = $this->tableGateway->getAdapter();
+		$aColumns = array('Nom','Prenom','Age','Sexe', 'Adresse', 'TypeSousDossier', 'id');
+		/* Indexed column (used for fast and accurate table cardinality) */
+		$sIndexColumn = "id";
+		/*
+		 * Paging
+		*/
+		$sLimit = array();
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$sLimit[0] = $_GET['iDisplayLength'];
+			$sLimit[1] = $_GET['iDisplayStart'];
+		}
+	
+		/*
+		 * Ordering
+		*/
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			$sOrder = array();
+			$j = 0;
+			for ( $i=0 ; $i<intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($_GET['iSortCol_'.$i]) ] == "true" )
+				{
+					$sOrder[$j++] = $aColumns[ intval( $_GET['iSortCol_'.$i] ) ]."
+								 	".$_GET['sSortDir_'.$i];
+				}
+			}
+		}
+	
+	
+		$sql2 = new Sql($db);
+		$sQuery2 = $sql2->select()
+		->from(array('cons' => 'consultation'))->columns(array('ID_PATIENT'))
+		->where(array('cons.DATEONLY' => $date));	
+	
+		/*
+		 * La liste des patients déja consulter par le medecin précédemment
+		*/
+	
+		/*
+		 * SQL queries
+		*/
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Age'=>'AGE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
+		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
+		->join(array('a' => 'admission') , 'a.id_patient = pat.ID_PERSONNE', array('*'))
+		->join(array('cons' => 'consultation') , 'cons.id_admission = a.id_admission', array('Id_cons' => 'ID_CONS'))
+		->join(array('sd' => 'sous_dossier') , 'sd.id_sous_dossier = cons.id_sous_dossier', array('TypeSousDossier' => 'type_dossier', 'idSousDossier' => 'id_sous_dossier'))
+		->where(array('a.date_admis != ?' => $date))
+		->order('a.id_admission ASC');
+		/* Data set length after filtering */
+		$stat = $sql->prepareStatementForSqlObject($sQuery);
+		$rResultFt = $stat->execute();
+		$iFilteredTotal = count($rResultFt);
+	
+		//var_dump($rResultFt->count()); exit();
+	
+		$rResult = $rResultFt;
+	
+		/*
+		 * $Control pour convertir la date en franï¿½ais
+		*/
+		$Control = new DateHelper();
+	
+		/*
+		 * ADRESSE URL RELATIF
+		*/
+		$baseUrl = $_SERVER['REQUEST_URI'];
+		$tabURI  = explode('public', $baseUrl);
+	
+		/*
+		 * Prï¿½parer la liste liste des patients à consulter par le medecin
+		*/
+		foreach ( $rResult as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					if ($aColumns[$i] == 'Nom'){
+						$row[] = "<khass id='nomMaj'>".$aRow[ $aColumns[$i]]."</khass>";
+					}
+	
+					else if ($aColumns[$i] == 'Datenaissance') {
+						$row[] = $Control->convertDate($aRow[ $aColumns[$i] ]);
+					}
+	
+					else if ($aColumns[$i] == 'Adresse') {
+						$row[] = $aRow[ $aColumns[$i] ];
+					}
+					
+					else if ($aColumns[$i] == 'TypeSousDossier') {
+						if($aRow[ 'idSousDossier' ] == 1){
+							$row[] = 'F.O.C';
+						}else {
+							$row[] = $aRow[ $aColumns[$i] ];
+						}
+						
+					}
+	
+					else if ($aColumns[$i] == 'id') {
+						
+						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/orl/maj-fiche-observation-clinique?id_patient=".$aRow[ 'id' ]."&id_cons=".$aRow[ 'Id_cons' ]."'>";
+						$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/modifier.png' title='d&eacute;tails'></a> </infoBulleVue>";
+	
+						$html .="<img style='display: inline; margin-right: 15%; color: white; opacity: 0.15;' src='".$tabURI[0]."public/images_icons/modifier.png'>";
+	
+						$row[] = $html;
+					}
+	
+					else {
+						$row[] = $aRow[ $aColumns[$i] ];
+					}
+	
+				}
+			}
+			$output['aaData'][] = $row;
+		}
+	
+	
+		return $output;
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public function listePatientsConsMedecin($idService){
 		$today = new \DateTime();
 		$date = $today->format('Y-m-d');

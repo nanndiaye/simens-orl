@@ -1574,27 +1574,46 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
-									<script> 
-                               ValiderDemandeExamenBio();
+									  <?php
+                            $nbDemande = count($this->listeDemandesBiologiques);
+                            if ($nbDemande == 0) {
+                                $nbDemande = 1;
+                            }
+                            $tableauDesExamens = array();
+                            ?>
+                           
                             
-                               var myArrayExamenBio = [''];
-                               var i = 1;
+                             <script>
+                                ValiderDemandeExamenBio();
+                                var myArrayExamenBio = [''];
+                                var icmpt = 1;
                             </script>
-                            
-                            <?php foreach ($this->listeDesExamensBiologiques as $examensBioListe){ ?>
-                                <script> myArrayExamenBio[i++] =  "<?php echo $examensBioListe['libelleExamen']; ?>" </script>
+                            <?php foreach ($this->listeDesExamensBiologiques as $examensBioListe) { ?>
+                                <script> myArrayExamenBio[icmpt++] = "<?php echo $examensBioListe['libelleExamen']; ?>" </script>
                             <?php } ?>
-                            
-                            <script> 
-                               partDefautExamenBio(myArrayExamenBio, 1);
-                               //Descactiver la visualisation des resultats pour afficher uniquement ceux selectionnés
-                               desactiverResutatsBio ();
-                            </script>
 
-								</div>
+                            <script>
+                                partDefautExamenBio(myArrayExamenBio, '<?php echo $nbDemande; ?>');
+                                var indligne = 0;
+                                //Descactiver la visualisation des resultats pour afficher uniquement ceux selectionnï¿½s
+                                desactiverResutatsBio();
+                            </script>
                             
-                           <?php 
-                          /**
+                            <script>
+                                //SELECTION DES LIGNES ET CHARGEMENT DE LEUR CONTENU
+                                <?php
+
+                                foreach ( $this->listeDemandesBiologiques as $Liste ) {
+                                $tableauDesExamens [] = $Liste ['idExamen'];
+                                ?>
+                                //Faire attention aux caracteres " et '
+
+                                chargementModificationBio(indligne++, "<?php  echo $Liste['idExamen'];?>", "<?php echo $Liste['noteDemande']; ?>");
+                                <?php } ?>
+                            </script>
+                        </div>
+
+                        <?php                          /**
                            *=============================================================================================
                            *================== Examens Morphologiques --- Examens Morphologiques ========================
                            *================== Examens Morphologiques --- Examens Morphologiques ========================
@@ -1746,7 +1765,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 											<table id="respondee" style="width: 100%;">
 												<tr id="groupe_sanguin" class="form-groupe"
 													style="width: 100%;">
-													<th id="groupe"> <?php echo $this->formRow($form->get('groupe_sanguin'));?> </th>
+													<th > <?php echo $this->formRow($form->get('groupe_sanguin'));?> </th>
 												</tr>
 
 												<tr id="hemogramme_sanguin" class="form-analyse-biologique"
@@ -1773,31 +1792,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('bilan_inflammatoire'));?> </th>
 												</tr>
-												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
-													style="width: 100%;">
-													<th> <?php echo $this->formRow($form->get('creatine'));?> </th>
-												</tr>
-												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
-													style="width: 100%;">
-													<th> <?php echo $this->formRow($form->get('t4'));?> </th>
-												</tr>
 												
-												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
-													style="width: 100%;">
-													<th> <?php echo $this->formRow($form->get('tsh'));?> </th>
-												</tr>
-												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
-													style="width: 100%;">
-													<th> <?php echo $this->formRow($form->get('crp'));?> </th>
-												</tr>
-												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
-													style="width: 100%;">
-													<th> <?php echo $this->formRow($form->get('glycemie_a_jeun'));?> </th>
-												</tr>
-												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
-													style="width: 100%;">
-													<th> <?php echo $this->formRow($form->get('asco'));?> </th>
-												</tr>
 												
 											</table>
 										</div>
@@ -2269,17 +2264,17 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 				<!--*6*-->
 				<div
 					style='font-family: police2; font-size: 17px; font-weight: bold;'>Ordonnance</div>
-				<div style="max-height: 350px;">
+				<div style="max-height: 400px;">
 					<!--**************** NOUVELLE ACCORDEON *********************  -->
 					<!--**************** NOUVELLE ACCORDEON *********************  -->
 					<div id="accordionssss">
 
 						<!-- ************** Traitement Mï¿½dical **************** -->
 						<!-- **1** -->
-						<div
-							style='font-family: police2; font-size: 17px; font-weight: bold;'>
+						<div 
+							style='font-family: police2; font-size: 17px; font-weight: bold; '>
 							M&eacute;dicamenteux</div>
-						<div>
+						<div style="min-height: 300px;">
 
 							<!--******* ======= MENU MENU MENU =======  ******-->
 							<!--******* ======= MENU MENU MENU =======  ******-->
@@ -2386,6 +2381,12 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							<!--********************* CHARGEMENT DES DONNEES  ************************-->
 							<!--********************* CHARGEMENT DES DONNEES  ************************-->
 							<!--********************* CHARGEMENT DES DONNEES  ************************-->
+							
+							                 <?php 
+                     $nbMedicaments = $this->nb_med_prescrit;
+                     if($nbMedicaments == 0){$nbMedicaments = 1;}
+                 ?>
+							
 							<script> 
                    ValiderOrdonnance();
 
@@ -2419,10 +2420,40 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                            myArrayTypeQuantiteMedicament[j++] = "<?php echo $listetypeQuantiteMedicament['libelleQuantite']; ?>"; 
                     <?php } ?>
 
-                    partDefautMedicament(myArrayMedicament, myArrayForme, myArrayTypeQuantiteMedicament, 1);
+                    //partDefautMedicament(myArrayMedicament, myArrayForme, myArrayTypeQuantiteMedicament, 1);
+
+
                     
                     /* =================== */
+
+
+                    <?php /* foreach($this->liste_med as $Liste) {?>
+                            myArrayMedicament["<?php echo $Liste['ID_MATERIEL']; ?>"] = "<?php echo $Liste['INTITULE']; ?>"; 
+                     <?php }*/ ?>
+                                 
+                     partDefautMedicament(myArrayMedicament, myArrayForme, myArrayTypeQuantiteMedicament, "<?php echo $nbMedicaments;?>");
+
+                     //Remplissage automatique des champs
+                     var i = 1;
+                     <?php 
+                     if($this->liste_med_prescrit) {
+                       foreach($this->liste_med_prescrit as $Medicaments) :?>
+                         $('#medicament_0'+i).val('<?php echo $Medicaments['Intitule'];?>');
+                         $('#forme_'+i).val('<?php echo $Medicaments['FORME'];?>');
+                         $('#nb_medicament_'+i).val('<?php echo substr($Medicaments['QUANTITE'], 0, strpos($Medicaments['QUANTITE'], ' '));?>');
+                         $('#quantite_'+i).val('<?php echo substr($Medicaments['QUANTITE'], strpos($Medicaments['QUANTITE'], ' ')+1);?>');
+  	                      i++;
+                       <?php endforeach; 
+                     }
+                     ?>
+
+                     //Remplissage de la durée du traitement
+                     $('#duree_traitement_ord').val('<?php echo $this->duree_traitement;?>');
+
+                     
                  </script>
+                 
+                 
 
 						</div>
 

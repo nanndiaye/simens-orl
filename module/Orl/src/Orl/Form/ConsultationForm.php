@@ -650,7 +650,7 @@ class ConsultationForm extends Form {
 				'name' => 'fibrocospie',
 				'type' => 'Textarea',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Echographie CERVICALE: ' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Audiogramme tonal: ' )
 				),
 				'attributes' => array (
 						'readonly' => 'readonly',
@@ -688,7 +688,7 @@ class ConsultationForm extends Form {
 				'name' => 'irm',
 				'type' => 'Textarea',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Audiogramme tonal: ' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'Echographie Cervicale: ' )
 				),
 				'attributes' => array (
 						'readonly' => 'readonly',
