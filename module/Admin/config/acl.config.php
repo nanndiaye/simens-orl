@@ -558,8 +558,6 @@ return array(
     								
     								
     								
-    								
-    								
     								'consultation-orl' => 'medecin',
     								'choix-dossier' => 'medecin',
     								'fiche-observation-clinique' => 'medecin',
@@ -567,8 +565,11 @@ return array(
     								'liste-consultation-precedente-ajax' => 'medecin',
     								'liste-notes-medicales-precedente-ajax' => 'medecin',
     								'maj-fiche-observation-clinique' => 'medecin',
-    								'espace-recherche-med-ajax' =>'medecin'
-    							
+    								'espace-recherche-med-ajax' =>'medecin',
+    								'info-patient-recherche-ajax' =>'medecin',
+    								'info-patient-recherche' =>'medecin',
+    							    'vue-infos-patient' => 'medecin',
+    								'recherche-visualisation-fiche-observation-clinique' => 'medecin',
     								
     						),
     						//secretariat
