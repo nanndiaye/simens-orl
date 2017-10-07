@@ -37,33 +37,22 @@ $(window).load(function () {
 <div id="contenu" >
 
 		<table class="table table-bordered  tab_list_mini" id="patient">
-			<thead>
+			<thead class="head_style">
 				<tr style="height:50px; width: 100%;">
-				    
-					<th id="nom" align="center">Nom</th>
-					<th id="prenom" align="center">Pr&eacute;nom</th>
-					<th id="date" align="center" name="date">Age</th>
-					<th id="sexe" align="center" name="sexe">Sexe</th>
-					<th id="adresse" align="center" name="adresse">Adresse</th>
-					<th id="nationalite" align="center" name="nationalite">Nationalit&eacute;</th>
+				   <th id="nom_" style="width: 13%;"><input type="text" name="search_browser" value=" Num_Dossier" class="search_init" /></th>
+					<th id="nom_" style='width: 13%;'><input type="text" name="search_browser" value=" Nom" class="search_init" /></th>
+					<th id="prenom_" style='width: 13%;'><input type="text" name="search_browser" value=" Prenom" class="search_init" /></th>
+					<th id="date_" style='width: 8%;'><input type="text" name="search_browser" value=" Age" class="search_init" /></th>
+					<th id="sexe_" style='width: 10%;'><input type="text" name="search_browser" value=" Sexe" class="search_init" /></th>
+					<th id="adresse_" style='width: 20%;'><input type="text" name="search_browser" value=" Adresse" class="search_init" /></th>
+					<th id="nationalite_" style='width: 13%;'><input type="text" name="search_browser" value=" Nationalite" class="search_init" /></th>
 					<th id="effectuer" align="center">Options</th>
 				</tr>
 			</thead>
 			<tbody>
 			
 			</tbody>
-			<tfoot class="foot_style">
-				<tr>
-				   
-					<th id="nom_" style='width: 13%;'><input type="text" name="search_browser" value=" Nom" class="search_init" /></th>
-					<th id="prenom_" style='width: 15%;'><input type="text" name="search_browser" value=" Prenom" class="search_init" /></th>
-					<th id="date_" style='width: 12%;'><input type="text" name="search_browser" value=" Date naissance" class="search_init" /></th>
-					<th id="sexe_" style='width: 7%;'><input type="text" name="search_browser" value=" Sexe" class="search_init" /></th>
-					<th id="adresse_" style='width: 28%;'><input type="text" name="search_browser" value=" Adresse" class="search_init" /></th>
-					<th id="nationalite_" style='width: 15%;'><input type="text" name="search_browser" value=" Nationalite" class="search_init" /></th>
-					<th id="effectuer_" style='width: 10%;'><input type="hidden" name="search_browser" value="" class="" /></th>
-				</tr>
-			</tfoot>
+		
 		</table>
 </div>
 <div id="context-menu">
