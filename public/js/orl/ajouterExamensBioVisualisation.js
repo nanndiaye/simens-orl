@@ -1,3 +1,15 @@
+//CHARGEMENT DES ELEMENTS SELECTIONNES POUR LA MODIFICATION
+//CHARGEMENT DES ELEMENTS SELECTIONNES POUR LA MODIFICATION
+//CHARGEMENT DES ELEMENTS SELECTIONNES POUR LA MODIFICATION
+	$('#groupe_sanguin').toggle(false); 
+	$('#hemogramme_sanguin').toggle(false);
+	$('#bilan_hemolyse').toggle(false);
+	$('#bilan_hepatique').toggle(false); 
+	$('#bilan_renal').toggle(false);
+	$('#bilan_inflammatoire').toggle(false);
+
+
+
 function creerLalisteExamenBio ($listeDesElements) {
     	var index = $("ExamensBiologiques").length; 
 			        $liste = "<div id='ExamenBio_"+(index+1)+"'>"+
@@ -69,7 +81,7 @@ function nbListeExamenBio () {
 
 
 //SUPPRIMER LE DERNIER ELEMENT
-$(function (){
+
 	//Au début on cache la suppression
 	$("#supprimer_examenBio").click(function(){
 		//ON PEUT SUPPRIMER QUAND C'EST PLUS DE DEUX LISTE
@@ -87,7 +99,7 @@ $(function (){
 		}    
 		Event.stopPropagation();
 	});
-});
+
 
 
 //FONCTION INITIALISATION (Par défaut)
@@ -152,34 +164,17 @@ function vider_examenBio_selectionne(id) {
 	$("#noteExamenBio_"+id+" input").val("");
 }
 
-//CHARGEMENT DES ELEMENTS SELECTIONNES POUR LA MODIFICATION
-//CHARGEMENT DES ELEMENTS SELECTIONNES POUR LA MODIFICATION
-//CHARGEMENT DES ELEMENTS SELECTIONNES POUR LA MODIFICATION
-function desactiverResutatsBio () {
-$(function(){
-	//ON CACHE TOUT
-	$('#groupe_sanguin').toggle(false); 
-	$('#hemogramme_sanguin').toggle(false);
-	$('#bilan_hemolyse').toggle(false);
-	$('#bilan_hepatique').toggle(false); 
-	$('#bilan_renal').toggle(false);
-	$('#bilan_inflammatoire').toggle(false);
-});
-}
-
 function chargementModificationBio (index , element , note) { 
-	
-	setTimeout(function(){ 
-	
 	$("#SelectExamenBio_"+(index+1)+" option[value='"+element+"']").attr('selected','selected'); 
 	$("#noteExamenBio_"+(index+1)+" input").val(note);
 	
-	$(function(){
+	setTimeout(function(){
+		
 		if(element == 1) {
 			$('#groupe_sanguin').toggle(true); 
-		} else
+		}else
 			if(element == 2) {
-				$('#hemogramme_sanguin').toggle(true); 
+				$('#hemogramme_sanguin').toggle(true);  
 			} else
 				if(element == 5) {
 					$('#bilan_hemolyse').toggle(true); 
@@ -194,9 +189,8 @@ function chargementModificationBio (index , element , note) {
 								$('#bilan_inflammatoire').toggle(true); 
 							}
 			
-	});
+	}, 1000);
 	
-	},1000);
 }
 
 var base_url = window.location.toString();
@@ -208,7 +202,7 @@ var tabUrl = base_url.split("public");
 //********************* EXAMEN MORPHOLOGIQUE *****************************
 
 function ValiderDemandeExamenBio(){
-$(function(){
+
 	//Au debut on affiche pas le bouton modifier
 	$("#bouton_ExamenBio_modifier_demande").toggle(false);
 	//Au debut on affiche le bouton valider
@@ -260,6 +254,7 @@ $(function(){
 	    		$("#iconeExamenBio_supp_vider a img").toggle(false);
 	    		$("#bouton_ExamenBio_modifier_demande").toggle(true);
 	    		$("#bouton_ExamenBio_valider_demande").toggle(false);
+	    		
 	    		return false;
 	      },
 	      error:function(e){console.log(e);alert("Une erreur interne est survenue!");},
@@ -298,5 +293,5 @@ $(function(){
 		return true;
 	});
 	
-});
+
 }

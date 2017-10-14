@@ -704,12 +704,14 @@ $(function(){
 	    
 	    //**********-- ANALYSE BIOLOGIQUE --************
         //**********-- ANALYSE BIOLOGIQUE --************
-	    donnees['groupe_sanguin']      = $("#groupe_sanguin").val();
-	    donnees['hemogramme_sanguin']  = $("#hemogramme_sanguin").val();
-	    donnees['bilan_hemolyse']      = $("#bilan_hemolyse").val();
-	    donnees['bilan_hepatique']     = $("#bilan_hepatique").val();
-	    donnees['bilan_renal']         = $("#bilan_renal").val();
-	    donnees['bilan_inflammatoire'] = $("#bilan_inflammatoire").val();
+	    donnees['groupe_sanguin']      = $(".examen_bio_resultat #groupe_sanguin").val();
+	    donnees['hemogramme_sanguin']  = $(".examen_bio_resultat #hemogramme_sanguin").val();
+	    donnees['bilan_hemolyse']      = $(".examen_bio_resultat #bilan_hemolyse").val();
+	    donnees['bilan_hepatique']     = $(".examen_bio_resultat #bilan_hepatique").val();
+	    donnees['bilan_renal']         = $(".examen_bio_resultat #bilan_renal").val();
+	    donnees['bilan_inflammatoire'] = $(".examen_bio_resultat #bilan_inflammatoire").val();
+	    
+	    //alert(donnees['groupe_sanguin']);
 	    
 	    //**********-- ANALYSE MORPHOLOGIQUE --************
         //**********-- ANALYSE MORPHOLOGIQUE --************

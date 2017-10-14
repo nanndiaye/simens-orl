@@ -2100,7 +2100,7 @@ class PatientTable {
 		*/
 		$sql = new Sql($db);
 		$sQuery = $sql->select()
-		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Age'=>'AGE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
+		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Age'=>'AGE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE', 'id2'=>'ID_PERSONNE'))
 		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
 		->join(array('a' => 'admission') , 'a.id_patient = pat.ID_PERSONNE', array('*'))
 		->join(array('cons' => 'consultation') , 'cons.id_admission = a.id_admission', array('Id_cons' => 'ID_CONS'))

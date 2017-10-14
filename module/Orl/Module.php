@@ -291,7 +291,7 @@ class Module implements AutoloaderProviderInterface {
 							$table = new NotesExamensBiologiquesTable($tableGateway);
 							return $table;
 						},
-						'NotesExamensBilogiquesTableGateway' => function ($sm) {
+						'NotesExamensBiologiquesTableGateway' => function ($sm) {
 							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
 							$resultSetPrototype = new ResultSet();
 							$resultSetPrototype->setArrayObjectPrototype ( new NotesExamensBiologiques());
