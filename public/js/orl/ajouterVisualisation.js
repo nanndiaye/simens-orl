@@ -71,7 +71,7 @@ function nbListe () {
 }
 
 //SUPPRIMER LE DERNIER ELEMENT
-$(function () {
+
 	//Au début on cache la suppression
 	$("#supprimer_element").click(function(){
 		//ON PEUT SUPPRIMER QUAND C'EST PLUS DE DEUX LISTE
@@ -91,7 +91,7 @@ $(function () {
 		}    
 		Event.stopPropagation();
 	});
-});
+
 
 //FONCTION INITIALISATION (Par défaut)
 function partDefaut (Liste, n) {
@@ -161,7 +161,9 @@ function vider_element_selectionne(id) {
 function chargementModification (index , element , note) { 
 	$("#SelectElement_"+(index+1)+" option[value='"+element+"']").attr('selected','selected'); 
 	$("#note_"+(index+1)+" input").val(note);
-	//setTimeout(function(){
+	setTimeout(function(){
+	}, 1000);
+	
 }
 
 var base_url = window.location.toString();
@@ -172,7 +174,7 @@ var tabUrl = base_url.split("public");
 //********************* EXAMEN MORPHOLOGIQUE *****************************
 //********************* EXAMEN MORPHOLOGIQUE *****************************
 function ValiderDemande(){
-$(function(){
+
 	//Au debut on affiche pas le bouton modifier
 	$("#bouton_morpho_modifier_demande").toggle(false);
 	//Au debut on affiche le bouton valider
@@ -268,5 +270,5 @@ $(function(){
 		$("#bouton_morpho_valider_demande").toggle(true);
 	});
 	
-});
+
 }

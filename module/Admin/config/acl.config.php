@@ -570,6 +570,7 @@ return array(
     								'info-patient-recherche' =>'medecin',
     							    'vue-infos-patient' => 'medecin',
     								'recherche-visualisation-fiche-observation-clinique' => 'medecin',
+    								'visualisation-note-medicale-precedente' => 'medecin',
     								
     						),
     						//secretariat
