@@ -1586,11 +1586,11 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
                             
                              <script>
                                 ValiderDemandeExamenBio();
-                                var myArrayExamenBio = [''];
+                                var myArrayExamenBio = [];
                                 var icmpt = 1;
                             </script>
                             <?php foreach ($this->listeDesExamensBiologiques as $examensBioListe) { ?>
-                                <script> myArrayExamenBio[icmpt++] = "<?php echo $examensBioListe['libelleExamen']; ?>" </script>
+                                <script> myArrayExamenBio["<?php  echo $examensBioListe['idExamen'];?>"] = "<?php echo $examensBioListe['libelleExamen']; ?>" </script>
                             <?php } ?>
 
                             <script>
@@ -1763,35 +1763,39 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 									<div style="width: 100%;">
 
 										<div style="width: 82%; float: left; height: 1px;">
-											<table id="respondee" style="width: 100%;">
-												<tr id="groupe_sanguin" class="form-groupe"
-													style="width: 100%;">
+			                                 <table id="respondee" style="width: 100%;" >
+												<tr class="form-groupe  examen_bio_resultat groupe_sanguin"
+													style="width: 100%;" >
 													<th > <?php echo $this->formRow($form->get('groupe_sanguin'));?> </th>
 												</tr>
 
-												<tr id="hemogramme_sanguin" class="form-analyse-biologique"
+												<tr class="form-analyse-biologique  examen_bio_resultat hemogramme_sanguin"
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('hemogramme_sanguin'));?> </th>
 												</tr>
 
-												<tr id="bilan_hemolyse" class="form-analyse-biologique"
+												<tr class="form-analyse-biologique  examen_bio_resultat bilan_hemolyse"
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('bilan_hemolyse'));?> </th>
 												</tr>
 
-												<tr id="bilan_hepatique" class="form-analyse-biologique"
+												<tr class="form-analyse-biologique  examen_bio_resultat bilan_hepatique"
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('bilan_hepatique'));?> </th>
 												</tr>
 
-												<tr id="bilan_renal" class="form-analyse-biologique"
+												<tr class="form-analyse-biologique  examen_bio_resultat bilan_renal"
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('bilan_renal'));?> </th>
 												</tr>
 
-												<tr id="bilan_inflammatoire" class="form-analyse-biologique"
+												<tr class="form-analyse-biologique  examen_bio_resultat bilan_inflammatoire"
 													style="width: 100%;">
 													<th> <?php echo $this->formRow($form->get('bilan_inflammatoire'));?> </th>
+												</tr>
+												<tr  class="form-analyse-biologique  examen_bio_resultat creatinine"
+													style="width: 100%;">
+													<th> <?php echo $this->formRow($form->get('creatinine'));?> </th>
 												</tr>
 												
 												

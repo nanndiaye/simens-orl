@@ -1157,7 +1157,7 @@ class FacturationController extends AbstractActionController {
 			//MISE A JOUR DE L'AGE DU PATIENT
 			//MISE A JOUR DE L'AGE DU PATIENT
 			//MISE A JOUR DE L'AGE DU PATIENT
-			$personne = $this->getPatientTable()->miseAJourAgePatient($id);
+			//$personne = $this->getPatientTable()->miseAJourAgePatient($id);
 			//*******************************
 			//*******************************
 			//*******************************

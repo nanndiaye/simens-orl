@@ -20,7 +20,7 @@ class NotesExamensBiologiquesTable{
 		$stat = $sql->prepareStatementForSqlObject($select);
 		$result = $stat->execute();
 
-		$tab = array('groupe_sanguin'=>'','hemogramme_sanguin'=>'','bilan_hepatique'=>'','bilan_renal'=>'','bilan_hemolyse'=>'');
+		$tab = array('groupe_sanguin'=>'','hemogramme_sanguin'=>'','bilan_hepatique'=>'','bilan_renal'=>'','bilan_hemolyse'=>'','bilan_inflammatoire'=>'');
 
 		foreach ($result as $donnes){
 			if($donnes['id_examen'] == 1 ){ $tab['groupe_sanguin']       = $donnes['note_bio'];}
@@ -28,6 +28,7 @@ class NotesExamensBiologiquesTable{
 			if($donnes['id_examen'] == 3){ $tab['bilan_hepatique'] = $donnes['note_bio'];}
 			if($donnes['id_examen'] == 4){ $tab['bilan_renal']     = $donnes['note_bio'];}
 			if($donnes['id_examen'] == 5){ $tab['bilan_hemolyse']         = $donnes['note_bio'];}
+			if($donnes['id_examen'] == 6){ $tab['bilan_inflammatoire']         = $donnes['note_bio'];}
 
 		}
 		return $tab;
@@ -36,7 +37,7 @@ class NotesExamensBiologiquesTable{
 	{
 		$this->tableGateway->delete(array('id_cons' => $donnees['id_cons']));
 
-		for($i=1; $i<6; $i++){
+		for($i=1; $i<7; $i++){
 			if($donnees[$i]){
 				$dataNotesExamensBio	 = array(
 						'id_cons'    => $donnees['id_cons'],

@@ -532,14 +532,14 @@ class ConsultationForm extends Form {
 				)
 		) );
 		$this->add ( array (
-				'name' => 'creatine',
+				'name' => 'creatinine',
 				'type' => 'Text',
 				'options' => array (
-						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'CREATINE:' )
+						'label' => iconv ( 'ISO-8859-1', 'UTF-8', 'CREATININE:' )
 				),
 				'attributes' => array (
 						//'readonly' => 'readonly',
-						'id'  => 'creatine'
+						'id'  => 'creatinine'
 				)
 		) );
 		
