@@ -1826,6 +1826,13 @@ class OrlController extends AbstractActionController {
 				$tableauResultatsExamensBio['bilan_inflammatoire_conclusion'] = $listeExamenBioEffectues['conclusion'];
 				$tableauResultatsExamensBio['temoinBInf'] = 1;
 			}
+		if($listeExamenBioEffectues['idExamen'] == 13){
+			$data['creatinine'] =  $listeExamenBioEffectues['noteResultat'];
+			$tableauResultatsExamensBio['creatinine_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+			$tableauResultatsExamensBio['creatinine_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+			$tableauResultatsExamensBio['creatinine_conclusion'] = $listeExamenBioEffectues['conclusion'];
+			$tableauResultatsExamensBio['temoinBInf'] = 1;
+		}
 		}
 		
 		////RESULTATS DES EXAMENS MORPHOLOGIQUE
@@ -1849,6 +1856,7 @@ class OrlController extends AbstractActionController {
 			$data['bilan_hepatique'] = $examen_biologique['bilan_hepatique'];
 			$data['bilan_renal'] = $examen_biologique['bilan_renal'];
 			$data['bilan_hemolyse'] = $examen_biologique['bilan_hemolyse'];
+			$data['bilan_inflammatoire'] = $examen_biologique['bilan_inflammatoire'];
 			//var_dump('dddd');exit();
 		
 			////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
@@ -6460,6 +6468,7 @@ class OrlController extends AbstractActionController {
 				'3' => $this->params()->fromPost('bilan_hepatique'),
 				'4' => $this->params()->fromPost('bilan_renal'),
 				'5' => $this->params()->fromPost('bilan_hemolyse'),
+				'6' => $this->params()->fromPost('bilan_inflammatoire'),
 		);
 		
 		
@@ -7791,6 +7800,13 @@ public function majFicheObservationCliniqueAction() {
 			$tableauResultatsExamensBio['bilan_inflammatoire_conclusion'] = $listeExamenBioEffectues['conclusion'];
 			$tableauResultatsExamensBio['temoinBInf'] = 1;
 		}
+		if($listeExamenBioEffectues['idExamen'] == 13){
+			$data['creatinine'] =  $listeExamenBioEffectues['noteResultat'];
+			$tableauResultatsExamensBio['creatinine_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+			$tableauResultatsExamensBio['creatinine_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+			$tableauResultatsExamensBio['creatinine_conclusion'] = $listeExamenBioEffectues['conclusion'];
+			$tableauResultatsExamensBio['temoinBInf'] = 1;
+		}
 	}
 	
 	////RESULTATS DES EXAMENS MORPHOLOGIQUE
@@ -7814,6 +7830,7 @@ public function majFicheObservationCliniqueAction() {
 	$data['bilan_hepatique'] = $examen_biologique['bilan_hepatique'];
 	$data['bilan_renal'] = $examen_biologique['bilan_renal'];
 	$data['bilan_hemolyse'] = $examen_biologique['bilan_hemolyse'];
+	$data['bilan_inflammatoire'] = $examen_biologique['bilan_inflammatoire'];
 	//var_dump('dddd');exit();
 	
 	////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
@@ -8327,14 +8344,16 @@ public function visualisationNoteMedicalePrecedenteAction() {
 	$listeDemandesMorphologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensMorphologiquesEffectues($id);
 	
 	
-	// 	////RESULTATS DES EXAMENS BIOLOGIQUE
-	// 	//$examen_biologique = $this->getNotesExamensBiologiquesTable()->getNotesExamensBiologiques($id);
+		////RESULTATS DES EXAMENS BIOLOGIQUE
+		$examen_biologique = $this->getNotesExamensBiologiquesTable()->getNotesExamensBiologiques($id);
 	
-	// 	$data['groupe_sanguin'] = $examen_morphologique['groupe_sanguin'];
-	// 	$data['hemogramme_sanguin'] = $examen_morphologique['hemogramme_sanguin'];
-	// 	$data['bilan_hepatique'] = $examen_morphologique['bilan_hepatique'];
-	// 	$data['bilan_renal'] = $examen_morphologique['bilan_renal'];
-	// 	$data['bilan_hemolyse'] = $examen_morphologique['bilan_hemolyse'];
+		$data['groupe_sanguin'] = $examen_biologique['groupe_sanguin'];
+		$data['hemogramme_sanguin'] = $examen_biologique['hemogramme_sanguin'];
+		$data['bilan_hepatique'] = $examen_biologique['bilan_hepatique'];
+		$data['bilan_renal'] = $examen_biologique['bilan_renal'];
+		$data['bilan_hemolyse'] = $examen_biologique['bilan_hemolyse'];
+		$data['bilan_inflammatoire'] = $examen_biologique['bilan_inflammatoire'];
+		
 	// 	var_dump('dddd');exit();
 	
 	// 	////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE

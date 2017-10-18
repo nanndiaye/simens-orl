@@ -710,6 +710,7 @@ $(function(){
 	    donnees['bilan_hepatique']     = $(".examen_bio_resultat #bilan_hepatique").val();
 	    donnees['bilan_renal']         = $(".examen_bio_resultat #bilan_renal").val();
 	    donnees['bilan_inflammatoire'] = $(".examen_bio_resultat #bilan_inflammatoire").val();
+	    donnees['creatine'] = $(".examen_bio_resultat #creatine").val();
 	    
 	    //alert(donnees['groupe_sanguin']);
 	    
