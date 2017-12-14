@@ -36,6 +36,8 @@ class AntecedentsFamiliauxTable {
 		$donnees['DiabeteAF'] = 0;
 		$donnees['DrepanocytoseAF'] = 0;
 		$donnees['htaAF'] = 0;
+		$donnees['dislipAF'] = 0;
+		$donnees['AsthmeAF'] = 0;
 		
 		foreach ($rowset as $rows){
 			if($rows->id_antecedent == 1){
@@ -50,6 +52,16 @@ class AntecedentsFamiliauxTable {
 				$donnees['htaAF'] = 1;
 				$donnees['NoteHtaAF'] = $rows->note;
 			}
+			
+			if($rows->id_antecedent == 7){
+				$donnees['dislipAF'] = 1;
+				//$donnees['NoteHtaAF'] = $rows->note;
+			}
+			if($rows->id_antecedent == 8){
+				$donnees['AsthmeAF'] = 1;
+				//$donnees['NoteHtaAF'] = $rows->note;
+			}
+			
 		}
 		
 		return $donnees;
@@ -112,6 +124,28 @@ class AntecedentsFamiliauxTable {
 						'ID_PERSONNE' => $id_personne,
 						'ID_ANTECEDENT' => 3,
 						'NOTE' => $donneesDesAntecedents['NoteHtaAF'],
+						'ID_EMPLOYE' => $id_medecin,
+				);
+					
+				$this->tableGateway->insert($donneesAntecedents);
+			}
+			
+			/*DISLIPIDEMIE*/
+			if($donneesDesAntecedents['dislipAF'] == 1){
+				$donneesAntecedents = array(
+						'ID_PERSONNE' => $id_personne,
+						'ID_ANTECEDENT' => 7,
+						'ID_EMPLOYE' => $id_medecin,
+				);
+					
+				$this->tableGateway->insert($donneesAntecedents);
+			}
+			
+			/*ASTHME*/
+			if($donneesDesAntecedents['AsthmeAF'] == 1){
+				$donneesAntecedents = array(
+						'ID_PERSONNE' => $id_personne,
+						'ID_ANTECEDENT' => 8,
 						'ID_EMPLOYE' => $id_medecin,
 				);
 					

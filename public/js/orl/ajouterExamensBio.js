@@ -253,7 +253,7 @@ $(function(){
 		
 		$.ajax({
 	        type: 'POST',
-	        url: tabUrl[0]+'public/consultation/demande-examen-biologique',
+	        url: tabUrl[0]+'public/orl/demande-examen-biologique',
 	        data: {'id_cons':id_cons, 'examensBio': examensBio, 'notesBio':notesBio},
 	        success: function(data) {
 	        	
@@ -282,8 +282,8 @@ $(function(){
 	    		$("#bouton_ExamenBio_valider_demande").toggle(false);
 	    		return false;
 	      },
-	      error:function(e){console.log(e);alert("Une erreur interne est survenue!");},
-	      dataType: "html"
+	      //error:function(e){console.log(e);alert("Une erreur interne est survenue!");},
+	      //dataType: "html"
 		});
 		return false;
 	});

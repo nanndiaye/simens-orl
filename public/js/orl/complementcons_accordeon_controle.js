@@ -486,6 +486,11 @@ $(function(){
        return false;
     });
 	
+	$("#terminer333").click(function(){
+		window.location.href = tabUrl[0]+"public/orl/espace-recherche-med";   
+		return false;
+	});
+	
 	//******************* POPUP ENVOIE DEMANDE OPERATION VPA ********************************
     function confirmationDemandeOperation(){
     	$( "#popupVPA" ).dialog({
@@ -700,6 +705,7 @@ $(function(){
 	    
 	 // **********-- Donnees de l'examen clinique --*******
 	    donnees['examen_clinique'] = $("#examen_clinique").val();
+	    donnees['reste_examen_clinique'] = $("#reste_examen_clinique").val();
 	    donnees['examen_para_clinique'] = $("#examen_para_clinique").val();
 	    
 	    //**********-- ANALYSE BIOLOGIQUE --************
@@ -938,6 +944,12 @@ $(function(){
 		donnees['htaAF'] = $("#htaAF:checked").val(); 
 		if(!donnees['htaAF']){ donnees['htaAF'] = 0;}
 		donnees['NoteHtaAF'] = $("#NoteHtaAF").val();
+		
+		donnees['AsthmeAF'] = $("#AsthmeAF:checked").val(); 
+		if(!donnees['AsthmeAF']){ donnees['AsthmeAF'] = 0;}
+
+		donnees['dislipAF'] = $("#dislipAF:checked").val(); 
+		if(!donnees['dislipAF']){ donnees['dislipAF'] = 0;}
 		
 		donnees['autresAF'] = $("#autresAF:checked").val(); 
 		if(!donnees['autresAF']){ donnees['autresAF'] = 0;}
@@ -1412,6 +1424,14 @@ $(function(){
 			if(temoinhtaAF != 1){
 				$("#DivNoteHtaAF").toggle(false);
 			}
+			
+//			if(temoinAsthmeAF != 1){
+//				$("#DivNoteAsthmeAF").toggle(false);
+//			}
+//			
+//			if(temoindislipAF != 1){
+//				$("#DivNoteDislipAF").toggle(false);
+//			}
 			$("#DivNoteAutresAF").toggle(false);
 			
 			$('#AntecedentsFamiliaux input[name=DiabeteAF]').click(function(){ 
@@ -1432,6 +1452,19 @@ $(function(){
 				if( boutons[1].checked){ $("#DivNoteHtaAF").toggle(true); }
 				if(!boutons[1].checked){ $("#DivNoteHtaAF").toggle(false); }
 			});
+			
+//			$('#AntecedentsFamiliaux input[name=AsthmeAF]').click(function(){ 
+//				var boutons = $('#AntecedentsFamiliaux input[name=AsthmeAF]');
+//				if( boutons[1].checked){ $("#DivNoteAsthmeAF").toggle(true); }
+//				if(!boutons[1].checked){ $("#DivNoteAsthmeAF").toggle(false); }
+//			});
+//			
+//			
+//			$('#AntecedentsFamiliaux input[name=dislipAF]').click(function(){ 
+//				var boutons = $('#AntecedentsFamiliaux input[name=dislipAF]');
+//				if( boutons[1].checked){ $("#DivNoteDislipAF").toggle(true); }
+//				if(!boutons[1].checked){ $("#DivNoteDislipAF").toggle(false); }
+//			});
 			
 			$('#AntecedentsFamiliaux input[name=autresAF]').click(function(){ 
 				var boutons = $('#AntecedentsFamiliaux input[name=autresAF]');

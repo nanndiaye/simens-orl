@@ -2103,7 +2103,7 @@ class PatientTable {
 		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Age'=>'AGE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE', 'id2'=>'ID_PERSONNE'))
 		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
 		->join(array('a' => 'admission') , 'a.id_patient = pat.ID_PERSONNE', array('*'))
-		->join(array('cons' => 'consultation') , 'cons.id_admission = a.id_admission', array('Id_cons' => 'ID_CONS'))
+		->join(array('cons' => 'consultation') , 'cons.id_admission = a.id_admission', array('Id_cons' => 'ID_CONS', 'Id_sous_dossier' => 'id_sous_dossier'))
 		->where(array('a.date_admis' => $date))
 		->order('a.id_admission ASC');
 		/* Data set length after filtering */
@@ -2150,11 +2150,33 @@ class PatientTable {
 					}
 		
 					else if ($aColumns[$i] == 'id') {
-						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/orl/maj-fiche-observation-clinique?id_patient=".$aRow[ 'id' ]."&id_cons=".$aRow[ 'Id_cons' ]."'>";
-						$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/modifier.png' title='d&eacute;tails'></a> </infoBulleVue>";
+						
+						
+						
+						
+						
+						
+						
+						
+						$html ="";
+						
+						if($aRow[ 'Id_sous_dossier' ] == 1){
+							$html .="<infoBulleVue> <a href='".$tabURI[0]."public/orl/maj-fiche-observation-clinique?id_patient=".$aRow[ 'id' ]."&id_cons=".$aRow[ 'Id_cons' ]."'>";
+							
+							$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/modifier.png' title='d&eacute;tails'></a> </infoBulleVue>";
+							
+							$html .="<img style='display: inline; margin-right: 15%; color: white; opacity: 0.15;' src='".$tabURI[0]."public/images_icons/modifier.png'>";
+						}
+						
+						else if($aRow[ 'Id_sous_dossier' ] == 2){
+							$html .="<infoBulleVue> <a href='".$tabURI[0]."public/orl/thyroide?id_admission=".$aRow[ 'id_admission' ]."&id_cons=".$aRow[ 'Id_cons' ]."'>";
+						
+							$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/modifier.png' title='d&eacute;tails'></a> </infoBulleVue>";
 		
-						$html .="<img style='display: inline; margin-right: 15%; color: white; opacity: 0.15;' src='".$tabURI[0]."public/images_icons/modifier.png'>";
-		
+							$html .="<img style='display: inline; margin-right: 15%; color: white; opacity: 0.15;' src='".$tabURI[0]."public/images_icons/modifier.png'>";
+						
+						}
+
 						$row[] = $html;
 					}
 		

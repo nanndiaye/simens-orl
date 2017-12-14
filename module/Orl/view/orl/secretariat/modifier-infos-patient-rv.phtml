@@ -273,10 +273,15 @@ $(window).load(function () {
                                             <th class="form-rendezvous2" style="width: 17%;"> <?php echo $this->formRow($form->get('delai_rv'));?> </th>
                                             <th style="width: 10%;"><th>
                                         </tr>
-                                        <tr style="width: 100%;">
-                                            <th colspan='4'>
-                                                 <div class='block' id='thoughtbot' style=' vertical-align: bottom; padding-left:60%; padding-top: 35px; font-size: 18px; font-weight: bold;'><button id='terminer' name= 'terminer'>Terminer</button></div>
+                                        <tr class="form-rendezvous" style="width: 100%;">
+                                                
+                                            <th colspan='1' >
+                                                 <div class='block' id='thoughtbot' style=' vertical-align: bottom; float: right; padding-left:10%; padding-top: 35px; font-size: 18px; font-weight: bold;'> <button id='annuler' >Annuler</button></div>
                                             </th>
+                                            <th colspan='4'>
+                                                 <div class='block' id='thoughtbot' style=' vertical-align: bottom; float: left; padding-left:5%; padding-top: 35px; font-size: 18px; font-weight: bold;'><button id='terminer' >Terminer</button></div>
+                                            </th>
+                                        
                                         </tr>
                                   </table>
 
@@ -298,4 +303,22 @@ $("#rendez_vous_orl").replaceWith("<li id='rendez_vous_orl' style='background:#4
 dep_rendez_vous_orl1();
 $('#liste_rendez_vous_style').css({'font-weight':'bold','color':'white','font-size':'18px'});
 
+</script>
+
+
+
+
+<script> 
+
+
+    $(document).keypress(function(e){
+	if(e.keyCode == 13){
+		e.preventDefault();
+	}
+    });
+    $('#annuler').click(function(){ 
+		 vart=tabUrl[0]+'public/secretariat/liste-rendez-vous';
+	     $(location).attr("href",vart);
+	     return false;
+	});
 </script>

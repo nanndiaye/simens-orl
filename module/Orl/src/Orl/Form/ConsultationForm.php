@@ -1772,6 +1772,14 @@ class ConsultationForm extends Form {
 						'id' => 'DiabeteAF'
 				)
 		) );
+		/*Asthme*/
+		$this->add ( array (
+				'name' => 'AsthmeAF',
+				'type' => 'checkbox',
+				'attributes' => array (
+						'id' => 'AsthmeAF'
+				)
+		) );
 		/*Note Diabete*/
 		$this->add ( array (
 				'name' => 'NoteDiabeteAF',
@@ -1797,6 +1805,25 @@ class ConsultationForm extends Form {
 						'id' => 'NoteDrepanocytoseAF'
 				)
 		) );
+		
+		/*Note Asthme*/
+		$this->add ( array (
+				'name' => 'NoteAsthmeAF',
+				'type' => 'text',
+				'attributes' => array (
+						'id' => 'NoteAsthmeAF'
+				)
+		) );
+		
+		/*Note Dislipidémie*/
+		$this->add ( array (
+				'name' => 'NoteDislipAF',
+				'type' => 'text',
+				'attributes' => array (
+						'id' => 'NoteDislipAF'
+				)
+		) );
+		
 		
 		/*HTA*/
 		$this->add ( array (
@@ -1832,6 +1859,14 @@ class ConsultationForm extends Form {
 				)
 		) );
 		
+		/*Autres*/
+		$this->add ( array (
+				'name' => 'dislipAF',
+				'type' => 'checkbox',
+				'attributes' => array (
+						'id' => 'dislipAF'
+				)
+		) );
 		/**** TRAITEMENTS CHIRURGICAUX ****/
 		/**** TRAITEMENTS CHIRURCICAUX ****/
 		$this->add ( array (

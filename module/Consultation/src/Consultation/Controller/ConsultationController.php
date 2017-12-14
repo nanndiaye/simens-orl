@@ -3037,7 +3037,7 @@ class ConsultationController extends AbstractActionController {
 		$this->demandeExamensTable()->saveDemandesExamensBiologiques($id_cons, $examensBio, $notesBio);
 	
 		$this->getResponse()->getHeaders ()->addHeaderLine ( 'Content-Type', 'application/html' );
-		return $this->getResponse ()->setContent(Json::encode (  ));
+		return $this->getResponse ()->setContent(Json::encode (1));
 	}
 	
 	

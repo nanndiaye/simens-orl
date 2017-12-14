@@ -582,7 +582,7 @@ class DemandeTable{
 			}
 				
 			//modification et insertion de nouveaux examens
-			for($i=1 ; $i <= count($examens) ; $i++){
+			for($i=1 ; $i < count($examens) ; $i++){
 				if($this->getExamen($id_cons, $examens[$i])){
 					$this->tableGateway->update(array('noteDemande' => $notes[$i]) , array('idCons' => $id_cons, 'idExamen' => $examens[$i]));
 				} else {
@@ -597,7 +597,7 @@ class DemandeTable{
 				
 				
 		} else {
-			for($i=1 ; $i <= count($examens) ; $i++){
+			for($i=1 ; $i < count($examens) ; $i++){
 				$examen = array(
 						'idCons' => $id_cons,
 						'idExamen'=> $examens[$i],

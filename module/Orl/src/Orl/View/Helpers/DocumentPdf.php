@@ -19,6 +19,14 @@ class DocumentPdf extends AbstractHelper{
 		$this->_pdf->pages[] = $page;
 	}
 	
+	public function addPagePlusieurs(Page $page)
+	{
+	
+		$this->_pdf->pages[] = $page;
+		 
+	
+	}
+	
 	public function getDocument()
 	{
 		header('Content-Type: application/pdf; charset=UTF-8') ;

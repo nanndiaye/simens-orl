@@ -199,11 +199,9 @@ $(function(){
 		
 		$.ajax({
 	        type: 'POST',
-	        url: tabUrl[0]+'public/consultation/demande-examen',
+	        url: tabUrl[0]+'public/orl/demande-examen',
 	        data: {'id_cons':id_cons, 'examens': examens, 'notes':notes},
 	        success: function(data) {
-	            //var result = jQuery.parseJSON(data); 
-	            //alert(result);
 	        	
 	        	//ON CACHE TOUT
 	        	$('.imageRadio').toggle(false); 

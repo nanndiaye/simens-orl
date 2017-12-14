@@ -1765,12 +1765,13 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 									style='font-family: police2; font-size: 15px; font-weight: bold; color: green;'>
 									Examens Biologiques</div>
 								<div>
-							     <div style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
+			                 <div style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
 						<!-- LE PDF POUR IMPRESSION-->
 						    <div class="rendezvous">
 								<hass> <input type="submit" title="Imprimer" name="demandeExamenBio" id="demandeExamenBio"> </hass>
 							</div>
 							<div style="padding-bottom: 40px; margin-bottom: 10px; border-bottom: 1px dashed green; margin-left: 0px; margin-right: 0px;"></div>
+
                            <?php 
                            /**
                             *=============================================================================================
@@ -1895,7 +1896,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 									style='font-family: police2; font-size: 15px; font-weight: bold; color: green;'>
 									Examens Morphologiques</div>
 								<div style="max-height: 250px;">
-									<div style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
+							<div style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
 							<!-- LE PDF POUR IMPRESSION-->
 							<div class="rendezvous">
 								<hass> <input type="submit" title="Imprimer" name="demandeExamenMorpho" id="demandeExamenMorpho"> </hass>
@@ -3412,7 +3413,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							<button id="annuler2"
 								style="font-family: police2; font-size: 18px; font-weight: bold;">
 								Annuler</button>
-							<button name="terminer2" id="terminer2"
+							<button id="terminer333"
 								style="font-family: police2; font-size: 18px; font-weight: bold;">
 								Terminer</button>
 						</p>
@@ -3433,47 +3434,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 			</div>
 
 			<!-- POP UP pour Choix des sous-dossiers -->
-			<div id="choix_sous_dossier" title="choisir des sous-dossiers"
-				style="display: none;">
-				<!-- INTERFACE DE GESTION DES CHOIX DES SOUS-DOSSIER -->
 
-				<table style="width: 100%;" id="liste_choix_sous_dossier">
-					<tr style="width: 100%; height: 30px;">
-						<td style="width: 15%;"><input type="checkbox" name="fiche-observation"></td>
-						<td style="width: 85%;" id='choix1'>Fiche d'Observation Clinique <span> </span>
-						</td>
-					</tr>
-
-					<tr style="width: 100%; height: 30px;">
-						<td style="width: 15%;"><input type="checkbox" name="tyroide">
-						</td>
-						<td style="width: 85%;" id='choix2'>Tyroide <span> </span>
-						</td>
-					</tr>
-
-					<tr style="width: 100%; height: 30px;">
-						<td style="width: 15%;"><input type="checkbox" name="otologie"></td>
-						<td style="width: 85%;" id='choix3'>Tumeur Parotidienne <span> </span>
-						</td>
-					</tr>
-
-					<tr style="width: 100%; height: 30px;">
-						<td style="width: 15%;"><input type="checkbox" name="pharynx"></td>
-						<td style="width: 85%;" id='choix4'>Corps Etrangers <span> </span>
-						</td>
-					</tr>
-
-					<tr style="width: 100%; height: 30px;">
-						<td style="width: 15%;"><input type="checkbox" name="larynx"></td>
-						<td style="width: 85%;" id='choix5'>Lesions Sphere Orl <span> </span>
-						</td>
-					</tr>
-
-
-				</table>
-
-
-			</div>
 
 
 

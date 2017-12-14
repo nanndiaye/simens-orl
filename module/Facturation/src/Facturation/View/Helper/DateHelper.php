@@ -96,7 +96,7 @@ class DateHelper extends AbstractHelper{
 		$leMoisActuel = $today->format('m'); //le mois actuel
 		$AnneeActuelle =  $today->format('Y'); //l'ann�e actuelle
 
-		$lePremierJourDuMois = $this->jourEnLettre('01/'.$leMoisActuel.'/'.$AnneeActuelle);//Le premier jour du mois
+		$lePremierJourDuMois = $this->jourEnLettre('01/'.$leMoisActuel.'/'."$AnneeActuelle");//Le premier jour du mois
 
 		$laSemaine = array(
 				'Lundi'    => '7',
@@ -113,7 +113,7 @@ class DateHelper extends AbstractHelper{
 
 	public function lePremierDimancheDuMoisByDate($leMois,$Annee){
 
-		$lePremierJourDuMois = $this->jourEnLettre('01/'.$leMois.'/'.$Annee);//Le premier jour du mois
+		$lePremierJourDuMois = $this->jourEnLettre('01/'.$leMois.'/'."$Annee");//Le premier jour du mois
 
 		$laSemaine = array(
 				'Lundi'    => '7',
