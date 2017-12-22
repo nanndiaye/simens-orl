@@ -571,6 +571,7 @@ return array(
     							    'vue-infos-patient' => 'medecin',
     								'recherche-visualisation-fiche-observation-clinique' => 'medecin',
     								'visualisation-note-medicale-precedente' => 'medecin',
+    								'visualisation-thyroide' => 'medecin',
     								'demande-examen-biologique' => 'medecin',
     								'demande-examen' => 'medecin',
     								'recherche-visualisation-thyroide' => 'medecin',

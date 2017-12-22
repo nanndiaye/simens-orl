@@ -708,6 +708,10 @@ $(function(){
 	    donnees['reste_examen_clinique'] = $("#reste_examen_clinique").val();
 	    donnees['examen_para_clinique'] = $("#examen_para_clinique").val();
 	    
+		 // **********-- Nouvelle note medicale --*******
+	    donnees['nouvelle_note_medicale'] = $("#nouvelle_note_medicale").val();
+
+	    
 	    //**********-- ANALYSE BIOLOGIQUE --************
         //**********-- ANALYSE BIOLOGIQUE --************
 	    donnees['groupe_sanguin']      = $(".examen_bio_resultat #groupe_sanguin").val();
@@ -751,7 +755,7 @@ $(function(){
 		//*********** TRAITEMENTS CHIRURGICAUX ************
 	    donnees['diagnostic_traitement_chirurgical'] = $("#diagnostic_traitement_chirurgical").val();
 	    donnees['intervention_prevue'] = $("#intervention_prevue").val();
-	    donnees['type_anesthesie_demande'] = $("#type_anesthesie_demande").val();
+	    donnees['type_anesthesie'] = $("#type_anesthesie").val();
 	    donnees['numero_vpa'] = $("#numero_vpa").val();
 	    donnees['observation'] = $("#observation").val();
 	    donnees['note_compte_rendu_operatoire'] = $("#note_compte_rendu_operatoire").val();
@@ -976,6 +980,10 @@ $(function(){
 		donnees['autresMotifHospitalisation'] = $("#autresMotifHospitalisation").val();
 		// **=== HISTOIRE DE LA MALADIE
 		donnees['histoire_maladie'] = $("#histoire_maladie").val();
+		
+		// **=== PLAINTE(MOTIF DE CONSULTATION)
+		donnees['plainte_motif'] = $("#plainte_motif").val();
+		
 		// **=== EXAMENS COMPLEMENTAIRES
 		donnees['examen_complementaire'] = $("#examen_complementaire").val();		
 		// **=== PEAU CERVICO-FASCIALE

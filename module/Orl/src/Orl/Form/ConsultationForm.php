@@ -2070,11 +2070,11 @@ class ConsultationForm extends Form {
 		
 		/*notes médicales */
 		$this->add ( array (
-				'name' => 'notes_medicales',
+				'name' => 'nouvelle_note_medicale',
 				'type' => 'Textarea',
 				
 				'attributes' => array (
-						'id' => 'notes_medicales'
+						'id' => 'nouvelle_note_medicale'
 				)
 		) );
 		

@@ -6,7 +6,6 @@ use ZendPdf\Page;
 use ZendPdf\Font;
 use Orl\Model\Orl;
 use Facturation\View\Helper\DateHelper;
- 
 
 
 class DemandeExamenBioPdf
@@ -220,7 +219,7 @@ class DemandeExamenBioPdf
 				'2' => 'GSRH',
 				'3' => 'TP',
 				'4' => 'TCK',
-				'5' => 'TEST DEMMEL',
+				'5' => 'TEST D\'EMMEL',
 				'6' => 'CALCEMIE',
 		);
 		return $ExamensBio;
@@ -382,7 +381,7 @@ class DemandeExamenBioPdf
 		    $this->_yPosition+70);
 		
 		$this->_page->setFont($this->_policeContenu, 14);
-		$this->_page->drawText("Cachet du Medecin :" ,
+		$this->_page->drawText("Cachet du Médecin :" ,
 		    $this->_leftMargin+370,
 		    $this->_yPosition+70);
 	} 

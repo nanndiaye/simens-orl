@@ -67,6 +67,8 @@ class DemandeVisitePreanesthesiqueTable{
 						'DIAGNOSTIC'  => $infoDemande['diagnostic'],
 						'OBSERVATION' => $infoDemande['observation'],
 						'INTERVENTION_PREVUE' => $infoDemande['intervention_prevue'],
+						'NUMERO_VPA' => $infoDemande['numero_vpa'],
+						'TYPE_ANESTHESIE' => $infoDemande['type_anesthesie'],
 						'DATE_ENREGISTREMENT' => $dateAujourdhui
 				);
 				$this->tableGateway->insert($donneesVPA);

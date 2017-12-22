@@ -31,6 +31,7 @@ use Orl\Form\ProtocoleOperatoireForm;
 use Orl\View\Helpers\CompteRenduOperatoirePdf;
 use Orl\View\Helpers\CompteRenduOperatoirePage2Pdf;
 use Orl\Model\AntecedentOrl;
+use Orl\View\Helpers\NoteMedicaleThyroidePdf;
 
 
 class OrlController extends AbstractActionController {
@@ -45,6 +46,7 @@ class OrlController extends AbstractActionController {
 	protected $consommableTable;
 	protected $donneesExamensPhysiquesTable;
     protected $donneesExamenCliniqueTable;
+    protected $noteMedicaleTable;
 	protected $diagnosticsTable;
 	protected $ordonnanceTable;
 	protected $demandeVisitePreanesthesiqueTable;
@@ -71,6 +73,7 @@ class OrlController extends AbstractActionController {
 	protected $antecedentOrlTable;
 	protected $motifHospitalisationOrlTable;
 	protected $histoireMaladieTable;
+	protected $plainteConsultationTable;
 	protected $examensComplementairesOrlTable;
 	protected $peauCervicauFacialeOrlTable;
 	protected $tyroideTable;
@@ -179,6 +182,24 @@ class OrlController extends AbstractActionController {
 			$this->donneesExamenCliniqueTable = $sm->get('Orl\Model\DonneesExamenCliniqueTable');
 		}
 		return $this->donneesExamenCliniqueTable;
+	
+	}
+	
+	public function getNoteMedicale(){
+		if (! $this->noteMedicaleTable) {
+			$sm = $this->getServiceLocator();
+			$this->noteMedicaleTable = $sm->get('Orl\Model\NoteMedicaleTable');
+		}
+		return $this->noteMedicaleTable;
+	
+	}
+	
+	public function getPlainteConsultation(){
+		if (! $this->plainteConsultationTable) {
+			$sm = $this->getServiceLocator();
+			$this->plainteConsultationTable = $sm->get('Orl\Model\PlainteConsultationTable');
+		}
+		return $this->plainteConsultationTable;
 	
 	}
 	
@@ -1736,6 +1757,13 @@ class OrlController extends AbstractActionController {
 			$data['histoire_maladie'] = $histoireMaladie['histoire_maladie'];
 		}
 		
+		//Plainte(Motif de consultation)
+		$plainteConsultation = $this->getPlainteConsultation()->getPlainteConsultation($id);
+		//var_dump($histoireMaladie); exit();
+		if ($plainteConsultation) {
+			$data['plainte_motif'] = $plainteConsultation['plainte_motif'];
+		}
+		
 		
 		//Donnees de l'examen clinique
 		$donneesExamenClinique = $this->getDonneesExamenClinique()->getDonneesExamenClinique($id);
@@ -2478,40 +2506,40 @@ class OrlController extends AbstractActionController {
 		//********************************* Imprimer pour un examen Biologique****************
 		//********************************* Imprimer pour un examen Biologique****************
 		//********************************* Imprimer pour un examen Biologique****************
+
+		
 		if(isset ($_POST['demandeExamenBio'])){
-			$donneesExamensBio = "";
-			$notesExamensBio = "";
-			
-			$DocPdf = new DocumentPdf();
-			$i = 1;
-			
-			for( ; $i <= 6; $i++){
-				if($this->params ()->fromPost ( 'examenBio_name_'.$i )){
-					$donneesExamensBio = $this->params ()->fromPost ( 'examenBio_name_'.$i );
-					$notesExamensBio = $this->params ()->fromPost ( 'noteExamenBio_'.$i  );
-					//var_dump($notesExamensBio);exit();
-					//Creer la page
-					$page = new DemandeExamenBioPdf();
-					//Envoi Id de la consultation
-					$page->setIdConsBio($id_cons);
-					$page->setService($serviceMedecin);
-					//Envoi des donnï¿½es du patient
-					$page->setDonneesPatientBio($donneesPatientOR);
-					//Envoi des donnï¿½es du medecin
-					$page->setDonneesMedecinBio($donneesMedecin);
-					$page->setDonneesDemandeBio($donneesExamensBio);
-					$page->setNotesDemandeBio($notesExamensBio);
-		
-					$DocPdf->addPagePlusieurs($page->getPage());
-					$page->addNotePlusieursExamensBiologiques();
-					$donneesExamensBio = "";
-					$notesExamensBio = "";
-				}
-		
-			}
-		
-			//Afficher le document contenant la page
-			$DocPdf->getDocument();
+		    $donneesExamensBio = "";
+		    $notesExamensBio = "";
+		    $DocPdf = new DocumentPdf();
+		    $i = 1;
+		    for( ; $i <= 6; $i++){
+		        if($this->params ()->fromPost ( 'examenBio_name_'.$i )){
+		            $donneesExamensBio = $this->params ()->fromPost ( 'examenBio_name_'.$i );
+		            $notesExamensBio = $this->params ()->fromPost ( 'noteExamenBio_'.$i  );
+		            
+		            //Creer la page
+		            $page = new DemandeExamenBioPdf();
+		            //Envoi Id de la consultation
+		            $page->setIdConsBio($id_cons);
+		            $page->setService($serviceMedecin);
+		            //Envoi des donnï¿½es du patient
+		            $page->setDonneesPatientBio($donneesPatientOR);
+		            //Envoi des donnï¿½es du medecin
+		            $page->setDonneesMedecinBio($donneesMedecin);
+		            $page->setDonneesDemandeBio($donneesExamensBio);
+		            $page->setNotesDemandeBio($notesExamensBio);
+		            
+		            $DocPdf->addPagePlusieurs($page->getPage());
+		            $page->addNotePlusieursExamensBiologiques();
+		            $donneesExamensBio = "";
+		            $notesExamensBio = "";
+		        }
+		        
+		    }
+		    
+		    //Afficher le document contenant la page
+		    $DocPdf->getDocument();
 		}
 		
 		
@@ -2559,6 +2587,45 @@ class OrlController extends AbstractActionController {
 		
 		}
 		
+		//**********TRAITEMENT CHIRURGICAL*****************
+		//**********TRAITEMENT CHIRURGICAL*****************
+		//**********TRAITEMENT CHIRURGICAL*****************
+		if(isset($_POST['traitement_chirurgical'])){
+			//Récupération des données
+			$donneesDemande['indication'] = $this->params ()->fromPost ( 'indication' );
+			$donneesDemande['intervention_prevue'] = $this->params ()->fromPost (  'intervention_prevue' );
+			$donneesDemande['type_anesthesie'] = $this->params()->fromPost('type_anesthesie');
+			$donneesDemande['numero_vpa'] = $this->params()->fromPost('numero_vpa');
+			$donneesDemande['observation'] = $this->params()->fromPost('observation');
+			
+				
+			//CREATION DU DOCUMENT PDF
+			//Créer le document
+			$DocPdf = new DocumentPdf();
+			//Créer la page
+			$page = new TraitementChirurgicalPdf();
+			
+			//Envoi Id de la Consultation
+			$page->setIdConsTC($id_cons);
+			$page->setService($serviceMedecin);
+			//Envoi des données du patient
+			$page->setDonneesPatientTC($donneesPatientOR);
+			//Envoi des données du medecin
+			$page->setDonneesMedecinTC($donneesMedecin);
+			//Envoi les données de la demande
+			$page->setDonneesDemandeTC($donneesDemande);
+			
+			//Ajouter les donnees a la page
+			$page->addNoteTC();
+			//var_dump($donneesDemande);exit();
+			//Ajouter la page au document
+			$DocPdf->addPage($page->getPage());
+				
+			//Afficher le document contenant la page
+			$DocPdf->getDocument();
+				
+		}
+		
 		if(isset($_POST['ordonnance'])){
 			//récupération de la liste des médicaments
 			$medicaments = $this->getConsultationTable()->fetchConsommable();
@@ -2602,43 +2669,8 @@ class OrlController extends AbstractActionController {
 			$DocPdf->getDocument();
 		}
 		else
-		//**********TRAITEMENT CHIRURGICAL*****************
-		//**********TRAITEMENT CHIRURGICAL*****************
-		//**********TRAITEMENT CHIRURGICAL*****************
-		if(isset($_POST['traitement_chirurgical'])){ 
-			//Récupération des données
-			$donneesDemande['indication'] = $this->params ()->fromPost ( 'indication' );
-			$donneesDemande['intervention_prevue'] = $this->params ()->fromPost (  'intervention_prevue' );
-			$donneesDemande['type_anesthesie'] = $this->params()->fromPost('type_anesthesie');
-			$donneesDemande['numero_vpa'] = $this->params()->fromPost('numero_vpa');
-			$donneesDemande['observation'] = $this->params()->fromPost('observation');
-			
-			//CREATION DU DOCUMENT PDF
-			//Créer le document
-			$DocPdf = new DocumentPdf();
-			//Créer la page
-			$page = new TraitementChirurgicalPdf();
-			
-			//Envoi Id de la Consultation
-			$page->setIdConsTC($id_cons);
-			$page->setService($serviceMedecin);
-			//Envoi des données du patient
-			$page->setDonneesPatientTC($donneesPatientOR);
-			//Envoi des données du medecin
-			$page->setDonneesMedecinTC($donneesMedecin);
-			//Envoi les données de la demande
-			$page->setDonneesDemandeTC($donneesDemande);
-			
-			//Ajouter les donnees a la page
-			$page->addNoteTC();
-			//Ajouter la page au document
-			$DocPdf->addPage($page->getPage());
-			
-			//Afficher le document contenant la page
-			$DocPdf->getDocument();
-			
-		}
-		else
+
+		
 		//********** PROTOCOLE OPERATOIRE *****************
 		//********** PROTOCOLE OPERATOIRE *****************
 		//********** PROTOCOLE OPERATOIRE *****************
@@ -6363,6 +6395,11 @@ class OrlController extends AbstractActionController {
 		//Insertion de lhistoire de la maladie
 		$this->getHistoireMaladie() ->deleteHistoireMaladie($id_cons);
 		$this->getHistoireMaladie()->addHistoireMaladie($formData, $id_cons, $id_medecin);
+		
+		//Insertion Plainte(Motif de consultation)
+		//Insertion Plainte(Motif de consultation)
+		$this->getPlainteConsultation() ->deletePlainteConsultation($id_cons);
+		$this->getPlainteConsultation()->addPlainteConsultation( $id_cons, $formData);
 
 		
 		//Sous Dossier
@@ -6416,6 +6453,8 @@ class OrlController extends AbstractActionController {
 		$this->getCompteRenduOperatoireOrl()->addCompteRenduOperatoireOrl($formData, $id_cons, $id_medecin);
  		$this->getDonneesExamenClinique()->deleteDonneesExamenClinique($id_cons);
  		$this->getDonneesExamenClinique()->addDonneesExamenClinique($id_cons, $formData);
+ 		$this->getNoteMedicale()->deleteNoteMedicale($id_cons);
+ 		$this->getNoteMedicale()->addNoteMedicale($id_cons, $formData);
 		$this->getPeriodePostOperatoirePrecoce()->deletePeriodePostOperatoirePrecoce($id_cons);
 		$this->getPeriodePostOperatoirePrecoce()->addPeriodePostOperatoirePrecoce($formData, $id_cons, $id_medecin);
     	//var_dump($formData->histologie);exit();
@@ -6649,6 +6688,8 @@ class OrlController extends AbstractActionController {
 				'diagnostic' => $this->params()->fromPost("diagnostic_traitement_chirurgical"),
 				'intervention_prevue' => $this->params()->fromPost("intervention_prevue"),
 				'observation' => $this->params()->fromPost("observation"),
+				'numero_vpa' => $this->params()->fromPost("numero_vpa"),
+				'type_anesthesie' => $this->params()->fromPost("type_anesthesie"),
 				'ID_CONS'=>$id_cons
 		);
 		
@@ -6850,6 +6891,11 @@ class OrlController extends AbstractActionController {
 		if ($donneesExamenClinique) {
 			$data['examen_clinique'] = $donneesExamenClinique['examen_clinique'];
 			$data['examen_para_clinique'] = $donneesExamenClinique['examen_para_clinique'];
+		}
+		$noteMedicale = $this->getNoteMedicale()->getNoteMedicale($id);
+		if ($noteMedicale) {
+			$data['nouvelle_note_medicale'] = $noteMedicale['nouvelle_note_medicale'];
+			
 		}
 		
 		// 		//POUR LES GROUPES GANGLIONNAIRES CERVICALES
@@ -7801,6 +7847,12 @@ class OrlController extends AbstractActionController {
 				$data['reste_examen_clinique'] = $donneesExamenClinique['reste_examen_clinique'];
 			
 			}
+			//Nouvelle note medicale
+			$noteMedicale = $this->getNoteMedicale()->getNoteMedicale($id);
+			if ($noteMedicale) {
+				$data['nouvelle_note_medicale'] = $noteMedicale['nouvelle_note_medicale'];
+					
+			}
 			
 			//POUR LES HORMONES TYROIDIENNES
 			//POUR LES HORMONES TYROIDIENNES
@@ -7888,6 +7940,8 @@ class OrlController extends AbstractActionController {
 				$data['diagnostic_traitement_chirurgical'] = $donneesDemandeVPA['DIAGNOSTIC'];
 				$data['observation'] = $donneesDemandeVPA['OBSERVATION'];
 				$data['intervention_prevue'] = $donneesDemandeVPA['INTERVENTION_PREVUE'];
+				$data['type_anesthesie'] = $donneesDemandeVPA['TYPE_ANESTHESIE'];
+				$data['numero_vpa'] = $donneesDemandeVPA['NUMERO_VPA'];
 					
 				$resultatVpa = $this->getResultatVpa()->getResultatVpa($donneesDemandeVPA['idVpa']);
 			}
@@ -8362,6 +8416,13 @@ public function rechercheVisualisationThyroideAction(){
 		$data['reste_examen_clinique'] = $donneesExamenClinique['reste_examen_clinique'];
 			
 	}
+	
+	//Note medicale
+	$noteMedicale = $this->getNoteMedicale()->getNoteMedicale($id);
+	if ($noteMedicale) {
+		$data['nouvelle_note_medicale'] = $noteMedicale['nouvelle_note_medicale'];
+			
+	}
 		
 	//POUR LES HORMONES TYROIDIENNES
 	//POUR LES HORMONES TYROIDIENNES
@@ -8784,6 +8845,12 @@ public function majFicheObservationCliniqueAction() {
 		$data['histoire_maladie'] = $histoireMaladie['histoire_maladie'];
 	}
 	
+	//Plainte(Motif de consultation) 
+	$plainteConsultation = $this->getPlainteConsultation()->getPlainteConsultation($id);
+	//var_dump($histoireMaladie); exit();
+	if ($plainteConsultation) {
+		$data['plainte_motif'] = $plainteConsultation['plainte_motif'];
+	}
 	
 	//Donnees de l'examen clinique
 	$donneesExamenClinique = $this->getDonneesExamenClinique()->getDonneesExamenClinique($id);
@@ -8978,6 +9045,8 @@ public function majFicheObservationCliniqueAction() {
 		$data['diagnostic_traitement_chirurgical'] = $donneesDemandeVPA['DIAGNOSTIC'];
 		$data['observation'] = $donneesDemandeVPA['OBSERVATION'];
 		$data['intervention_prevue'] = $donneesDemandeVPA['INTERVENTION_PREVUE'];
+		$data['type_anesthesie'] = $donneesDemandeVPA['TYPE_ANESTHESIE'];
+		$data['numero_vpa'] = $donneesDemandeVPA['NUMERO_VPA'];
 		 
 		$resultatVpa = $this->getResultatVpa()->getResultatVpa($donneesDemandeVPA['idVpa']);
 	}
@@ -9733,6 +9802,54 @@ public function visualisationNoteMedicalePrecedenteAction() {
 	
 	
 }
+
+
+public function visualisationThyroideAction() {
+
+	$id_patient = $this->params ()->fromQuery ( 'id_patient', 0 );
+	$id_cons = $this->params ()->fromQuery ( 'id_cons', 0 );
+	$id = $this->params()->fromQuery ( 'id_cons' );
+	$user = $this->layout()->user;
+	$serviceMedecin = $user['NomService'];
+	
+	$nomMedecin = $user['Nom'];
+	$prenomMedecin = $user['Prenom'];
+	$donneesMedecin = array('nomMedecin' => $nomMedecin, 'prenomMedecin' => $prenomMedecin);
+	
+	//*************************************
+	//*************************************
+	$donneesPatient = $this->getConsultationTable()->getInfoPatient($id_patient);
+	
+	$noteMedicaleInfo = null;
+	//Nouvelle note medicale
+	$noteMedicale = $this->getNoteMedicale()->getNoteMedicale($id);
+	if ($noteMedicale) {
+		$noteMedicaleInfo = $noteMedicale['nouvelle_note_medicale'];
+	}
+
+	//Creer le document
+	$DocPdf = new DocumentPdf();
+	//Creer la page
+	$page = new NoteMedicaleThyroidePdf();
+	
+	//Envoyer l'id_cons
+	$page->setIdCons($id_cons);
+	$page->setService($serviceMedecin);
+	//Envoyer les données sur le partient
+	$page->setDonneesPatient($donneesPatient);
+
+	$page->setNoteMedicale($noteMedicaleInfo);
+	
+	
+	
+	$page->addNote();
+		
+	$DocPdf->addPage($page->getPage());
+	
+	$DocPdf->getDocument();
+	
+}
+
 
 
 

@@ -21,6 +21,10 @@ use Orl\Model\DonneesExamensPhysiquesTable;
 use Orl\Model\DonneesExamensPhysiques;
 use Orl\Model\DonneesExamenCliniqueTable;
 use Orl\Model\DonneesExamenClinique;
+use Orl\Model\NoteMedicaleTable;
+use Orl\Model\NoteMedicale;
+use Orl\Model\PlainteConsultationTable;
+use Orl\Model\PlainteConsultation;
 use Orl\Model\DiagnosticsTable;
 use Orl\Model\Diagnostics;
 use Orl\Model\OrdonnanceTable;
@@ -242,6 +246,30 @@ class Module implements AutoloaderProviderInterface {
 							$resultSetPrototype->setArrayObjectPrototype ( new DonneesExamenClinique());
 							return new TableGateway ( 'Donnees_examen_clinique', $dbAdapter, null, $resultSetPrototype );
 						},
+						'Orl\Model\NoteMedicaleTable' => function ($sm) {
+							$tableGateway = $sm->get ( 'NoteMedicaleTableGateway' );
+							$table = new NoteMedicaleTable($tableGateway);
+							return $table;
+						},
+						'NoteMedicaleTableGateway' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$resultSetPrototype = new ResultSet();
+							$resultSetPrototype->setArrayObjectPrototype ( new NoteMedicale());
+							return new TableGateway ( 'note_medicale', $dbAdapter, null, $resultSetPrototype );
+						},
+						
+						'Orl\Model\PlainteConsultationTable' => function ($sm) {
+							$tableGateway = $sm->get ( 'PlainteConsultationTableGateway' );
+							$table = new PlainteConsultationTable($tableGateway);
+							return $table;
+						},
+						'PlainteConsultationTableGateway' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$resultSetPrototype = new ResultSet();
+							$resultSetPrototype->setArrayObjectPrototype ( new PlainteConsultation());
+							return new TableGateway ( 'plainte_consultation',$dbAdapter, null, $resultSetPrototype );
+						},
+						
 						'Orl\Model\DiagnosticsTable' => function ($sm) {
 							$tableGateway = $sm->get ( 'DiagnosticsTableGateway' );
 							$table = new DiagnosticsTable($tableGateway);
