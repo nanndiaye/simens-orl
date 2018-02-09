@@ -129,9 +129,9 @@ $(function(){
 	var observation = $("#observation");
 	
 	$("#chirurgical1").click(function(){
-		diagnostic_traitement_chirurgical.attr( 'readonly', true).css({'background':'#f8f8f8'});
-		intervention_prevue.attr( 'readonly', true).css({'background':'#f8f8f8'});
-		observation.attr( 'readonly', true).css({'background':'#f8f8f8'});
+		diagnostic_traitement_chirurgical.attr( 'readonly', false).css({'background':'#fff'});
+		intervention_prevue.attr( 'readonly', false).css({'background':'#fff'});
+		observation.attr( 'readonly', false).css({'background':'#fff'});
 		
 		$("#bouton_chirurgical_modifier").toggle(true);
 		$("#bouton_chirurgical_valider").toggle(false);	
@@ -148,9 +148,9 @@ $(function(){
 	observation.attr( 'readonly', false).css({'background':'#fff'});
 	
 	$("#bouton_chirurgical_valider").click(function(){
-		diagnostic_traitement_chirurgical.attr( 'readonly', true).css({'background':'#f8f8f8'});
-		intervention_prevue.attr( 'readonly', true).css({'background':'#f8f8f8'});
-		observation.attr( 'readonly', true).css({'background':'#f8f8f8'});
+		diagnostic_traitement_chirurgical.attr( 'readonly', false).css({'background':'#fff'});
+		intervention_prevue.attr( 'readonly', false).css({'background':'#fff'});
+		observation.attr( 'readonly', false).css({'background':'#fff'});
 		
 		$("#bouton_chirurgical_modifier").toggle(true);
 		$("#bouton_chirurgical_valider").toggle(false);

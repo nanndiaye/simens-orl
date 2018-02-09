@@ -154,6 +154,9 @@ return array(
     								'impression-facture-acte' => 'facturation',
     								
     								'liste-admission-bloc-ajax' =>  array('major', 'medecin', 'facturation'),
+    								'informations-statistiques' =>  array('major', 'medecin', 'facturation'),
+    								'informations-complementaires' =>  array('major', 'medecin', 'facturation'),
+    								'informations-complementaires-ajax' =>  array('major', 'medecin', 'facturation'),
     								
     								
     								

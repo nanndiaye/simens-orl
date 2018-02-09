@@ -2209,7 +2209,7 @@ class OrlController extends AbstractActionController {
 	
 	
 	public function espaceRechercheMedAction() {
-		$this->layout ()->setTemplate ( 'layout/orl' );
+		$this->layout ()->setTemplate ( 'layout/orl');
 		
 		//$output = $this->getConsultationTable()->getListePatientsConsultesAjax();
 		//var_dump($output); exit(); //nombre aléatoire
@@ -2592,7 +2592,7 @@ class OrlController extends AbstractActionController {
 		//**********TRAITEMENT CHIRURGICAL*****************
 		if(isset($_POST['traitement_chirurgical'])){
 			//Récupération des données
-			$donneesDemande['indication'] = $this->params ()->fromPost ( 'indication' );
+			$donneesDemande['diagnostic_traitement_chirurgical'] = $this->params ()->fromPost ( 'diagnostic_traitement_chirurgical' );
 			$donneesDemande['intervention_prevue'] = $this->params ()->fromPost (  'intervention_prevue' );
 			$donneesDemande['type_anesthesie'] = $this->params()->fromPost('type_anesthesie');
 			$donneesDemande['numero_vpa'] = $this->params()->fromPost('numero_vpa');

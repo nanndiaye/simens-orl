@@ -585,20 +585,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 			  </div>
 		    </div>
 		 </div>
-		 <!--********************* BOUTON VALIDER-MODIFIER ************************-->
-         <!--********************* BOUTON VALIDER-MODIFIER ************************-->		            
-         <table style="width: 59%; position: relative; top: 0px;">
-              <tr style="width: 90%;">
-                <th style="width:65%;">
-                    <div style="float:right;">
-                       <button id='bouton_donnee_valider'>Valider</button>
-                    </div>
-                    <div style="float:right;">
-                       <button id='bouton_donnee_modifier'>Modifier</button>
-                    </div>
-                </th>
-              </tr>
-         </table>
+
           <script>
               var nbexamendonnee = '<?php echo $this->nbDonneesExamensPhysiques;?>';
               if(nbexamendonnee == 0) { nbexamendonnee = 1; }
@@ -696,23 +683,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 											</div>
 										</div>
 
-										<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-										<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-										<table
-											style="width: 90%; float: right; position: relative; right: 0;">
-											<tr style="width: 100%;">
-												<th style="height: 15px;">
-													<div id='bouton_ExamenBio_valider_demande'
-														style="float: right;">
-														<button>Valider</button>
-													</div>
-													<div id='bouton_ExamenBio_modifier_demande'
-														style="float: right;">
-														<button>Modifier</button>
-													</div>
-												</th>
-											</tr>
-										</table>
+									
 
 									</div>
 
@@ -826,24 +797,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 										</div>
 									</div>
 
-									<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-									<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-									<table
-										style="width: 90%; float: right; position: relative; right: 0;">
-										<tr style="width: 100%;">
-											<th style="height: 15px;">
-												<div id='bouton_morpho_valider_demande'
-													style="float: right;">
-													<button>Valider</button>
-												</div>
-												<div id='bouton_morpho_modifier_demande'
-													style="float: right;">
-													<button>Modifier</button>
-												</div>
-											</th>
 
-										</tr>
-									</table>
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
@@ -1381,20 +1335,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 						</div>
 					</div>
 
-					<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-					<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-					<table style="width: 59%; position: relative; top: 0px;">
-						<tr style="width: 90%;">
-							<th style="width: 65%;">
-								<div style="float: right;">
-									<button id='bouton_diagnostic_valider'>Valider</button>
-								</div>
-								<div style="float: right;">
-									<button id='bouton_diagnostic_modifier'>Modifier</button>
-								</div>
-							</th>
-						</tr>
-					</table>
+					
 
 		 <script>
               var nbdiagnostic = '<?php echo $this->nbDiagnostics;?>';
@@ -1508,23 +1449,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 									</div>
 								</div>
 
-								<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-								<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-								<table
-									style="width: 90%; float: right; position: relative; right: 0;">
-									<tr style="width: 100%;">
-										<th style="height: 15px;">
-											<div id='bouton_Medicament_modifier_demande'
-												style="float: right;">
-												<button>Modifier</button>
-											</div>
-											<div id='bouton_Medicament_valider_demande'
-												style="float: right;">
-												<button>Valider</button>
-											</div>
-										</th>
-									</tr>
-								</table>
+
 
 							</div>
 
@@ -1539,7 +1464,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                  ?>
 							
 							<script> 
-                   ValiderOrdonnance();
+                   //ValiderOrdonnance();
 
                    //var myArrayMedicament = [''];
                    <?php /* foreach($this->liste_med as $Liste) {?>
@@ -1645,9 +1570,10 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                                
                                
                                                 <div style=" padding-bottom:0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
+                                                                            <!-- LE PDF POUR IMPRESSION-->
                                        <!-- LE PDF POUR IMPRESSION-->
                                        <div class="rendezvous">
-                                           <hass><input  alt="Constantes" title="Imprimer" name="traitement_chirurgical" id="chirurgical1"></hass>
+                                           <hass><input type="submit" alt="Constantes" title="Imprimer" name="traitement_chirurgical" id="chirurgical1"></hass>
                                        </div>
 
                                        <div class="annulertransfert">
@@ -1669,20 +1595,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                                         
                                         </tr>
                                         
-                                        
-                                        <tr class="form-chirurgical" style="width: 100%;">
-                                            <th style="width: 33%;">  </th>
-                                            <th style="width: 33%;">  </th>
-                                            <th style="width: 33%; padding-right:30px;">
-                                                <div id="bouton_valider_chirurgical" style='margin-top:30px; float:right; '> 
-                                                     <button id='bouton_chirurgical_valider'>Valider</button>  
-                                                </div >
-                                                <div id="bouton_modifier_chirurgical" style='margin-top:30px; float:right; '> 
-                                                     <button id='bouton_chirurgical_modifier'>Modifier</button>  
-                                                </div>
-                                            </th>
-                                           
-                                        </tr>
+                                     
                                       </table>
                                
                                
@@ -1899,20 +1812,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 										id="service_accueil_tampon" name="service_accueil_tampon"></th>
 								</tr>
 
-								<tr style="width: 100%;">
-									<th></th>
-									<th></th>
-									<th
-										style="float: right; height: 40px; margin-top: 20px; width: 80px;">
-										<!-- On cr�e le bouton Valider (permettant la validation des donn�es -->
-										<div id="bouton_valider_transfert">
-											<button id='bouton_transfert_valider'>Valider</button>
-										</div> <!-- On cr�e le bouton MODIFIER (permettant la modification des donn�es -->
-										<div id="bouton_modifier_transfert">
-											<button id='bouton_transfert_modifier'>Modifier</button>
-										</div>
-									</th>
-								</tr>
+								
 							</table>
 
 						</div>
@@ -1954,21 +1854,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								</tr>
 							</table>
 
-							<table style="width: 100%; margin-top: 20px;">
-								<tr>
-									<th style="width: 55%;"></th>
-									<th style="width: 10%;">
-										<!-- On cr�e le bouton Valider (permettant la validation des donn�es -->
-										<div id="bouton_valider_hospi">
-											<button id='bouton_hospi_valider'>Valider</button>
-										</div> <!-- On cr�e le bouton MODIFIER (permettant la modification des donn�es -->
-										<div id="bouton_modifier_hospi">
-											<button id='bouton_hospi_modifier'>Modifier</button>
-										</div>
-									</th>
-									<th style="width: 35%;"></th>
-								</tr>
-							</table>
+							
 						</div>
 
 
@@ -2012,19 +1898,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 										id="heure_rv_tampon" name="heure_rv_tampon"> <input
 										type="hidden" id="delai_rv_tampon" name="delai_rv_tampon"></th>
 								</tr>
-								<tr style="width: 100%;">
-									<th colspan='4'>
-										<!-- On cr�e le bouton Valider (permettant la validation des donn�es -->
-										<div id="bouton_valider"
-											style="float: right; height: 15px; margin-top: 20px;">
-											<button id='enable_bouton'>Valider</button>
-										</div> <!-- On cr�e le bouton MODIFIER (permettant la modification des donn�es -->
-										<div id="bouton"
-											style="float: right; height: 15px; margin-top: 20px;">
-											<button id='disable_bouton'>Modifier</button>
-										</div>
-									</th>
-								</tr>
+							
 							</table>
 
 						</div>

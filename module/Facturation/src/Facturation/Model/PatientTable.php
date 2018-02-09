@@ -238,6 +238,179 @@ class PatientTable {
 		return $output;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public function getListePatientNouvelle(){
+		$today = new \DateTime();
+		$date = $today->format('Y-m-d');
+		$db = $this->tableGateway->getAdapter();
+		$aColumns = array('NUMERO_DOSSIER', 'Nom','Prenom','Age','Sexe', 'Adresse', 'Diagnostic', 'id', 'id2');
+		/* Indexed column (used for fast and accurate table cardinality) */
+		$sIndexColumn = "id";
+		/*
+		 * Paging
+		*/
+		$sLimit = array();
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$sLimit[0] = $_GET['iDisplayLength'];
+			$sLimit[1] = $_GET['iDisplayStart'];
+		}
+		/*
+		 * Ordering
+		*/
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			$sOrder = array();
+			$j = 0;
+			for ( $i=0 ; $i<intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($_GET['iSortCol_'.$i]) ] == "true" )
+				{
+					$sOrder[$j++] = $aColumns[ intval( $_GET['iSortCol_'.$i] ) ]."
+								 	".$_GET['sSortDir_'.$i];
+				}
+			}
+		}
+	
+		$sql2 = new Sql($db);
+		$sQuery2 = $sql2->select()
+		->from(array('cons' => 'consultation'))->columns(array('ID_PATIENT'))
+		->where(array('cons.DATEONLY' => $date));
+		
+	
+		/*
+		 * SQL queries
+		*/
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Age'=>'AGE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Taille'=>'TAILLE','id'=>'ID_PERSONNE','id2'=>'ID_PERSONNE',))
+		->join(array('pat' => 'patient') , 'pat.ID_PERSONNE = pers.ID_PERSONNE', array('*'))
+		->join(array('a' => 'admission') , 'a.id_patient = pat.ID_PERSONNE', array('*'))
+		->join(array('cons' => 'consultation') , 'cons.id_admission = a.id_admission', array('Id_cons' => 'ID_CONS'))
+		->join(array('diag' => 'diagnostic') , 'diag.id_cons = cons.ID_CONS', array('Diagnostic' => 'libelle_diagnostics'))
+		->join(array('sd' => 'sous_dossier') , 'sd.id_sous_dossier = cons.id_sous_dossier', array('TypeSousDossier' => 'type_dossier', 'idSousDossier' => 'id_sous_dossier'))
+		->where(array('a.date_admis != ?' => $date))
+		->order('a.id_admission ASC')
+		->group('pat.ID_PERSONNE');
+	
+		/* Data set length after filtering */
+		$stat = $sql->prepareStatementForSqlObject($sQuery);
+		$rResultFt = $stat->execute();
+		$iFilteredTotal = count($rResultFt);
+	
+		$rResult = $rResultFt;
+	
+		$output = array(
+				//"sEcho" => intval($_GET['sEcho']),
+				//"iTotalRecords" => $iTotal,
+				"iTotalDisplayRecords" => $iFilteredTotal,
+				"aaData" => array()
+		);
+	
+		/*
+		 * $Control pour convertir la date en fran�ais
+		*/
+		$Control = new DateHelper();
+	
+		/*
+		 * ADRESSE URL RELATIF
+		*/
+		$baseUrl = $_SERVER['REQUEST_URI'];
+		$tabURI  = explode('public', $baseUrl);
+	
+		/*
+		 * Pr�parer la liste
+		*/
+		foreach ( $rResult as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					if ($aColumns[$i] == 'Nom'){
+						$row[] = "<khass id='nomMaj'>".$aRow[ $aColumns[$i]]."</khass>";
+					}
+	
+					else if ($aColumns[$i] == 'Datenaissance') {
+	
+						$date_naissance = $aRow[ $aColumns[$i] ];
+						if($date_naissance){ $row[] = $Control->convertDate($aRow[ $aColumns[$i] ]); }else{ $row[] = null;}
+					}
+					else if ($aColumns[$i] == 'Adresse') {
+						$row[] = $this->adresseText($aRow[ $aColumns[$i] ]);
+					}
+					else if ($aColumns[$i] == 'id') {
+	
+						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/secretariat/info-patient/id_patient/".$aRow[ $aColumns[$i] ]."'>";
+						$html .="<img style='display: inline; margin-right: 10%;' src='".$tabURI[0]."public/images_icons/voir2.png' title='d&eacute;tails'></a></infoBulleVue>";
+	
+						$html .= "<infoBulleVue> <a href='".$tabURI[0]."public/secretariat/modifier/id_patient/".$aRow[ $aColumns[$i] ]."'>";
+						$html .="<img style='display: inline; margin-right: 10%;' src='".$tabURI[0]."public/images_icons/pencil_16.png' title='Modifier'></a></infoBulleVue>";
+	
+						if(!$this->verifierExisteAdmission($aRow[ $aColumns[$i] ])){
+							$html .= "<infoBulleVue> <a id='".$aRow[ $aColumns[$i] ]."' href='javascript:supprimer(".$aRow[ $aColumns[$i] ].");'>";
+							$html .="<img style='display: inline;' src='".$tabURI[0]."public/images_icons/symbol_supprimer.png' title='Supprimer'></a></infoBulleVue>";
+						}
+						$row[] = $html;
+					}
+					else {
+						$row[] = $aRow[ $aColumns[$i] ];
+					}
+				}
+			}
+			$output['aaData'][] = $row;
+		}
+		return $output;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * LISTE DE TOUTES LES FEMMES SAUF LES FEMMES DECEDES
 	 * @param unknown $id
@@ -2481,6 +2654,123 @@ class PatientTable {
 	
 		return $output;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public function nbPatientAdmis(){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))
+		->columns(array('*'))
+		->join(array('pat' => 'patient') , 'pers.ID_PERSONNE = pat.ID_PERSONNE' , array('*'));
+		//->join(array('a' => 'admission_bloc') , 'a.id_patient = pat.ID_PERSONNE' , array('*'));
+		//->join(array('pob' => 'protocole_operatoire_bloc') , 'pob.id_admission_bloc = a.id_admission' , array('*'));
+	
+		$requete = $sql->prepareStatementForSqlObject($sQuery)->execute()->count();
+	
+		return $requete;
+	}
+	
+	public function nbPatientAdmisSexeFem(){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))
+		->columns(array('*'))
+		->join(array('pat' => 'patient') , 'pers.ID_PERSONNE = pat.ID_PERSONNE' , array('*'))
+// 		->join(array('a' => 'admission_bloc') , 'a.id_patient = pat.ID_PERSONNE' , array('*'))
+// 		->join(array('pob' => 'protocole_operatoire_bloc') , 'pob.id_admission_bloc = a.id_admission' , array('*'))
+		->where(array('pers.SEXE' => 'FéMININ'));
+	
+		$requete = $sql->prepareStatementForSqlObject($sQuery)->execute()->count();
+	
+		return $requete;
+	}
+	
+	public function nbPatientAdmisSexeMas(){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))
+		->columns(array('*'))
+		->join(array('pat' => 'patient') , 'pers.ID_PERSONNE = pat.ID_PERSONNE' , array('*'))
+// 		->join(array('a' => 'admission_bloc') , 'a.id_patient = pat.ID_PERSONNE' , array('*'))
+// 		->join(array('pob' => 'protocole_operatoire_bloc') , 'pob.id_admission_bloc = a.id_admission' , array('*'))
+		->where(array('pers.SEXE' => 'MASCULIN'));
+	
+		$requete = $sql->prepareStatementForSqlObject($sQuery)->execute()->count();
+	
+		return $requete;
+	}
+	
+	public function nbPatientOperesParService(){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))
+		->columns(array('*'))
+		->join(array('pat' => 'patient') , 'pers.ID_PERSONNE = pat.ID_PERSONNE' , array('*'));
+// 		->join(array('a' => 'admission_bloc') , 'a.id_patient = pat.ID_PERSONNE' , array('*'))
+// 		->join(array('pob' => 'protocole_operatoire_bloc') , 'pob.id_admission_bloc = a.id_admission' , array('*'))
+// 		->join(array('se' => 'service_employe') , 'pob.id_employe = se.id_employe' , array('*'))
+// 		->join(array('s' => 'service') , 's.ID_SERVICE = se.id_service' , array('NomService'=>'NOM'));
+	
+		$resultat = $sql->prepareStatementForSqlObject($sQuery)->execute();
+	
+// 		$services = array();
+// 		$lesServices = array();
+// 		foreach ($resultat as $res){
+// 			$services[] = $res['NomService'];
+// 			if(!in_array($res['NomService'], $lesServices)){
+// 				$lesServices[] = $res['NomService'];
+// 			}
+		}
+		//$tabValeursCompter = array_count_values($services);
+		//Trier en respectant l
+		//var_dump(array_values($services)); exit();
+	
+		//return array($lesServices, array_count_values($services));
+	//}
+	
+	public function premierDernierPatientOpereMedecinIntervenant($p){
+	
+		if($p == 0){ $p = 'ASC'; }else{ $p ='DESC'; }
+	
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))
+		->columns(array('*'))
+		->join(array('pat' => 'patient') , 'pers.ID_PERSONNE = pat.ID_PERSONNE' , array('*'));
+// 		->join(array('a' => 'admission_bloc') , 'a.id_patient = pat.ID_PERSONNE' , array('*'))
+// 		->join(array('pob' => 'protocole_operatoire_bloc') , 'pob.id_admission_bloc = a.id_admission' , array('Idprotocole'=> 'id_protocole', 'DateIntervention'=> 'date', 'HeureIntervention'=> 'heure'))
+		//->join(array('se' => 'service_employe') , 'pob.id_employe = se.id_employe' , array('*'))
+		//->join(array('s' => 'service') , 's.ID_SERVICE = se.id_service' , array('NomService'=>'NOM'))
+		//->join(array('emp' => 'employe') , 'emp.id_personne = se.id_employe' , array('*'))
+		//->join(array('med' => 'personne') , 'med.ID_PERSONNE = emp.id_personne' , array('NomMedecin'=>'NOM', 'PrenomMedecin'=>'PRENOM'));
+		//->order(array('pob.id_protocole' => $p));
+		$resultat = $sql->prepareStatementForSqlObject($sQuery)->execute()->current();
+	
+		return $resultat;
+	}
+	
+	
+	
 	
 	
 	

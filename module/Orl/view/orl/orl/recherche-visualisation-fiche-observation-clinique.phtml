@@ -933,10 +933,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderDiabeteAM"
-											style='cursor: pointer; padding-right: 10px;'
-											src='<?php //echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span> 
+										 
                          
                          Diab&egrave;te 
                          <?php echo $this->formRow($form->get('DiabeteAF'));?>
@@ -948,10 +945,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderHtaAM"
-											style='cursor: pointer; padding-right: 10px;'
-											src='<?php //echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span> 
+										
                          
                         HTA 
                         <?php echo $this->formRow($form->get('htaAF'));?>
@@ -963,10 +957,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderDrepanocytoseAM"
-											style='cursor: pointer; padding-right: 0px;'
-											src='<?php //echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span> 
+										
                         
                         Dr&eacute;panocytose <?php echo $this->formRow($form->get('DrepanocytoseAF'));?>
                      </label>
@@ -977,10 +968,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderDislipidemieAM"
-											style='cursor: pointer; padding-right: 10px;'
-											src='<?php //echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span>  
+										 
                         
                         Dislipid&eacute;mie  <?php echo $this->formRow($form->get('dislipAF'));?>
                      </label>
@@ -991,11 +979,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderAsthmeAM"
-											style='cursor: pointer; padding-right: 10px;'
-											src='<?php //echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span> 
-                     
+										
                         Asthme  <?php echo $this->formRow($form->get('AsthmeAF'));?>
                      </label>
 								</div>
@@ -1300,20 +1284,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 								</div>
 							</div>
 
-							<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-							<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-							<table style="width: 86%; position: relative; top: 0px;">
-								<tr style="width: 100%;">
-									<th style="width: 65%;">
-										<div style="float: right;">
-											<button id='bouton_motif_valider'>Valider</button>
-										</div>
-										<div style="float: right;">
-											<button id='bouton_motif_modifier'>Modifier</button>
-										</div>
-									</th>
-								</tr>
-							</table>
+
 
 							<script>
                             var nbMotif = "<?php echo $this->nbMotifs;?>";
@@ -1527,20 +1498,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 			  </div>
 		    </div>
 		 </div>
-		 <!--********************* BOUTON VALIDER-MODIFIER ************************-->
-         <!--********************* BOUTON VALIDER-MODIFIER ************************-->		            
-         <table style="width: 59%; position: relative; top: 0px;">
-              <tr style="width: 90%;">
-                <th style="width:65%;">
-                    <div style="float:right;">
-                       <button id='bouton_donnee_valider'>Valider</button>
-                    </div>
-                    <div style="float:right;">
-                       <button id='bouton_donnee_modifier'>Modifier</button>
-                    </div>
-                </th>
-              </tr>
-         </table>
+
           <script>
               var nbexamendonnee = '<?php echo $this->nbDonneesExamensPhysiques;?>';
               if(nbexamendonnee == 0) { nbexamendonnee = 1; }
@@ -1638,23 +1596,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 											</div>
 										</div>
 
-										<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-										<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-										<table
-											style="width: 90%; float: right; position: relative; right: 0;">
-											<tr style="width: 100%;">
-												<th style="height: 15px;">
-													<div id='bouton_ExamenBio_valider_demande'
-														style="float: right;">
-														<button>Valider</button>
-													</div>
-													<div id='bouton_ExamenBio_modifier_demande'
-														style="float: right;">
-														<button>Modifier</button>
-													</div>
-												</th>
-											</tr>
-										</table>
+
 
 									</div>
 
@@ -1767,24 +1709,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 										</div>
 									</div>
 
-									<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-									<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-									<table
-										style="width: 90%; float: right; position: relative; right: 0;">
-										<tr style="width: 100%;">
-											<th style="height: 15px;">
-												<div id='bouton_morpho_valider_demande'
-													style="float: right;">
-													<button>Valider</button>
-												</div>
-												<div id='bouton_morpho_modifier_demande'
-													style="float: right;">
-													<button>Modifier</button>
-												</div>
-											</th>
 
-										</tr>
-									</table>
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
@@ -2326,20 +2251,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 						</div>
 					</div>
 
-					<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-					<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-					<table style="width: 59%; position: relative; top: 0px;">
-						<tr style="width: 90%;">
-							<th style="width: 65%;">
-								<div style="float: right;">
-									<button id='bouton_diagnostic_valider'>Valider</button>
-								</div>
-								<div style="float: right;">
-									<button id='bouton_diagnostic_modifier'>Modifier</button>
-								</div>
-							</th>
-						</tr>
-					</table>
+
 
 		 <script>
               var nbdiagnostic = '<?php echo $this->nbDiagnostics;?>';
@@ -2453,23 +2365,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 									</div>
 								</div>
 
-								<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-								<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-								<table
-									style="width: 90%; float: right; position: relative; right: 0;">
-									<tr style="width: 100%;">
-										<th style="height: 15px;">
-											<div id='bouton_Medicament_modifier_demande'
-												style="float: right;">
-												<button>Modifier</button>
-											</div>
-											<div id='bouton_Medicament_valider_demande'
-												style="float: right;">
-												<button>Valider</button>
-											</div>
-										</th>
-									</tr>
-								</table>
+
 
 							</div>
 
@@ -2484,7 +2380,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
                  ?>
 							
 							<script> 
-                   ValiderOrdonnance();
+                   //ValiderOrdonnance();
 
                    //var myArrayMedicament = [''];
                    <?php /* foreach($this->liste_med as $Liste) {?>
@@ -2616,19 +2512,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
                                         </tr>
                                         
                                         
-                                        <tr class="form-chirurgical" style="width: 100%;">
-                                            <th style="width: 33%;">  </th>
-                                            <th style="width: 33%;">  </th>
-                                            <th style="width: 33%; padding-right:30px;">
-                                                <div id="bouton_valider_chirurgical" style='margin-top:30px; float:right; '> 
-                                                     <button id='bouton_chirurgical_valider'>Valider</button>  
-                                                </div >
-                                                <div id="bouton_modifier_chirurgical" style='margin-top:30px; float:right; '> 
-                                                     <button id='bouton_chirurgical_modifier'>Modifier</button>  
-                                                </div>
-                                            </th>
-                                           
-                                        </tr>
+
                                       </table>
                                
                                
@@ -2845,20 +2729,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 										id="service_accueil_tampon" name="service_accueil_tampon"></th>
 								</tr>
 
-								<tr style="width: 100%;">
-									<th></th>
-									<th></th>
-									<th
-										style="float: right; height: 40px; margin-top: 20px; width: 80px;">
-										<!-- On cr�e le bouton Valider (permettant la validation des donn�es -->
-										<div id="bouton_valider_transfert">
-											<button id='bouton_transfert_valider'>Valider</button>
-										</div> <!-- On cr�e le bouton MODIFIER (permettant la modification des donn�es -->
-										<div id="bouton_modifier_transfert">
-											<button id='bouton_transfert_modifier'>Modifier</button>
-										</div>
-									</th>
-								</tr>
+
 							</table>
 
 						</div>
@@ -2900,21 +2771,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 								</tr>
 							</table>
 
-							<table style="width: 100%; margin-top: 20px;">
-								<tr>
-									<th style="width: 55%;"></th>
-									<th style="width: 10%;">
-										<!-- On cr�e le bouton Valider (permettant la validation des donn�es -->
-										<div id="bouton_valider_hospi">
-											<button id='bouton_hospi_valider'>Valider</button>
-										</div> <!-- On cr�e le bouton MODIFIER (permettant la modification des donn�es -->
-										<div id="bouton_modifier_hospi">
-											<button id='bouton_hospi_modifier'>Modifier</button>
-										</div>
-									</th>
-									<th style="width: 35%;"></th>
-								</tr>
-							</table>
+
 						</div>
 
 
@@ -2957,20 +2814,7 @@ $('#liste_recherche_style').css({'font-weight':'bold','color':'white','font-size
 										name="date_rv_tampon"> <input type="hidden"
 										id="heure_rv_tampon" name="heure_rv_tampon"> <input
 										type="hidden" id="delai_rv_tampon" name="delai_rv_tampon"></th>
-								</tr>
-								<tr style="width: 100%;">
-									<th colspan='4'>
-										<!-- On cr�e le bouton Valider (permettant la validation des donn�es -->
-										<div id="bouton_valider"
-											style="float: right; height: 15px; margin-top: 20px;">
-											<button id='enable_bouton'>Valider</button>
-										</div> <!-- On cr�e le bouton MODIFIER (permettant la modification des donn�es -->
-										<div id="bouton"
-											style="float: right; height: 15px; margin-top: 20px;">
-											<button id='disable_bouton'>Modifier</button>
-										</div>
-									</th>
-								</tr>
+					
 							</table>
 
 						</div>

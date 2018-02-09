@@ -82,6 +82,7 @@ box-shadow: 0pt 0pt 12px rgba(0, 0, 0, 0.2);
 
 }
 
+/*
 canvas {
    position: relative;
    background-color: #ffffff;
@@ -102,6 +103,7 @@ canvas {
    width: auto;
              
 }
+*/
 
 #suppr{
    alt: photo;

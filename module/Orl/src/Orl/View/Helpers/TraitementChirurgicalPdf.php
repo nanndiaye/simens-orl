@@ -254,14 +254,14 @@ class TraitementChirurgicalPdf
 		$i = 0;
 		$d = 1;
 		//PREPARATION DU TEXT Diagnostic
-		$tab = $this->scinderText($this->_DonneesDemande['indication']);
+		$tab = $this->scinderText($this->_DonneesDemande['diagnostic_traitement_chirurgical']);
 		//PREPARATION DU TEXT Observation
 		$tab2 = $this->scinderText($this->_DonneesDemande['observation']);
 		
 		while($this->_yPosition > 70 ) {
 			if($i==0){
 				$this->_page->setFont($this->_newTimeGras, 13);
-				$this->_page->drawText('Diagnostic :   ',
+				$this->_page->drawText('Indication :   ',
 						$this->_leftMargin,
 						$this->_yPosition);
 				$this->_page->setFont($this->_policeContenu, 14);
@@ -297,8 +297,8 @@ class TraitementChirurgicalPdf
 						$this->_leftMargin,
 						$this->_yPosition);
 				$this->_page->setFont($this->_policeContenu, 14);
-				$this->_page->drawText("",
-						$this->_leftMargin+120,
+				$this->_page->drawText($this->_DonneesDemande['type_anesthesie'],
+						$this->_leftMargin+125,
 						$this->_yPosition);
 			}
 			if($i==5){
@@ -307,7 +307,7 @@ class TraitementChirurgicalPdf
 						$this->_leftMargin,
 						$this->_yPosition);
 				$this->_page->setFont($this->_policeContenu, 14);
-				$this->_page->drawText("",
+				$this->_page->drawText($this->_DonneesDemande['numero_vpa'],
 						$this->_leftMargin+60,
 						$this->_yPosition);
 			}
