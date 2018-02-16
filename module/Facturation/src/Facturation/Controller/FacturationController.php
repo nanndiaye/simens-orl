@@ -42,6 +42,7 @@ use Facturation\View\Helper\DocumentPdf;
 use Facturation\View\Helper\FacturePdf;
 use Facturation\View\Helper\FactureActePdf;
 use Facturation\Form\AdmissionBlocForm;
+use Facturation\Form\StatistiqueForm;
 
 class FacturationController extends AbstractActionController {
 	protected $dateHelper;
@@ -651,7 +652,7 @@ class FacturationController extends AbstractActionController {
 	}
 	
 	public function listePatientsAdmisBlocAction() {
-		$output = $this->getPatientTable ()->getListePatientsAdmisBloc();
+		$output = $this->getPatientTable ()->getListePatientsAdmisBlocOperatoire(1);
 		//var_dump($output);exit();
 		//INSTANCIATION DU FORMULAIRE D'ADMISSION
 		$formAdmission = new AdmissionBlocForm();
@@ -2604,5 +2605,39 @@ class FacturationController extends AbstractActionController {
 		
 		
 	}
+	
+	
+	public function informationsStatistiquesAction() {
+
+		$this->layout ()->setTemplate ( 'layout/facturation' );
+		$patientTable = $this->getPatientTable();
+		$infos = $this->getConsultationTable()->getInfosSousDossier();
+		//var_dump($infos);exit();
+		
+		return new ViewModel ( array (
+				'infos' => $infos
+		) );
+	
+
+	}	
+	
+	
+	public function informationsComplementairesAjaxAction() {
+		$output = $this->getPatientTable ()->getListePatientNouvelle ();
+		return $this->getResponse ()->setContent ( Json::encode ( $output, array (
+				'enableJsonExprFinder' => true
+		) ) );
+	}
+	
+	
+	
+	public function informationsComplementairesAction() {
+		$layout = $this->layout ();
+		$layout->setTemplate ( 'layout/facturation' );
+		$view = new ViewModel ();
+		return $view;
+	}	
+	
+	
 	
 }

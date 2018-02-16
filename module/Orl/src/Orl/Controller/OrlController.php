@@ -12,6 +12,8 @@ use Orl\View\Helpers\OrdonnancePdf;
 use Orl\View\Helpers\TraitementChirurgicalPdf;
 use Orl\View\Helpers\TransfertPdf;
 use Orl\View\Helpers\RendezVousPdf;
+use Orl\View\Helpers\DemandeExamenBioPdf;
+use Orl\View\Helpers\DemandeExamenMorphoPdf;
 use Facturation\View\Helper\DateHelper;
 use Orl\Form\SoinForm;
 use Orl\Form\LibererPatientForm;
@@ -29,6 +31,7 @@ use Orl\Form\ProtocoleOperatoireForm;
 use Orl\View\Helpers\CompteRenduOperatoirePdf;
 use Orl\View\Helpers\CompteRenduOperatoirePage2Pdf;
 use Orl\Model\AntecedentOrl;
+use Orl\View\Helpers\NoteMedicaleThyroidePdf;
 
 
 class OrlController extends AbstractActionController {
@@ -43,6 +46,7 @@ class OrlController extends AbstractActionController {
 	protected $consommableTable;
 	protected $donneesExamensPhysiquesTable;
     protected $donneesExamenCliniqueTable;
+    protected $noteMedicaleTable;
 	protected $diagnosticsTable;
 	protected $ordonnanceTable;
 	protected $demandeVisitePreanesthesiqueTable;
@@ -69,6 +73,7 @@ class OrlController extends AbstractActionController {
 	protected $antecedentOrlTable;
 	protected $motifHospitalisationOrlTable;
 	protected $histoireMaladieTable;
+	protected $plainteConsultationTable;
 	protected $examensComplementairesOrlTable;
 	protected $peauCervicauFacialeOrlTable;
 	protected $tyroideTable;
@@ -177,6 +182,24 @@ class OrlController extends AbstractActionController {
 			$this->donneesExamenCliniqueTable = $sm->get('Orl\Model\DonneesExamenCliniqueTable');
 		}
 		return $this->donneesExamenCliniqueTable;
+	
+	}
+	
+	public function getNoteMedicale(){
+		if (! $this->noteMedicaleTable) {
+			$sm = $this->getServiceLocator();
+			$this->noteMedicaleTable = $sm->get('Orl\Model\NoteMedicaleTable');
+		}
+		return $this->noteMedicaleTable;
+	
+	}
+	
+	public function getPlainteConsultation(){
+		if (! $this->plainteConsultationTable) {
+			$sm = $this->getServiceLocator();
+			$this->plainteConsultationTable = $sm->get('Orl\Model\PlainteConsultationTable');
+		}
+		return $this->plainteConsultationTable;
 	
 	}
 	
@@ -1734,6 +1757,13 @@ class OrlController extends AbstractActionController {
 			$data['histoire_maladie'] = $histoireMaladie['histoire_maladie'];
 		}
 		
+		//Plainte(Motif de consultation)
+		$plainteConsultation = $this->getPlainteConsultation()->getPlainteConsultation($id);
+		//var_dump($histoireMaladie); exit();
+		if ($plainteConsultation) {
+			$data['plainte_motif'] = $plainteConsultation['plainte_motif'];
+		}
+		
 		
 		//Donnees de l'examen clinique
 		$donneesExamenClinique = $this->getDonneesExamenClinique()->getDonneesExamenClinique($id);
@@ -2179,7 +2209,7 @@ class OrlController extends AbstractActionController {
 	
 	
 	public function espaceRechercheMedAction() {
-		$this->layout ()->setTemplate ( 'layout/orl' );
+		$this->layout ()->setTemplate ( 'layout/orl');
 		
 		//$output = $this->getConsultationTable()->getListePatientsConsultesAjax();
 		//var_dump($output); exit(); //nombre aléatoire
@@ -2470,6 +2500,132 @@ class OrlController extends AbstractActionController {
 		//**********ORDONNANCE*****************
 		//**********ORDONNANCE*****************
 		//**********ORDONNANCE*****************
+		
+		
+		
+		//********************************* Imprimer pour un examen Biologique****************
+		//********************************* Imprimer pour un examen Biologique****************
+		//********************************* Imprimer pour un examen Biologique****************
+
+		
+		if(isset ($_POST['demandeExamenBio'])){
+		    $donneesExamensBio = "";
+		    $notesExamensBio = "";
+		    $DocPdf = new DocumentPdf();
+		    $i = 1;
+		    for( ; $i <= 6; $i++){
+		        if($this->params ()->fromPost ( 'examenBio_name_'.$i )){
+		            $donneesExamensBio = $this->params ()->fromPost ( 'examenBio_name_'.$i );
+		            $notesExamensBio = $this->params ()->fromPost ( 'noteExamenBio_'.$i  );
+		            
+		            //Creer la page
+		            $page = new DemandeExamenBioPdf();
+		            //Envoi Id de la consultation
+		            $page->setIdConsBio($id_cons);
+		            $page->setService($serviceMedecin);
+		            //Envoi des donnï¿½es du patient
+		            $page->setDonneesPatientBio($donneesPatientOR);
+		            //Envoi des donnï¿½es du medecin
+		            $page->setDonneesMedecinBio($donneesMedecin);
+		            $page->setDonneesDemandeBio($donneesExamensBio);
+		            $page->setNotesDemandeBio($notesExamensBio);
+		            
+		            $DocPdf->addPagePlusieurs($page->getPage());
+		            $page->addNotePlusieursExamensBiologiques();
+		            $donneesExamensBio = "";
+		            $notesExamensBio = "";
+		        }
+		        
+		    }
+		    
+		    //Afficher le document contenant la page
+		    $DocPdf->getDocument();
+		}
+		
+		
+		//********************************* Imprimer pour un examen Morphologique****************
+		//********************************* Imprimer pour un examen Morphologique****************
+		//********************************* Imprimer pour un examen Morphologique****************
+		
+		if(isset ($_POST['demandeExamenMorpho'])){
+			$donneesExamensMorph = "";
+			$notesExamensMorph = "";
+			$DocPdfMorpho = new DocumentPdf();
+			$j=1;
+			//var_dump($donneesExamensMorph);exit();
+			for ( $i=1;$i<=6; $i++){
+				if(['element_name_'.$i]){
+					if($this->params ()->fromPost ( 'element_name_'.$i)){
+						$donneesExamensMorph = $this->params ()->fromPost ( 'element_name_'.$i );
+						$notesExamensMorph = $this->params ()->fromPost ( 'note_'.$i  );
+						
+						//Creer la page
+						$pageMorpho = new DemandeExamenMorphoPdf();
+						//Envoi Id de la consultation
+						$pageMorpho->setIdConsBio($id_cons);
+						$pageMorpho->setService($serviceMedecin);
+						//Envoi des donnï¿½es du patient
+						$pageMorpho->setDonneesPatientBio($donneesPatientOR);
+						//Envoi des donnï¿½es du medecin
+						$pageMorpho->setDonneesMedecinBio($donneesMedecin);
+						//Envoi les donnï¿½es de la demande
+						$pageMorpho->setDonneesDemandeMorph($donneesExamensMorph);
+						$pageMorpho->setNotesDemandeMorph($notesExamensMorph);
+		
+						$DocPdfMorpho->addPagePlusieurs($pageMorpho->getPage());
+						$pageMorpho->addNotePlusieursExamensMorphologique();
+						$donneesExamensMorph = "";
+						$notesExamensMorph = "";
+					}
+		
+				}
+		
+			}
+			//Afficher le document contenant la page
+			$DocPdfMorpho->getDocument();
+			 
+		
+		}
+		
+		//**********TRAITEMENT CHIRURGICAL*****************
+		//**********TRAITEMENT CHIRURGICAL*****************
+		//**********TRAITEMENT CHIRURGICAL*****************
+		if(isset($_POST['traitement_chirurgical'])){
+			//Récupération des données
+			$donneesDemande['diagnostic_traitement_chirurgical'] = $this->params ()->fromPost ( 'diagnostic_traitement_chirurgical' );
+			$donneesDemande['intervention_prevue'] = $this->params ()->fromPost (  'intervention_prevue' );
+			$donneesDemande['type_anesthesie'] = $this->params()->fromPost('type_anesthesie');
+			$donneesDemande['numero_vpa'] = $this->params()->fromPost('numero_vpa');
+			$donneesDemande['observation'] = $this->params()->fromPost('observation');
+			
+				
+			//CREATION DU DOCUMENT PDF
+			//Créer le document
+			$DocPdf = new DocumentPdf();
+			//Créer la page
+			$page = new TraitementChirurgicalPdf();
+			
+			//Envoi Id de la Consultation
+			$page->setIdConsTC($id_cons);
+			$page->setService($serviceMedecin);
+			//Envoi des données du patient
+			$page->setDonneesPatientTC($donneesPatientOR);
+			//Envoi des données du medecin
+			$page->setDonneesMedecinTC($donneesMedecin);
+			//Envoi les données de la demande
+			$page->setDonneesDemandeTC($donneesDemande);
+			
+			//Ajouter les donnees a la page
+			$page->addNoteTC();
+			//var_dump($donneesDemande);exit();
+			//Ajouter la page au document
+			$DocPdf->addPage($page->getPage());
+				
+			//Afficher le document contenant la page
+			$DocPdf->getDocument();
+				
+		}
+		
 		if(isset($_POST['ordonnance'])){
 			//récupération de la liste des médicaments
 			$medicaments = $this->getConsultationTable()->fetchConsommable();
@@ -2513,43 +2669,8 @@ class OrlController extends AbstractActionController {
 			$DocPdf->getDocument();
 		}
 		else
-		//**********TRAITEMENT CHIRURGICAL*****************
-		//**********TRAITEMENT CHIRURGICAL*****************
-		//**********TRAITEMENT CHIRURGICAL*****************
-		if(isset($_POST['traitement_chirurgical'])){ 
-			//Récupération des données
-			$donneesDemande['indication'] = $this->params ()->fromPost ( 'indication' );
-			$donneesDemande['intervention_prevue'] = $this->params ()->fromPost (  'intervention_prevue' );
-			$donneesDemande['type_anesthesie'] = $this->params()->fromPost('type_anesthesie');
-			$donneesDemande['numero_vpa'] = $this->params()->fromPost('numero_vpa');
-			$donneesDemande['observation'] = $this->params()->fromPost('observation');
-			
-			//CREATION DU DOCUMENT PDF
-			//Créer le document
-			$DocPdf = new DocumentPdf();
-			//Créer la page
-			$page = new TraitementChirurgicalPdf();
-			
-			//Envoi Id de la Consultation
-			$page->setIdConsTC($id_cons);
-			$page->setService($serviceMedecin);
-			//Envoi des données du patient
-			$page->setDonneesPatientTC($donneesPatientOR);
-			//Envoi des données du medecin
-			$page->setDonneesMedecinTC($donneesMedecin);
-			//Envoi les données de la demande
-			$page->setDonneesDemandeTC($donneesDemande);
-			
-			//Ajouter les donnees a la page
-			$page->addNoteTC();
-			//Ajouter la page au document
-			$DocPdf->addPage($page->getPage());
-			
-			//Afficher le document contenant la page
-			$DocPdf->getDocument();
-			
-		}
-		else
+
+		
 		//********** PROTOCOLE OPERATOIRE *****************
 		//********** PROTOCOLE OPERATOIRE *****************
 		//********** PROTOCOLE OPERATOIRE *****************
@@ -2795,6 +2916,12 @@ class OrlController extends AbstractActionController {
 						//Afficher le document contenant la page
 						$DocPdf->getDocument();
 					}
+					
+					
+				 
+						
+						
+						
 			
 	}
 	
@@ -6225,6 +6352,7 @@ class OrlController extends AbstractActionController {
 		$id_patient = $this->params()->fromPost('id_patient');
  		$id_admission = $this->params()->fromPost('id_admission');
  		$sous_dossier = $this->params()->fromPost('sous_dossier');
+ 		
 		$user = $this->layout()->user;
 		$IdDuService = $user['IdService'];
 		$id_medecin = $user['id_personne'];
@@ -6267,6 +6395,11 @@ class OrlController extends AbstractActionController {
 		//Insertion de lhistoire de la maladie
 		$this->getHistoireMaladie() ->deleteHistoireMaladie($id_cons);
 		$this->getHistoireMaladie()->addHistoireMaladie($formData, $id_cons, $id_medecin);
+		
+		//Insertion Plainte(Motif de consultation)
+		//Insertion Plainte(Motif de consultation)
+		$this->getPlainteConsultation() ->deletePlainteConsultation($id_cons);
+		$this->getPlainteConsultation()->addPlainteConsultation( $id_cons, $formData);
 
 		
 		//Sous Dossier
@@ -6320,6 +6453,8 @@ class OrlController extends AbstractActionController {
 		$this->getCompteRenduOperatoireOrl()->addCompteRenduOperatoireOrl($formData, $id_cons, $id_medecin);
  		$this->getDonneesExamenClinique()->deleteDonneesExamenClinique($id_cons);
  		$this->getDonneesExamenClinique()->addDonneesExamenClinique($id_cons, $formData);
+ 		$this->getNoteMedicale()->deleteNoteMedicale($id_cons);
+ 		$this->getNoteMedicale()->addNoteMedicale($id_cons, $formData);
 		$this->getPeriodePostOperatoirePrecoce()->deletePeriodePostOperatoirePrecoce($id_cons);
 		$this->getPeriodePostOperatoirePrecoce()->addPeriodePostOperatoirePrecoce($formData, $id_cons, $id_medecin);
     	//var_dump($formData->histologie);exit();
@@ -6434,6 +6569,12 @@ class OrlController extends AbstractActionController {
 			'NoteDrepanocytoseAF' => $this->params()->fromPost('NoteDrepanocytoseAF'),
 			'htaAF' => $this->params()->fromPost('htaAF'),
 			'NoteHtaAF' => $this->params()->fromPost('NoteHtaAF'),
+			
+			'AsthmeAF' => $this->params()->fromPost('AsthmeAF'),
+			
+			
+			'dislipAF' => $this->params()->fromPost('dislipAF'),
+			
 		);
 	
 		$id_personne = $this->getAntecedantPersonnelTable()->getIdPersonneParIdCons($id_cons);
@@ -6547,6 +6688,8 @@ class OrlController extends AbstractActionController {
 				'diagnostic' => $this->params()->fromPost("diagnostic_traitement_chirurgical"),
 				'intervention_prevue' => $this->params()->fromPost("intervention_prevue"),
 				'observation' => $this->params()->fromPost("observation"),
+				'numero_vpa' => $this->params()->fromPost("numero_vpa"),
+				'type_anesthesie' => $this->params()->fromPost("type_anesthesie"),
 				'ID_CONS'=>$id_cons
 		);
 		
@@ -6601,7 +6744,7 @@ class OrlController extends AbstractActionController {
 		$rv_consultation = array('ID_RV' => $id_rv, 'ID_CONS' => $id_cons);
 		$this->getRvPatientConsTable()->addRendezVousConsultation($rv_consultation, $id_rv);
 
-		//var_dump($infos_rv); exit();
+		//var_dump($rv_consultation); exit();
 		//var_dump('$id_rv'); exit();
 		
 		//*********************************************
@@ -6748,6 +6891,11 @@ class OrlController extends AbstractActionController {
 		if ($donneesExamenClinique) {
 			$data['examen_clinique'] = $donneesExamenClinique['examen_clinique'];
 			$data['examen_para_clinique'] = $donneesExamenClinique['examen_para_clinique'];
+		}
+		$noteMedicale = $this->getNoteMedicale()->getNoteMedicale($id);
+		if ($noteMedicale) {
+			$data['nouvelle_note_medicale'] = $noteMedicale['nouvelle_note_medicale'];
+			
 		}
 		
 		// 		//POUR LES GROUPES GANGLIONNAIRES CERVICALES
@@ -7428,6 +7576,8 @@ class OrlController extends AbstractActionController {
 		$donneesAntecedentsPersonnels = $this->getAntecedantPersonnelTable()->getTableauAntecedentsPersonnels($id_pat);
 		$donneesAntecedentsFamiliaux  = $this->getAntecedantsFamiliauxTable()->getTableauAntecedentsFamiliaux($id_pat);
 		
+		//var_dump($donneesAntecedentsFamiliaux); exit();
+		
 		//Recuperer les antecedents medicaux ajouter pour le patient
 		//Recuperer les antecedents medicaux ajouter pour le patient
 		$antMedPat = $this->getConsultationTable()->getAntecedentMedicauxPersonneParIdPatient($id_pat);
@@ -7542,9 +7692,10 @@ class OrlController extends AbstractActionController {
 		$form = new ConsultationForm();
 		$form->get('id_cons')->setValue($id);
 		$form->get('id_patient')->setValue($id_pat);
-		// instancier la Consultation et rï¿½cupï¿½rer enregistrement
-		//$consult = $this->getConsultationTable()->getConsult ( $id );
-		//var_dump($id);exit();
+		$form->get('id_admission')->setValue($id_admission);
+		$form->get('sous_dossier')->setValue(2);
+		
+		//var_dump($form); exit();
 		
 		// POUR LES HISTORIQUES OU TERRAIN PARTICULIER
 		// POUR LES HISTORIQUES OU TERRAIN PARTICULIER
@@ -7612,7 +7763,448 @@ class OrlController extends AbstractActionController {
 		$listeActes = $this->getConsultationTable()->getListeDesActes();
 		$form->populateValues ( array_merge($donneesAntecedentsPersonnels,$donneesAntecedentsFamiliaux) );
 		
-		return array (
+		
+		
+		//Lorsqu'il s'agit d'une mise jour
+		$consultation = $this->getConsultationTable()->getConsult($id);
+		if($consultation){
+			
+			//modification des antécédents ORL
+			//modification des antécédents ORL
+			//modification des antécédents ORL
+			$antecedentOrl = $this->getAntecedentOrl() ->getAntecedentsOrl($id);
+			if($antecedentOrl){
+				$data['ant_chirurgicaux'] = $antecedentOrl['ant_chirurgicaux'];
+				$data['irradiation_cervical_anterieur'] = $antecedentOrl['irradiation_cervical_anterieur'];
+				$data['goitre_atcd'] = $antecedentOrl['goitre_atcd'];
+			}
+			
+			
+			//modification des motifs de consultation du sous dossier thyroide
+			//modification des motifs de consultation du sous dossier thyroide
+			//modification des motifs de consultation du sous dossier thyroide
+			$motifHospitalisation=$this->getMotifHospitalisationOrl()->getMotifHospitalisation($id);
+			//var_dump($this->params()->fromPost('groupeIa'));exit();
+			if($motifHospitalisation){
+				$data['tumefaction_cervical_anterieur'] = $motifHospitalisation['tumefaction_cervical_anterieur'];
+				$data['signes_thyroxicose'] = $motifHospitalisation['signes_thyroxicose'];
+				$data['signe_compression'] = $motifHospitalisation['signe_compression'];
+				$data['groupeIa'] = $motifHospitalisation['groupeIa'];
+				$data['groupeIb'] = $motifHospitalisation['groupeIb'];
+				$data['groupeIc'] = $motifHospitalisation['groupeIc'];
+					
+			}
+			
+			//modification pour l'histoire de la maladie
+			//modification pour l'histoire de la maladie
+			$histoireMaladie = $this->getHistoireMaladie()->getHistoireMaladie($id);
+			if ($histoireMaladie) {
+				$data['histoire_maladie'] = $histoireMaladie['histoire_maladie'];
+			}
+			
+			//Pour PEAU_CERVICAU_FACIALE
+			//Pour PEAU_CERVICAU_FACIALE
+			$peauCervicauFaciale = $this->getPeauCervicauFacialeOrl()->getPeauCervicauFaciale($id);
+			
+			if ($peauCervicauFaciale) {
+				$data['depigmentation_artificielle'] = $peauCervicauFaciale['depigmentation_artificielle'];
+				$data['cicatrices_taches_fistules'] = $peauCervicauFaciale['cicatrices_taches_fistules'];
+					
+			}
+			
+			//POUR GLANDE TYROIDE
+			//POUR GLANDE TYROIDE
+			$tyroide = $this->getTyroide()->getTyroide($id);
+			if ($tyroide) {
+				$data['hypertrophie_globale'] = $tyroide['hypertrophie_globale'];
+				$data['hypertrophie_localise'] = $tyroide['hypertrophie_localise'];
+				$data['hypertrophie_nodulaire'] = $tyroide['hypertrophie_nodulaire'];
+				$data['hypertrophie_sensibilite'] = $tyroide['hypertrophie_sensibilite'];
+				$data['consistance'] = $tyroide['consistance'];
+				$data['mobilite_transversale'] = $tyroide['mobilite_transversale'];
+				$data['taille_tyroide'] = $tyroide['taille_tyroide'];
+			}
+			
+			//POUR LES GROUPES GANGLIONNAIRES CERVICALES
+			//POUR LES GROUPES GANGLIONNAIRES CERVICALES
+			$groupeGanglionnaireCervicaux = $this->getGroupesGanglionnaires()->getGroupesGanglionnaires($id);
+			if ($groupeGanglionnaireCervicaux) {
+				$data['groupeI'] = $groupeGanglionnaireCervicaux['groupeI'];
+				$data['groupeIIa'] = $groupeGanglionnaireCervicaux['groupeIIa'];
+				$data['groupeIIb'] = $groupeGanglionnaireCervicaux['groupeIIb'];
+				$data['groupeIII'] = $groupeGanglionnaireCervicaux['groupeIII'];
+				$data['groupeIV'] = $groupeGanglionnaireCervicaux['groupeIV'];
+				$data['groupeV'] = $groupeGanglionnaireCervicaux['groupeV'];
+				$data['groupeVI'] = $groupeGanglionnaireCervicaux['groupeVI'];
+				$data['atteinte'] = $groupeGanglionnaireCervicaux['atteinte'];
+				$data['libre'] = $groupeGanglionnaireCervicaux['libre'];
+			}
+
+			//Donnees de l'examen clinique
+			$donneesExamenClinique = $this->getDonneesExamenClinique()->getDonneesExamenClinique($id);
+			if ($donneesExamenClinique) {
+				
+				$data['reste_examen_clinique'] = $donneesExamenClinique['reste_examen_clinique'];
+			
+			}
+			//Nouvelle note medicale
+			$noteMedicale = $this->getNoteMedicale()->getNoteMedicale($id);
+			if ($noteMedicale) {
+				$data['nouvelle_note_medicale'] = $noteMedicale['nouvelle_note_medicale'];
+					
+			}
+			
+			//POUR LES HORMONES TYROIDIENNES
+			//POUR LES HORMONES TYROIDIENNES
+			$hormonesTyroidiennes = $this->getHormonesTyroidiennesOrl()->getHormonesTyroidiennes($id);
+			if($hormonesTyroidiennes){
+				$data['t4'] = $hormonesTyroidiennes['t4'];
+				$data['tsh'] = $hormonesTyroidiennes['tsh'];
+				$data['groupeIIIa'] = $hormonesTyroidiennes['groupeIIIa'];
+				$data['groupeIIIb'] = $hormonesTyroidiennes['groupeIIIb'];
+				$data['groupeIIIc'] = $hormonesTyroidiennes['groupeIIIc'];
+				$data['cytologie'] = $hormonesTyroidiennes['cytologie'];
+				$data['echographie_cervicale'] = $hormonesTyroidiennes['echographie_cervicale'];
+				$data['autres'] = $hormonesTyroidiennes['autres'];
+					
+			}
+			
+			//POUR LES INFORMATIONS OPERATOIRES
+			//POUR LES INFORMATIONS OPERATOIRES
+			//POUR LES INFORMATIONS OPERATOIRES
+			
+			$indicationsPreoperatoire = $this->getIndicationsOperatoireOrl()->getIndicationsOperatoiresOrl($id);
+			if ($indicationsPreoperatoire) {
+				$data['indication_preoperatoire'] = $indicationsPreoperatoire['indication_preoperatoire'];
+				$data['indication_peroperatoire'] = $indicationsPreoperatoire['indication_peroperatoire'];
+			}
+			$incidentAccidentPerOperatoire = $this->getIncidentAccidentPerOperatoire()->getIncidentAccidentPerOperatoireOrl($id);
+			if ($incidentAccidentPerOperatoire) {
+				$data['incident_anesthesique'] = $incidentAccidentPerOperatoire['incident_anesthesique'];
+				$data['incident_chirurgicaux'] = $incidentAccidentPerOperatoire['incident_chirurgicaux'];
+				$data['groupeIVb'] = $incidentAccidentPerOperatoire['groupeIVb'];
+				$data['groupeIVa'] = $incidentAccidentPerOperatoire['groupeIVa'];
+				$data['incident_glandulaire'] = $incidentAccidentPerOperatoire['incident_glandulaire'];
+				$data['incident_tracheotomie'] = $incidentAccidentPerOperatoire['incident_tracheotomie'];
+			}
+			$compteRenduOperatoireOrl = $this->getCompteRenduOperatoireOrl()->getCompteRenduOperatoireOrl($id);
+			if ($compteRenduOperatoireOrl) {
+				$data['anesthesie'] = $compteRenduOperatoireOrl['anesthesie'];
+				$data['incision'] = $compteRenduOperatoireOrl['incision'];
+				$data['exploitation'] = $compteRenduOperatoireOrl['exploitation'];
+				$data['geste_sur_nerf'] = $compteRenduOperatoireOrl['geste_sur_nerf'];
+				$data['loboithmectomie'] = $compteRenduOperatoireOrl['loboithmectomie'];
+				$data['ithmectomie'] = $compteRenduOperatoireOrl['ithmectomie'];
+				$data['thyroidectomie_subtotale'] = $compteRenduOperatoireOrl['thyroidectomie_subtotale'];
+				$data['thyroidectomie_totale'] = $compteRenduOperatoireOrl['thyroidectomie_totale'];
+				$data['glande_parathyroide'] = $compteRenduOperatoireOrl['glande_parathyroide'];
+				$data['fermeture'] = $compteRenduOperatoireOrl['fermeture'];
+				$data['description_piece'] = $compteRenduOperatoireOrl['description_piece'];
+			}
+			$periodePostOperatoirePrecoce = $this->getPeriodePostOperatoirePrecoce()->getPeriodePostOperatoirePrecoce($id);
+			if ($periodePostOperatoirePrecoce) {
+				$data['calcemie'] = $periodePostOperatoirePrecoce['calcemie'];
+				$data['laryngectomie_indirecte'] = $periodePostOperatoirePrecoce['laryngectomie_indirecte'];
+				$data['ablation_drain'] = $periodePostOperatoirePrecoce['ablation_drain'];
+				$data['ablation_fil'] = $periodePostOperatoirePrecoce['ablation_fil'];
+				$data['accident_hemoragie'] = $periodePostOperatoirePrecoce['accident_hemoragie'];
+				$data['accident_infectieux'] = $periodePostOperatoirePrecoce['accident_infectieux'];
+				$data['autresAccident'] = $periodePostOperatoirePrecoce['autresAccident'];
+			}
+			
+
+			//Surveillance Tardive
+			$surveillanceTardive = $this->getsurveillanceTardive()->getsurveillanceTardive($id);
+			//var_dump($surveillanceTardive);exit();
+			if ($surveillanceTardive) {
+				$data['plainte'] = $surveillanceTardive['plainte'];
+				$data['qualite_voix_parlee'] = $surveillanceTardive['qualite_voix_parlee'];
+				$data['qualite_voix_chantee'] = $surveillanceTardive['qualite_voix_chantee'];
+				$data['qualite_cicatrice'] = $surveillanceTardive['qualite_cicatrice'];
+				$data['laryngoscopie_indirecte'] = $surveillanceTardive['laryngoscopie_indirecte'];
+				$data['palpation_cou'] = $surveillanceTardive['palpation_cou'];
+				$data['radiographie_pulmonaire'] = $surveillanceTardive['radiographie_pulmonaire'];
+			}
+			$histologie = $this->getHistologie()->getHistologie($id);
+			if ($histologie) {
+				$data['histologie'] = $histologie['histologie'];
+			}
+			
+			//POUR LA DEMANDE PRE-ANESTHESIQUE
+			//POUR LA DEMANDE PRE-ANESTHESIQUE
+			//POUR LA DEMANDE PRE-ANESTHESIQUE
+			$donneesDemandeVPA = $this->getDemandeVisitePreanesthesiqueTable()->getDemandeVisitePreanesthesique($id);
+			
+			$resultatVpa = null;
+			if($donneesDemandeVPA) {
+				$data['diagnostic_traitement_chirurgical'] = $donneesDemandeVPA['DIAGNOSTIC'];
+				$data['observation'] = $donneesDemandeVPA['OBSERVATION'];
+				$data['intervention_prevue'] = $donneesDemandeVPA['INTERVENTION_PREVUE'];
+				$data['type_anesthesie'] = $donneesDemandeVPA['TYPE_ANESTHESIE'];
+				$data['numero_vpa'] = $donneesDemandeVPA['NUMERO_VPA'];
+					
+				$resultatVpa = $this->getResultatVpa()->getResultatVpa($donneesDemandeVPA['idVpa']);
+			}
+			
+			//POUR LE TRANSFERT
+			//POUR LE TRANSFERT
+			//POUR LE TRANSFERT
+			// INSTANCIATION DU TRANSFERT
+			// RECUPERATION DE LA LISTE DES HOPITAUX
+			$hopital = $this->getTransfererPatientServiceTable ()->fetchHopital ();
+			
+			//LISTE DES HOPITAUX
+			$form->get ( 'hopital_accueil' )->setValueOptions ( $hopital );
+			// RECUPERATION DU SERVICE OU EST TRANSFERE LE PATIENT
+			$transfertPatientService = $this->getTransfererPatientServiceTable ()->getServicePatientTransfert($id);
+			
+			if( $transfertPatientService ){
+				$idService = $transfertPatientService['ID_SERVICE'];
+				// RECUPERATION DE L'HOPITAL DU SERVICE
+				$transfertPatientHopital = $this->getTransfererPatientServiceTable ()->getHopitalPatientTransfert($idService);
+				$idHopital = $transfertPatientHopital['ID_HOPITAL'];
+				// RECUPERATION DE LA LISTE DES SERVICES DE L'HOPITAL OU SE TROUVE LE SERVICE OU IL EST TRANSFERE
+				$serviceHopital = $this->getTransfererPatientServiceTable ()->fetchServiceWithHopital($idHopital);
+			
+				// LISTE DES SERVICES DE L'HOPITAL
+				$form->get ( 'service_accueil' )->setValueOptions ($serviceHopital);
+			
+				// SELECTION DE L'HOPITAL ET DU SERVICE SUR LES LISTES
+				$data['hopital_accueil'] = $idHopital;
+				$data['service_accueil'] = $idService;
+				$data['motif_transfert'] = $transfertPatientService['MOTIF_TRANSFERT'];
+				$hopitalSelect = 1;
+			}else {
+				$hopitalSelect = 0;
+				// RECUPERATION DE L'HOPITAL DU SERVICE
+				$transfertPatientHopital = $this->getTransfererPatientServiceTable ()->getHopitalPatientTransfert($IdDuService);
+				$idHopital = $transfertPatientHopital['ID_HOPITAL'];
+				$data['hopital_accueil'] = $idHopital;
+				// RECUPERATION DE LA LISTE DES SERVICES DE L'HOPITAL OU SE TROUVE LE SERVICE OU LE MEDECIN TRAVAILLE
+				$serviceHopital = $this->getTransfererPatientServiceTable ()->fetchServiceWithHopitalNotServiceActual($idHopital, $IdDuService);
+				// LISTE DES SERVICES DE L'HOPITAL
+				$form->get ( 'service_accueil' )->setValueOptions ($serviceHopital);
+			}
+			
+			
+			
+			//POUR LES EXAMENS COMPLEMENTAIRES
+			//POUR LES EXAMENS COMPLEMENTAIRES
+			//POUR LES EXAMENS COMPLEMENTAIRES
+			// DEMANDES DES EXAMENS COMPLEMENTAIRES
+			$listeDemandesMorphologiques = $this->demandeExamensTable()->getDemandeExamensMorphologiques($id);
+			$listeDemandesBiologiques = $this->demandeExamensTable()->getDemandeExamensBiologiques($id);
+			$listeDemandesActes = $this->getDemandeActe()->getDemandeActe($id);
+			
+			//Liste des examens biologiques
+			$listeDesExamensBiologiques = $this->demandeExamensTable()->getDemandeDesExamensBiologiques();
+			//Liste des examens Morphologiques
+			$listeDesExamensMorphologiques = $this->demandeExamensTable()->getDemandeDesExamensMorphologiques();
+			
+			//var_dump($listeDesExamensBiologiques); exit();
+			
+			////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+			$listeDemandesBiologiquesEffectuerEnvoyer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectuesEnvoyer($id);
+			$listeDemandesBiologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectues($id);
+			
+			$tableauResultatsExamensBio = array(
+					'temoinGSan' => 0,
+					'temoinHSan' => 0,
+					'temoinBHep' => 0,
+					'temoinBRen' => 0,
+					'temoinBHem' => 0,
+					'temoinBInf' => 0,
+			);
+			foreach ($listeDemandesBiologiquesEffectuerEnvoyer as $listeExamenBioEffectues){
+				if($listeExamenBioEffectues['idExamen'] == 1){
+					$data['groupe_sanguin'] =  $listeExamenBioEffectues['noteResultat'];
+					$tableauResultatsExamensBio['groupe_sanguin_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+					$tableauResultatsExamensBio['groupe_sanguin_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+					$tableauResultatsExamensBio['groupe_sanguin_conclusion'] = $listeExamenBioEffectues['conclusion'];
+					$tableauResultatsExamensBio['temoinGSan'] = 1;
+				}
+				if($listeExamenBioEffectues['idExamen'] == 2){
+					$data['hemogramme_sanguin'] =  $listeExamenBioEffectues['noteResultat'];
+					$tableauResultatsExamensBio['hemogramme_sanguin_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+					$tableauResultatsExamensBio['hemogramme_sanguin_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+					$tableauResultatsExamensBio['hemogramme_sanguin_conclusion'] = $listeExamenBioEffectues['conclusion'];
+					$tableauResultatsExamensBio['temoinHSan'] = 1;
+				}
+				if($listeExamenBioEffectues['idExamen'] == 3){
+					$data['bilan_hepatique'] =  $listeExamenBioEffectues['noteResultat'];
+					$tableauResultatsExamensBio['bilan_hepatique_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+					$tableauResultatsExamensBio['bilan_hepatique_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+					$tableauResultatsExamensBio['bilan_hepatique_conclusion'] = $listeExamenBioEffectues['conclusion'];
+					$tableauResultatsExamensBio['temoinBHep'] = 1;
+				}
+				if($listeExamenBioEffectues['idExamen'] == 4){
+					$data['bilan_renal'] =  $listeExamenBioEffectues['noteResultat'];
+					$tableauResultatsExamensBio['bilan_renal_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+					$tableauResultatsExamensBio['bilan_renal_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+					$tableauResultatsExamensBio['bilan_renal_conclusion'] = $listeExamenBioEffectues['conclusion'];
+					$tableauResultatsExamensBio['temoinBRen'] = 1;
+				}
+				if($listeExamenBioEffectues['idExamen'] == 5){
+					$data['bilan_hemolyse'] =  $listeExamenBioEffectues['noteResultat'];
+					$tableauResultatsExamensBio['bilan_hemolyse_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+					$tableauResultatsExamensBio['bilan_hemolyse_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+					$tableauResultatsExamensBio['bilan_hemolyse_conclusion'] = $listeExamenBioEffectues['conclusion'];
+					$tableauResultatsExamensBio['temoinBHem'] = 1;
+				}
+				if($listeExamenBioEffectues['idExamen'] == 6){
+					$data['bilan_inflammatoire'] =  $listeExamenBioEffectues['noteResultat'];
+					$tableauResultatsExamensBio['bilan_inflammatoire_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+					$tableauResultatsExamensBio['bilan_inflammatoire_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+					$tableauResultatsExamensBio['bilan_inflammatoire_conclusion'] = $listeExamenBioEffectues['conclusion'];
+					$tableauResultatsExamensBio['temoinBInf'] = 1;
+				}
+				if($listeExamenBioEffectues['idExamen'] == 13){
+					$data['creatinine'] =  $listeExamenBioEffectues['noteResultat'];
+					$tableauResultatsExamensBio['creatinine_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+					$tableauResultatsExamensBio['creatinine_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+					$tableauResultatsExamensBio['creatinine_conclusion'] = $listeExamenBioEffectues['conclusion'];
+					$tableauResultatsExamensBio['temoinBInf'] = 1;
+				}
+			}
+			
+			
+			////RESULTATS DES EXAMENS MORPHOLOGIQUE
+			$examen_morphologique = $this->getNotesExamensMorphologiquesTable()->getNotesExamensMorphologiques($id);
+			
+			$data['radio'] = $examen_morphologique['radio'];
+			$data['ecographie'] = $examen_morphologique['ecographie'];
+			$data['fibrocospie'] = $examen_morphologique['fibroscopie'];
+			$data['scanner'] = $examen_morphologique['scanner'];
+			$data['irm'] = $examen_morphologique['irm'];
+			
+			////RESULTATS DES EXAMENS MORPHOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+			$listeDemandesMorphologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensMorphologiquesEffectues($id);
+			
+			
+			// 	////RESULTATS DES EXAMENS BIOLOGIQUE
+			$examen_biologique = $this->getNotesExamensBiologiquesTable()->getNotesExamensBiologiques($id);
+			
+			$data['groupe_sanguin'] = $examen_biologique['groupe_sanguin'];
+			$data['hemogramme_sanguin'] = $examen_biologique['hemogramme_sanguin'];
+			$data['bilan_hepatique'] = $examen_biologique['bilan_hepatique'];
+			$data['bilan_renal'] = $examen_biologique['bilan_renal'];
+			$data['bilan_hemolyse'] = $examen_biologique['bilan_hemolyse'];
+			$data['bilan_inflammatoire'] = $examen_biologique['bilan_inflammatoire'];
+			//var_dump('dddd');exit();
+			
+			////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+			$listeDemandesBiologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectues($id);
+			
+			//DIAGNOSTICS
+			//DIAGNOSTICS
+			//DIAGNOSTICS
+			$infoDiagnostics = $this->getDiagnosticsTable()->getDiagnostics($id);
+			// POUR LES DIAGNOSTICS
+			$k = 1;
+			foreach ($infoDiagnostics as $diagnos){
+				$data['diagnostic'.$k] = $diagnos['libelle_diagnostics'];
+				$k++;
+			}
+			
+			//TRAITEMENT (Ordonnance) *********************************************************
+			//TRAITEMENT (Ordonnance) *********************************************************
+			//TRAITEMENT (Ordonnance) *********************************************************
+			
+			//POUR LES MEDICAMENTS
+			//POUR LES MEDICAMENTS
+			//POUR LES MEDICAMENTS
+			// INSTANCIATION DES MEDICAMENTS de l'ordonnance
+			$listeMedicament = $this->getConsultationTable()->listeDeTousLesMedicaments();
+			$listeForme = $this->getConsultationTable()->formesMedicaments();
+			$listetypeQuantiteMedicament = $this->getConsultationTable()->typeQuantiteMedicaments();
+			
+			// INSTANTIATION DE L'ORDONNANCE
+			$infoOrdonnance = $this->getOrdonnanceTable()->getOrdonnanceNonHospi($id);
+			
+			if($infoOrdonnance) {
+				$idOrdonnance = $infoOrdonnance->id_document;
+				$duree_traitement = $infoOrdonnance->duree_traitement;
+				//LISTE DES MEDICAMENTS PRESCRITS
+				$listeMedicamentsPrescrits = $this->getOrdonnanceTable()->getMedicamentsParIdOrdonnance($idOrdonnance);
+				$nbMedPrescrit = $listeMedicamentsPrescrits->count();
+			}else{
+				$nbMedPrescrit = null;
+				$listeMedicamentsPrescrits =null;
+				$duree_traitement = null;
+			}
+			
+			
+			// liste des heures rv
+			$heure_rv = array (
+					'08:00' => '08:00',
+					'09:00' => '09:00',
+					'10:00' => '10:00',
+					'15:00' => '15:00',
+					'16:00' => '16:00'
+			);
+			$form->get ( 'heure_rv' )->setValueOptions ( $heure_rv );
+			
+			
+			/*CODES AJOUTES*/
+			$rv_consultation = $this->getRvPatientConsTable()->getRendezVousConsultation($id);
+			$leRendezVous = $this->getRvPatientConsTable()->getInfosRendezVousConsultation($rv_consultation['ID_RV']);
+			
+			if($leRendezVous) {
+				$date_rv = "";
+				if ($leRendezVous['DATE']){ $date_rv = (new DateHelper())->convertDate($leRendezVous['DATE']); }
+			
+				$data['heure_rv'] = $leRendezVous['HEURE'];
+				$data['date_rv']  = $date_rv;
+				$data['motif_rv'] = $leRendezVous['NOTE'];
+				$data['delai_rv'] = $leRendezVous['DELAI'];
+			}
+			
+			
+			
+			/*
+			 * 
+			 * 
+			 */
+			$form->populateValues($data);
+			$donnees = array (
+				'maj' => 1,	
+				'lesdetails' => $liste,
+				'id_cons' => $id,
+				'image' => $image,
+				'form' => $form,
+				'liste_med' => $listeMedicament,
+			    'nb_med_prescrit' => $nbMedPrescrit,
+			    'liste_med_prescrit' => $listeMedicamentsPrescrits,
+			    'duree_traitement' => $duree_traitement,
+				'listeForme' => $listeForme,
+				'listetypeQuantiteMedicament'  => $listetypeQuantiteMedicament,
+				'listetypeQuantiteMedicament'  => $listetypeQuantiteMedicament,
+				'donneesAntecedentsPersonnels' => $donneesAntecedentsPersonnels,
+				'donneesAntecedentsFamiliaux'  => $donneesAntecedentsFamiliaux,
+				'resultRV' => $resultRV,
+				'listeDemandesMorphologiques' => $listeDemandesMorphologiques,
+				'listeDemandesBiologiques' => $listeDemandesBiologiques,
+				'listeDemandesBioEff' => $listeDemandesBiologiquesEffectuer->count(),
+				'listeDemandesMorphoEff' => $listeDemandesMorphologiquesEffectuer->count(),
+				'listeHospitalisation' => $listeHospitalisation,
+				'tableauResultatsExamensBio' => $tableauResultatsExamensBio,
+				'listeDesExamensBiologiques' => $listeDesExamensBiologiques,
+				'listeDesExamensMorphologiques' => $listeDesExamensMorphologiques,
+				'nbDiagnostics'=> $infoDiagnostics->count(),
+				'listeAntMed' => $listeAntMed,
+				'antMedPat' => $antMedPat,
+				'nbAntMedPat' => $antMedPat->count(),
+				'listeActes' => $listeActes,
+				'verifieRV' => $leRendezVous,
+				'resultRV' => $resultRV,
+		
+			);
+		}
+		//Nouvelle consultation
+		else{
+			
+			$donnees = array (
+				'maj' => 0,	
 				'lesdetails' => $liste,
 				'id_cons' => $id,
 				'image' => $image,
@@ -7630,9 +8222,554 @@ class OrlController extends AbstractActionController {
 				'antMedPat' => $antMedPat,
 				'nbAntMedPat' => $antMedPat->count(),
 				'listeActes' => $listeActes,
-		);
+			);
 		
+		}
+		
+		return $donnees;
 	}
+	
+	
+
+public function rechercheVisualisationThyroideAction(){
+	
+	$this->layout ()->setTemplate ( 'layout/orl' );
+	
+	$user = $this->layout()->user;
+	$IdDuService = $user['IdService'];
+	$id_medecin = $user['id_personne'];
+	
+	$id_admission = $this->params ()->fromQuery ( 'id_admission', 0 );
+	$id = $this->params ()->fromQuery ( 'id_cons', 0 );
+	
+	$info_admission = $this->getAdmissionTable()->getPatientAdmis($id_admission);
+	
+	//var_dump($info_admission); exit();
+	
+	$id_pat = $info_admission->id_patient;
+	
+	$listeMedicament = $this->getConsultationTable()->listeDeTousLesMedicaments();
+	
+	$listeForme = $this->getConsultationTable()->formesMedicaments();
+	$listetypeQuantiteMedicament = $this->getConsultationTable()->typeQuantiteMedicaments();
+	
+	$liste = $this->getConsultationTable ()->getInfoPatient ( $id_pat );
+	$image = $this->getConsultationTable ()->getPhoto ( $id_pat );
+	
+	//RECUPERER TOUS LES PATIENTS AYANT UN RV aujourd'hui
+	$tabPatientRV = $this->getConsultationTable()->getPatientsRV($IdDuService);
+	
+	$resultRV = null;
+	if(array_key_exists($id_pat, $tabPatientRV)){
+		$resultRV = $tabPatientRV[ $id_pat ];
+	}
+	
+	$form = new ConsultationForm();
+	$form->get('id_cons')->setValue($id);
+	$form->get('id_patient')->setValue($id_pat);
+	$form->get('id_admission')->setValue($id_admission);
+	$form->get('sous_dossier')->setValue(2);
+	
+	//var_dump($form); exit();
+	
+	// POUR LES HISTORIQUES OU TERRAIN PARTICULIER
+	// POUR LES HISTORIQUES OU TERRAIN PARTICULIER
+	// POUR LES HISTORIQUES OU TERRAIN PARTICULIER
+	//*** Liste des Consultations
+	//$listeConsultation = $this->getConsultationTable()->getConsultationPatient($id_pat, $id);
+	//Liste des examens biologiques
+	$listeDesExamensBiologiques = $this->demandeExamensTable()->getDemandeDesExamensBiologiques();
+	
+	//var_dump($listeDesExamensBiologiques);exit();
+	//Liste des examens Morphologiques
+	$listeDesExamensMorphologiques = $this->demandeExamensTable()->getDemandeDesExamensMorphologiques();
+	
+	
+	//*** Liste des Hospitalisations
+	$listeHospitalisation = $this->getDemandeHospitalisationTable()->getDemandeHospitalisationWithIdPatient($id_pat);
+	
+	// instancier le motif d'admission et recupï¿½rer l'enregistrement
+	//$motif_admission = $this->getMotifAdmissionTable ()->getMotifAdmission ( $id );
+	//$nbMotif = $this->getMotifAdmissionTable ()->nbMotifs ( $id );
+	
+	// rï¿½cupï¿½ration de la liste des hopitaux
+	$hopital = $this->getTransfererPatientServiceTable ()->fetchHopital ();
+	$form->get ( 'hopital_accueil' )->setValueOptions ( $hopital );
+	// RECUPERATION DE L'HOPITAL DU SERVICE
+	$transfertPatientHopital = $this->getTransfererPatientServiceTable ()->getHopitalPatientTransfert($IdDuService);
+	$idHopital = $transfertPatientHopital['ID_HOPITAL'];
+	
+	// RECUPERATION DE LA LISTE DES SERVICES DE L'HOPITAL OU SE TROUVE LE SERVICE OU LE MEDECIN TRAVAILLE
+	$serviceHopital = $this->getTransfererPatientServiceTable ()->fetchServiceWithHopitalNotServiceActual($idHopital, $IdDuService);
+	
+	
+	// LISTE DES SERVICES DE L'HOPITAL
+	$form->get ( 'service_accueil' )->setValueOptions ($serviceHopital);
+	
+	// liste des heures rv
+	$heure_rv = array (
+			'08:00' => '08:00',
+			'09:00' => '09:00',
+			'10:00' => '10:00',
+			'15:00' => '15:00',
+			'16:00' => '16:00'
+	);
+	$form->get ( 'heure_rv' )->setValueOptions ( $heure_rv );
+	
+	//RECUPERATION DES ANTECEDENTS
+	//RECUPERATION DES ANTECEDENTS
+	//RECUPERATION DES ANTECEDENTS
+	$donneesAntecedentsPersonnels = $this->getAntecedantPersonnelTable()->getTableauAntecedentsPersonnels($id_pat);
+	$donneesAntecedentsFamiliaux  = $this->getAntecedantsFamiliauxTable()->getTableauAntecedentsFamiliaux($id_pat);
+	
+	//Recuperer les antecedents medicaux ajouter pour le patient
+	//Recuperer les antecedents medicaux ajouter pour le patient
+	$antMedPat = $this->getConsultationTable()->getAntecedentMedicauxPersonneParIdPatient($id_pat);
+	
+	//Recuperer les antecedents medicaux
+	//Recuperer les antecedents medicaux
+	$listeAntMed = $this->getConsultationTable()->getAntecedentsMedicaux();
+	
+	//FIN ANTECEDENTS --- FIN ANTECEDENTS --- FIN ANTECEDENTS
+	//FIN ANTECEDENTS --- FIN ANTECEDENTS --- FIN ANTECEDENTS
+	
+	//Recuperer la liste des actes
+	//Recuperer la liste des actes
+	$listeActes = $this->getConsultationTable()->getListeDesActes();
+	$form->populateValues ( array_merge($donneesAntecedentsPersonnels,$donneesAntecedentsFamiliaux) );
+	
+	//modification des antécédents ORL
+	//modification des antécédents ORL
+	//modification des antécédents ORL
+	$antecedentOrl = $this->getAntecedentOrl() ->getAntecedentsOrl($id);
+	if($antecedentOrl){
+		$data['ant_chirurgicaux'] = $antecedentOrl['ant_chirurgicaux'];
+		$data['irradiation_cervical_anterieur'] = $antecedentOrl['irradiation_cervical_anterieur'];
+		$data['goitre_atcd'] = $antecedentOrl['goitre_atcd'];
+	}
+		
+		
+	//modification des motifs de consultation du sous dossier thyroide
+	//modification des motifs de consultation du sous dossier thyroide
+	//modification des motifs de consultation du sous dossier thyroide
+	$motifHospitalisation=$this->getMotifHospitalisationOrl()->getMotifHospitalisation($id);
+	//var_dump($this->params()->fromPost('groupeIa'));exit();
+	if($motifHospitalisation){
+		$data['tumefaction_cervical_anterieur'] = $motifHospitalisation['tumefaction_cervical_anterieur'];
+		$data['signes_thyroxicose'] = $motifHospitalisation['signes_thyroxicose'];
+		$data['signe_compression'] = $motifHospitalisation['signe_compression'];
+		$data['groupeIa'] = $motifHospitalisation['groupeIa'];
+		$data['groupeIb'] = $motifHospitalisation['groupeIb'];
+		$data['groupeIc'] = $motifHospitalisation['groupeIc'];
+			
+	}
+		
+	//modification pour l'histoire de la maladie
+	//modification pour l'histoire de la maladie
+	$histoireMaladie = $this->getHistoireMaladie()->getHistoireMaladie($id);
+	if ($histoireMaladie) {
+		$data['histoire_maladie'] = $histoireMaladie['histoire_maladie'];
+	}
+		
+	//Pour PEAU_CERVICAU_FACIALE
+	//Pour PEAU_CERVICAU_FACIALE
+	$peauCervicauFaciale = $this->getPeauCervicauFacialeOrl()->getPeauCervicauFaciale($id);
+		
+	if ($peauCervicauFaciale) {
+		$data['depigmentation_artificielle'] = $peauCervicauFaciale['depigmentation_artificielle'];
+		$data['cicatrices_taches_fistules'] = $peauCervicauFaciale['cicatrices_taches_fistules'];
+			
+	}
+		
+	//POUR GLANDE TYROIDE
+	//POUR GLANDE TYROIDE
+	$tyroide = $this->getTyroide()->getTyroide($id);
+	if ($tyroide) {
+		$data['hypertrophie_globale'] = $tyroide['hypertrophie_globale'];
+		$data['hypertrophie_localise'] = $tyroide['hypertrophie_localise'];
+		$data['hypertrophie_nodulaire'] = $tyroide['hypertrophie_nodulaire'];
+		$data['hypertrophie_sensibilite'] = $tyroide['hypertrophie_sensibilite'];
+		$data['consistance'] = $tyroide['consistance'];
+		$data['mobilite_transversale'] = $tyroide['mobilite_transversale'];
+		$data['taille_tyroide'] = $tyroide['taille_tyroide'];
+	}
+		
+	//POUR LES GROUPES GANGLIONNAIRES CERVICALES
+	//POUR LES GROUPES GANGLIONNAIRES CERVICALES
+	$groupeGanglionnaireCervicaux = $this->getGroupesGanglionnaires()->getGroupesGanglionnaires($id);
+	if ($groupeGanglionnaireCervicaux) {
+		$data['groupeI'] = $groupeGanglionnaireCervicaux['groupeI'];
+		$data['groupeIIa'] = $groupeGanglionnaireCervicaux['groupeIIa'];
+		$data['groupeIIb'] = $groupeGanglionnaireCervicaux['groupeIIb'];
+		$data['groupeIII'] = $groupeGanglionnaireCervicaux['groupeIII'];
+		$data['groupeIV'] = $groupeGanglionnaireCervicaux['groupeIV'];
+		$data['groupeV'] = $groupeGanglionnaireCervicaux['groupeV'];
+		$data['groupeVI'] = $groupeGanglionnaireCervicaux['groupeVI'];
+		$data['atteinte'] = $groupeGanglionnaireCervicaux['atteinte'];
+		$data['libre'] = $groupeGanglionnaireCervicaux['libre'];
+	}
+	
+	//Donnees de l'examen clinique
+	$donneesExamenClinique = $this->getDonneesExamenClinique()->getDonneesExamenClinique($id);
+	if ($donneesExamenClinique) {
+	
+		$data['reste_examen_clinique'] = $donneesExamenClinique['reste_examen_clinique'];
+			
+	}
+	
+	//Note medicale
+	$noteMedicale = $this->getNoteMedicale()->getNoteMedicale($id);
+	if ($noteMedicale) {
+		$data['nouvelle_note_medicale'] = $noteMedicale['nouvelle_note_medicale'];
+			
+	}
+		
+	//POUR LES HORMONES TYROIDIENNES
+	//POUR LES HORMONES TYROIDIENNES
+	$hormonesTyroidiennes = $this->getHormonesTyroidiennesOrl()->getHormonesTyroidiennes($id);
+	if($hormonesTyroidiennes){
+		$data['t4'] = $hormonesTyroidiennes['t4'];
+		$data['tsh'] = $hormonesTyroidiennes['tsh'];
+		$data['groupeIIIa'] = $hormonesTyroidiennes['groupeIIIa'];
+		$data['groupeIIIb'] = $hormonesTyroidiennes['groupeIIIb'];
+		$data['groupeIIIc'] = $hormonesTyroidiennes['groupeIIIc'];
+		$data['cytologie'] = $hormonesTyroidiennes['cytologie'];
+		$data['echographie_cervicale'] = $hormonesTyroidiennes['echographie_cervicale'];
+		$data['autres'] = $hormonesTyroidiennes['autres'];
+			
+	}
+		
+	//POUR LES INFORMATIONS OPERATOIRES
+	//POUR LES INFORMATIONS OPERATOIRES
+	//POUR LES INFORMATIONS OPERATOIRES
+		
+	$indicationsPreoperatoire = $this->getIndicationsOperatoireOrl()->getIndicationsOperatoiresOrl($id);
+	if ($indicationsPreoperatoire) {
+		$data['indication_preoperatoire'] = $indicationsPreoperatoire['indication_preoperatoire'];
+		$data['indication_peroperatoire'] = $indicationsPreoperatoire['indication_peroperatoire'];
+	}
+	$incidentAccidentPerOperatoire = $this->getIncidentAccidentPerOperatoire()->getIncidentAccidentPerOperatoireOrl($id);
+	if ($incidentAccidentPerOperatoire) {
+		$data['incident_anesthesique'] = $incidentAccidentPerOperatoire['incident_anesthesique'];
+		$data['incident_chirurgicaux'] = $incidentAccidentPerOperatoire['incident_chirurgicaux'];
+		$data['groupeIVb'] = $incidentAccidentPerOperatoire['groupeIVb'];
+		$data['groupeIVa'] = $incidentAccidentPerOperatoire['groupeIVa'];
+		$data['incident_glandulaire'] = $incidentAccidentPerOperatoire['incident_glandulaire'];
+		$data['incident_tracheotomie'] = $incidentAccidentPerOperatoire['incident_tracheotomie'];
+	}
+	$compteRenduOperatoireOrl = $this->getCompteRenduOperatoireOrl()->getCompteRenduOperatoireOrl($id);
+	if ($compteRenduOperatoireOrl) {
+		$data['anesthesie'] = $compteRenduOperatoireOrl['anesthesie'];
+		$data['incision'] = $compteRenduOperatoireOrl['incision'];
+		$data['exploitation'] = $compteRenduOperatoireOrl['exploitation'];
+		$data['geste_sur_nerf'] = $compteRenduOperatoireOrl['geste_sur_nerf'];
+		$data['loboithmectomie'] = $compteRenduOperatoireOrl['loboithmectomie'];
+		$data['ithmectomie'] = $compteRenduOperatoireOrl['ithmectomie'];
+		$data['thyroidectomie_subtotale'] = $compteRenduOperatoireOrl['thyroidectomie_subtotale'];
+		$data['thyroidectomie_totale'] = $compteRenduOperatoireOrl['thyroidectomie_totale'];
+		$data['glande_parathyroide'] = $compteRenduOperatoireOrl['glande_parathyroide'];
+		$data['fermeture'] = $compteRenduOperatoireOrl['fermeture'];
+		$data['description_piece'] = $compteRenduOperatoireOrl['description_piece'];
+	}
+	$periodePostOperatoirePrecoce = $this->getPeriodePostOperatoirePrecoce()->getPeriodePostOperatoirePrecoce($id);
+	if ($periodePostOperatoirePrecoce) {
+		$data['calcemie'] = $periodePostOperatoirePrecoce['calcemie'];
+		$data['laryngectomie_indirecte'] = $periodePostOperatoirePrecoce['laryngectomie_indirecte'];
+		$data['ablation_drain'] = $periodePostOperatoirePrecoce['ablation_drain'];
+		$data['ablation_fil'] = $periodePostOperatoirePrecoce['ablation_fil'];
+		$data['accident_hemoragie'] = $periodePostOperatoirePrecoce['accident_hemoragie'];
+		$data['accident_infectieux'] = $periodePostOperatoirePrecoce['accident_infectieux'];
+		$data['autresAccident'] = $periodePostOperatoirePrecoce['autresAccident'];
+	}
+		
+	
+	//Surveillance Tardive
+	$surveillanceTardive = $this->getsurveillanceTardive()->getsurveillanceTardive($id);
+	//var_dump($surveillanceTardive);exit();
+	if ($surveillanceTardive) {
+		$data['plainte'] = $surveillanceTardive['plainte'];
+		$data['qualite_voix_parlee'] = $surveillanceTardive['qualite_voix_parlee'];
+		$data['qualite_voix_chantee'] = $surveillanceTardive['qualite_voix_chantee'];
+		$data['qualite_cicatrice'] = $surveillanceTardive['qualite_cicatrice'];
+		$data['laryngoscopie_indirecte'] = $surveillanceTardive['laryngoscopie_indirecte'];
+		$data['palpation_cou'] = $surveillanceTardive['palpation_cou'];
+		$data['radiographie_pulmonaire'] = $surveillanceTardive['radiographie_pulmonaire'];
+	}
+	$histologie = $this->getHistologie()->getHistologie($id);
+	if ($histologie) {
+		$data['histologie'] = $histologie['histologie'];
+	}
+		
+	//POUR LA DEMANDE PRE-ANESTHESIQUE
+	//POUR LA DEMANDE PRE-ANESTHESIQUE
+	//POUR LA DEMANDE PRE-ANESTHESIQUE
+	$donneesDemandeVPA = $this->getDemandeVisitePreanesthesiqueTable()->getDemandeVisitePreanesthesique($id);
+		
+	$resultatVpa = null;
+	if($donneesDemandeVPA) {
+		$data['diagnostic_traitement_chirurgical'] = $donneesDemandeVPA['DIAGNOSTIC'];
+		$data['observation'] = $donneesDemandeVPA['OBSERVATION'];
+		$data['intervention_prevue'] = $donneesDemandeVPA['INTERVENTION_PREVUE'];
+			
+		$resultatVpa = $this->getResultatVpa()->getResultatVpa($donneesDemandeVPA['idVpa']);
+	}
+		
+	//POUR LE TRANSFERT
+	//POUR LE TRANSFERT
+	//POUR LE TRANSFERT
+	// INSTANCIATION DU TRANSFERT
+	// RECUPERATION DE LA LISTE DES HOPITAUX
+	$hopital = $this->getTransfererPatientServiceTable ()->fetchHopital ();
+		
+	//LISTE DES HOPITAUX
+	$form->get ( 'hopital_accueil' )->setValueOptions ( $hopital );
+	// RECUPERATION DU SERVICE OU EST TRANSFERE LE PATIENT
+	$transfertPatientService = $this->getTransfererPatientServiceTable ()->getServicePatientTransfert($id);
+		
+	if( $transfertPatientService ){
+		$idService = $transfertPatientService['ID_SERVICE'];
+		// RECUPERATION DE L'HOPITAL DU SERVICE
+		$transfertPatientHopital = $this->getTransfererPatientServiceTable ()->getHopitalPatientTransfert($idService);
+		$idHopital = $transfertPatientHopital['ID_HOPITAL'];
+		// RECUPERATION DE LA LISTE DES SERVICES DE L'HOPITAL OU SE TROUVE LE SERVICE OU IL EST TRANSFERE
+		$serviceHopital = $this->getTransfererPatientServiceTable ()->fetchServiceWithHopital($idHopital);
+			
+		// LISTE DES SERVICES DE L'HOPITAL
+		$form->get ( 'service_accueil' )->setValueOptions ($serviceHopital);
+			
+		// SELECTION DE L'HOPITAL ET DU SERVICE SUR LES LISTES
+		$data['hopital_accueil'] = $idHopital;
+		$data['service_accueil'] = $idService;
+		$data['motif_transfert'] = $transfertPatientService['MOTIF_TRANSFERT'];
+		$hopitalSelect = 1;
+	}else {
+		$hopitalSelect = 0;
+		// RECUPERATION DE L'HOPITAL DU SERVICE
+		$transfertPatientHopital = $this->getTransfererPatientServiceTable ()->getHopitalPatientTransfert($IdDuService);
+		$idHopital = $transfertPatientHopital['ID_HOPITAL'];
+		$data['hopital_accueil'] = $idHopital;
+		// RECUPERATION DE LA LISTE DES SERVICES DE L'HOPITAL OU SE TROUVE LE SERVICE OU LE MEDECIN TRAVAILLE
+		$serviceHopital = $this->getTransfererPatientServiceTable ()->fetchServiceWithHopitalNotServiceActual($idHopital, $IdDuService);
+		// LISTE DES SERVICES DE L'HOPITAL
+		$form->get ( 'service_accueil' )->setValueOptions ($serviceHopital);
+	}
+		
+		
+		
+	//POUR LES EXAMENS COMPLEMENTAIRES
+	//POUR LES EXAMENS COMPLEMENTAIRES
+	//POUR LES EXAMENS COMPLEMENTAIRES
+	// DEMANDES DES EXAMENS COMPLEMENTAIRES
+	$listeDemandesMorphologiques = $this->demandeExamensTable()->getDemandeExamensMorphologiques($id);
+	$listeDemandesBiologiques = $this->demandeExamensTable()->getDemandeExamensBiologiques($id);
+	$listeDemandesActes = $this->getDemandeActe()->getDemandeActe($id);
+		
+	//Liste des examens biologiques
+	$listeDesExamensBiologiques = $this->demandeExamensTable()->getDemandeDesExamensBiologiques();
+	//Liste des examens Morphologiques
+	$listeDesExamensMorphologiques = $this->demandeExamensTable()->getDemandeDesExamensMorphologiques();
+		
+	//var_dump($listeDesExamensBiologiques); exit();
+		
+	////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+	$listeDemandesBiologiquesEffectuerEnvoyer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectuesEnvoyer($id);
+	$listeDemandesBiologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectues($id);
+		
+	$tableauResultatsExamensBio = array(
+			'temoinGSan' => 0,
+			'temoinHSan' => 0,
+			'temoinBHep' => 0,
+			'temoinBRen' => 0,
+			'temoinBHem' => 0,
+			'temoinBInf' => 0,
+	);
+	foreach ($listeDemandesBiologiquesEffectuerEnvoyer as $listeExamenBioEffectues){
+		if($listeExamenBioEffectues['idExamen'] == 1){
+			$data['groupe_sanguin'] =  $listeExamenBioEffectues['noteResultat'];
+			$tableauResultatsExamensBio['groupe_sanguin_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+			$tableauResultatsExamensBio['groupe_sanguin_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+			$tableauResultatsExamensBio['groupe_sanguin_conclusion'] = $listeExamenBioEffectues['conclusion'];
+			$tableauResultatsExamensBio['temoinGSan'] = 1;
+		}
+		if($listeExamenBioEffectues['idExamen'] == 2){
+			$data['hemogramme_sanguin'] =  $listeExamenBioEffectues['noteResultat'];
+			$tableauResultatsExamensBio['hemogramme_sanguin_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+			$tableauResultatsExamensBio['hemogramme_sanguin_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+			$tableauResultatsExamensBio['hemogramme_sanguin_conclusion'] = $listeExamenBioEffectues['conclusion'];
+			$tableauResultatsExamensBio['temoinHSan'] = 1;
+		}
+		if($listeExamenBioEffectues['idExamen'] == 3){
+			$data['bilan_hepatique'] =  $listeExamenBioEffectues['noteResultat'];
+			$tableauResultatsExamensBio['bilan_hepatique_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+			$tableauResultatsExamensBio['bilan_hepatique_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+			$tableauResultatsExamensBio['bilan_hepatique_conclusion'] = $listeExamenBioEffectues['conclusion'];
+			$tableauResultatsExamensBio['temoinBHep'] = 1;
+		}
+		if($listeExamenBioEffectues['idExamen'] == 4){
+			$data['bilan_renal'] =  $listeExamenBioEffectues['noteResultat'];
+			$tableauResultatsExamensBio['bilan_renal_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+			$tableauResultatsExamensBio['bilan_renal_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+			$tableauResultatsExamensBio['bilan_renal_conclusion'] = $listeExamenBioEffectues['conclusion'];
+			$tableauResultatsExamensBio['temoinBRen'] = 1;
+		}
+		if($listeExamenBioEffectues['idExamen'] == 5){
+			$data['bilan_hemolyse'] =  $listeExamenBioEffectues['noteResultat'];
+			$tableauResultatsExamensBio['bilan_hemolyse_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+			$tableauResultatsExamensBio['bilan_hemolyse_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+			$tableauResultatsExamensBio['bilan_hemolyse_conclusion'] = $listeExamenBioEffectues['conclusion'];
+			$tableauResultatsExamensBio['temoinBHem'] = 1;
+		}
+		if($listeExamenBioEffectues['idExamen'] == 6){
+			$data['bilan_inflammatoire'] =  $listeExamenBioEffectues['noteResultat'];
+			$tableauResultatsExamensBio['bilan_inflammatoire_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+			$tableauResultatsExamensBio['bilan_inflammatoire_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+			$tableauResultatsExamensBio['bilan_inflammatoire_conclusion'] = $listeExamenBioEffectues['conclusion'];
+			$tableauResultatsExamensBio['temoinBInf'] = 1;
+		}
+		if($listeExamenBioEffectues['idExamen'] == 13){
+			$data['creatinine'] =  $listeExamenBioEffectues['noteResultat'];
+			$tableauResultatsExamensBio['creatinine_infoInfirmier'] = $this->getConsultationTable()->getInfosSurveillant( $listeExamenBioEffectues['id_personne'] );
+			$tableauResultatsExamensBio['creatinine_date_enregistrement'] = $this->controlDate->convertDateTime($listeExamenBioEffectues['date_enregistrement']);
+			$tableauResultatsExamensBio['creatinine_conclusion'] = $listeExamenBioEffectues['conclusion'];
+			$tableauResultatsExamensBio['temoinBInf'] = 1;
+		}
+	}
+		
+		
+	////RESULTATS DES EXAMENS MORPHOLOGIQUE
+	$examen_morphologique = $this->getNotesExamensMorphologiquesTable()->getNotesExamensMorphologiques($id);
+		
+	$data['radio'] = $examen_morphologique['radio'];
+	$data['ecographie'] = $examen_morphologique['ecographie'];
+	$data['fibrocospie'] = $examen_morphologique['fibroscopie'];
+	$data['scanner'] = $examen_morphologique['scanner'];
+	$data['irm'] = $examen_morphologique['irm'];
+		
+	////RESULTATS DES EXAMENS MORPHOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+	$listeDemandesMorphologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensMorphologiquesEffectues($id);
+		
+		
+	// 	////RESULTATS DES EXAMENS BIOLOGIQUE
+	$examen_biologique = $this->getNotesExamensBiologiquesTable()->getNotesExamensBiologiques($id);
+		
+	$data['groupe_sanguin'] = $examen_biologique['groupe_sanguin'];
+	$data['hemogramme_sanguin'] = $examen_biologique['hemogramme_sanguin'];
+	$data['bilan_hepatique'] = $examen_biologique['bilan_hepatique'];
+	$data['bilan_renal'] = $examen_biologique['bilan_renal'];
+	$data['bilan_hemolyse'] = $examen_biologique['bilan_hemolyse'];
+	$data['bilan_inflammatoire'] = $examen_biologique['bilan_inflammatoire'];
+	//var_dump('dddd');exit();
+		
+	////RESULTATS DES EXAMENS BIOLOGIQUES DEJA EFFECTUES ET ENVOYER PAR LE BIOLOGISTE
+	$listeDemandesBiologiquesEffectuer = $this->demandeExamensTable()->getDemandeExamensBiologiquesEffectues($id);
+		
+	//DIAGNOSTICS
+	//DIAGNOSTICS
+	//DIAGNOSTICS
+	$infoDiagnostics = $this->getDiagnosticsTable()->getDiagnostics($id);
+	// POUR LES DIAGNOSTICS
+	$k = 1;
+	foreach ($infoDiagnostics as $diagnos){
+		$data['diagnostic'.$k] = $diagnos['libelle_diagnostics'];
+		$k++;
+	}
+		
+	//TRAITEMENT (Ordonnance) *********************************************************
+	//TRAITEMENT (Ordonnance) *********************************************************
+	//TRAITEMENT (Ordonnance) *********************************************************
+		
+	//POUR LES MEDICAMENTS
+	//POUR LES MEDICAMENTS
+	//POUR LES MEDICAMENTS
+	// INSTANCIATION DES MEDICAMENTS de l'ordonnance
+	$listeMedicament = $this->getConsultationTable()->listeDeTousLesMedicaments();
+	$listeForme = $this->getConsultationTable()->formesMedicaments();
+	$listetypeQuantiteMedicament = $this->getConsultationTable()->typeQuantiteMedicaments();
+		
+	// INSTANTIATION DE L'ORDONNANCE
+	$infoOrdonnance = $this->getOrdonnanceTable()->getOrdonnanceNonHospi($id);
+		
+	if($infoOrdonnance) {
+		$idOrdonnance = $infoOrdonnance->id_document;
+		$duree_traitement = $infoOrdonnance->duree_traitement;
+		//LISTE DES MEDICAMENTS PRESCRITS
+		$listeMedicamentsPrescrits = $this->getOrdonnanceTable()->getMedicamentsParIdOrdonnance($idOrdonnance);
+		$nbMedPrescrit = $listeMedicamentsPrescrits->count();
+	}else{
+		$nbMedPrescrit = null;
+		$listeMedicamentsPrescrits =null;
+		$duree_traitement = null;
+	}
+		
+		
+	// liste des heures rv
+	$heure_rv = array (
+			'08:00' => '08:00',
+			'09:00' => '09:00',
+			'10:00' => '10:00',
+			'15:00' => '15:00',
+			'16:00' => '16:00'
+	);
+	$form->get ( 'heure_rv' )->setValueOptions ( $heure_rv );
+		
+		
+	/*CODES AJOUTES*/
+	$rv_consultation = $this->getRvPatientConsTable()->getRendezVousConsultation($id);
+	$leRendezVous = $this->getRvPatientConsTable()->getInfosRendezVousConsultation($rv_consultation['ID_RV']);
+		
+	if($leRendezVous) {
+		$date_rv = "";
+		if ($leRendezVous['DATE']){ $date_rv = (new DateHelper())->convertDate($leRendezVous['DATE']); }
+			
+		$data['heure_rv'] = $leRendezVous['HEURE'];
+		$data['date_rv']  = $date_rv;
+		$data['motif_rv'] = $leRendezVous['NOTE'];
+		$data['delai_rv'] = $leRendezVous['DELAI'];
+	}
+		
+		
+	/*
+	 *
+	*
+	*/
+	$form->populateValues($data);
+
+	return array (
+			'maj' => 1,
+			'lesdetails' => $liste,
+			'id_cons' => $id,
+			'image' => $image,
+			'form' => $form,
+			'liste_med' => $listeMedicament,
+			'nb_med_prescrit' => $nbMedPrescrit,
+			'liste_med_prescrit' => $listeMedicamentsPrescrits,
+			'duree_traitement' => $duree_traitement,
+			'listeForme' => $listeForme,
+			'listetypeQuantiteMedicament'  => $listetypeQuantiteMedicament,
+			'listetypeQuantiteMedicament'  => $listetypeQuantiteMedicament,
+			'donneesAntecedentsPersonnels' => $donneesAntecedentsPersonnels,
+			'donneesAntecedentsFamiliaux'  => $donneesAntecedentsFamiliaux,
+			'resultRV' => $resultRV,
+			'listeDemandesMorphologiques' => $listeDemandesMorphologiques,
+			'listeDemandesBiologiques' => $listeDemandesBiologiques,
+			'listeDemandesBioEff' => $listeDemandesBiologiquesEffectuer->count(),
+			'listeDemandesMorphoEff' => $listeDemandesMorphologiquesEffectuer->count(),
+			'listeHospitalisation' => $listeHospitalisation,
+			'tableauResultatsExamensBio' => $tableauResultatsExamensBio,
+			'listeDesExamensBiologiques' => $listeDesExamensBiologiques,
+			'listeDesExamensMorphologiques' => $listeDesExamensMorphologiques,
+			'nbDiagnostics'=> $infoDiagnostics->count(),
+			'listeAntMed' => $listeAntMed,
+			'antMedPat' => $antMedPat,
+			'nbAntMedPat' => $antMedPat->count(),
+			'listeActes' => $listeActes,
+			'verifieRV' => $leRendezVous,
+			'resultRV' => $resultRV,
+	
+	);
+	
+}	
+	
 	
 	
 	
@@ -7708,6 +8845,12 @@ public function majFicheObservationCliniqueAction() {
 		$data['histoire_maladie'] = $histoireMaladie['histoire_maladie'];
 	}
 	
+	//Plainte(Motif de consultation) 
+	$plainteConsultation = $this->getPlainteConsultation()->getPlainteConsultation($id);
+	//var_dump($histoireMaladie); exit();
+	if ($plainteConsultation) {
+		$data['plainte_motif'] = $plainteConsultation['plainte_motif'];
+	}
 	
 	//Donnees de l'examen clinique
 	$donneesExamenClinique = $this->getDonneesExamenClinique()->getDonneesExamenClinique($id);
@@ -7902,6 +9045,8 @@ public function majFicheObservationCliniqueAction() {
 		$data['diagnostic_traitement_chirurgical'] = $donneesDemandeVPA['DIAGNOSTIC'];
 		$data['observation'] = $donneesDemandeVPA['OBSERVATION'];
 		$data['intervention_prevue'] = $donneesDemandeVPA['INTERVENTION_PREVUE'];
+		$data['type_anesthesie'] = $donneesDemandeVPA['TYPE_ANESTHESIE'];
+		$data['numero_vpa'] = $donneesDemandeVPA['NUMERO_VPA'];
 		 
 		$resultatVpa = $this->getResultatVpa()->getResultatVpa($donneesDemandeVPA['idVpa']);
 	}
@@ -8061,7 +9206,7 @@ public function majFicheObservationCliniqueAction() {
 	//Recuperer la liste des actes
 	$listeActes = $this->getConsultationTable()->getListeDesActes();
 	$form->populateValues ( array_merge($donneesAntecedentsPersonnels,$donneesAntecedentsFamiliaux) );
-	
+	//var_dump($donneesAntecedentsFamiliaux); exit();
 	//$output = $this->getPatientTable ()->getListePatientsAdmisAjax();
 	//var_dump($output); exit();
 	
@@ -8657,6 +9802,54 @@ public function visualisationNoteMedicalePrecedenteAction() {
 	
 	
 }
+
+
+public function visualisationThyroideAction() {
+
+	$id_patient = $this->params ()->fromQuery ( 'id_patient', 0 );
+	$id_cons = $this->params ()->fromQuery ( 'id_cons', 0 );
+	$id = $this->params()->fromQuery ( 'id_cons' );
+	$user = $this->layout()->user;
+	$serviceMedecin = $user['NomService'];
+	
+	$nomMedecin = $user['Nom'];
+	$prenomMedecin = $user['Prenom'];
+	$donneesMedecin = array('nomMedecin' => $nomMedecin, 'prenomMedecin' => $prenomMedecin);
+	
+	//*************************************
+	//*************************************
+	$donneesPatient = $this->getConsultationTable()->getInfoPatient($id_patient);
+	
+	$noteMedicaleInfo = null;
+	//Nouvelle note medicale
+	$noteMedicale = $this->getNoteMedicale()->getNoteMedicale($id);
+	if ($noteMedicale) {
+		$noteMedicaleInfo = $noteMedicale['nouvelle_note_medicale'];
+	}
+
+	//Creer le document
+	$DocPdf = new DocumentPdf();
+	//Creer la page
+	$page = new NoteMedicaleThyroidePdf();
+	
+	//Envoyer l'id_cons
+	$page->setIdCons($id_cons);
+	$page->setService($serviceMedecin);
+	//Envoyer les données sur le partient
+	$page->setDonneesPatient($donneesPatient);
+
+	$page->setNoteMedicale($noteMedicaleInfo);
+	
+	
+	
+	$page->addNote();
+		
+	$DocPdf->addPage($page->getPage());
+	
+	$DocPdf->getDocument();
+	
+}
+
 
 
 

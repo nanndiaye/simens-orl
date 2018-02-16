@@ -302,7 +302,8 @@ class RvPatientConsTable{
 		->from(array('pat' => 'patient'))->columns(array('*'))
 		->join(array('p' => 'personne'), 'pat.id_personne = p.id_personne' , array('Nom'=>'NOM','Prenom'=>'PRENOM','Datenaissance'=>'DATE_NAISSANCE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE', 'id2'=>'ID_PERSONNE', 'Age'=>'AGE'))
 		->join(array('rv' => 'rendezvous') , 'rv.ID_PATIENT = p.id_personne', array('id_rv' => 'ID_RV', 'delai' => 'DELAI', 'date' => 'DATE'))
-		->order('rv.HEURE_ENREG ASC');
+		->order('rv.HEURE_ENREG ASC')
+		->where(array( 'date != ?' => ''));
 		
 		/* Data set length after filtering */
 		$stat = $sql2->prepareStatementForSqlObject($sQuery2);
@@ -391,7 +392,7 @@ class RvPatientConsTable{
 	
 	public function addInfosRendezVousConsultation($infos_rv, $id_cons){
 		if(!$this->getRendezVousConsultation($id_cons)){
-			if($infos_rv['NOTE']){
+			if($infos_rv['DELAI']){
 				$db = $this->tableGateway->getAdapter();
 				$sql = new Sql($db);
 				$sQuery = $sql->insert()
@@ -405,7 +406,7 @@ class RvPatientConsTable{
 			$sql = new Sql($db);
 			$sQuery = $sql->delete()->from('rendezvous')->where(array('ID_RV' => $rvcons['ID_RV']));
 			$sql->prepareStatementForSqlObject($sQuery)->execute();
-			if($infos_rv['NOTE']){
+			if($infos_rv['DELAI']){
 				$db = $this->tableGateway->getAdapter();
 				$sql = new Sql($db);
 				$sQuery = $sql->insert()

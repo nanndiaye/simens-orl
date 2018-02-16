@@ -73,11 +73,11 @@ class TraitementChirurgicalPdf
 	}
 	
 	public function setEnTete(){
-		$imageHeader = ZendPdf\Image::imageWithPath('C:\wamp\www\simens\public\img\polycliniquelogo.png');
-		$this->_page->drawImage($imageHeader, 505, //-x
-				$this->_pageHeight - 130, //-y
-				600, //+x
-				650); //+y
+// 		$imageHeader = ZendPdf\Image::imageWithPath('C:\wamp\www\simens\public\img\polycliniquelogo.png');
+// 		$this->_page->drawImage($imageHeader, 505, //-x
+// 				$this->_pageHeight - 130, //-y
+// 				600, //+x
+// 				650); //+y
 		
 		$this->_page->setFont($this->_newTime, 10);
 		$this->_page->drawText('République du Sénégal',
@@ -179,6 +179,19 @@ class TraitementChirurgicalPdf
 		
 		$today = new \DateTime();
 		$date_actu = $today->format('Y-m-d');
+		
+		//-----------------------------------------------
+		$this->_page->setFont($this->_newTimeGras, 9);
+		$this->_page->drawText('NUMERO DOSSIER :',
+				$this->_leftMargin+155,
+				$this->_yPosition);
+		$this->_page->setFont($this->_newTime, 11);
+		$this->_page->drawText($this->_DonneesPatient['NUMERO_DOSSIER'],
+				$this->_leftMargin+240,
+				$this->_yPosition);
+		//-----------------------------------------------
+		$this->_yPosition -= 15;// allez a ligne suivante
+		//----- -----------------------------------------
 
 			//-----------------------------------------------
 			$this->_page->setFont($this->_newTimeGras, 9);
@@ -241,14 +254,14 @@ class TraitementChirurgicalPdf
 		$i = 0;
 		$d = 1;
 		//PREPARATION DU TEXT Diagnostic
-		$tab = $this->scinderText($this->_DonneesDemande['diagnostic']);
+		$tab = $this->scinderText($this->_DonneesDemande['diagnostic_traitement_chirurgical']);
 		//PREPARATION DU TEXT Observation
 		$tab2 = $this->scinderText($this->_DonneesDemande['observation']);
 		
 		while($this->_yPosition > 70 ) {
 			if($i==0){
 				$this->_page->setFont($this->_newTimeGras, 13);
-				$this->_page->drawText('Diagnostic :   ',
+				$this->_page->drawText('Indication :   ',
 						$this->_leftMargin,
 						$this->_yPosition);
 				$this->_page->setFont($this->_policeContenu, 14);
@@ -284,8 +297,8 @@ class TraitementChirurgicalPdf
 						$this->_leftMargin,
 						$this->_yPosition);
 				$this->_page->setFont($this->_policeContenu, 14);
-				$this->_page->drawText("",
-						$this->_leftMargin+120,
+				$this->_page->drawText($this->_DonneesDemande['type_anesthesie'],
+						$this->_leftMargin+125,
 						$this->_yPosition);
 			}
 			if($i==5){
@@ -294,7 +307,7 @@ class TraitementChirurgicalPdf
 						$this->_leftMargin,
 						$this->_yPosition);
 				$this->_page->setFont($this->_policeContenu, 14);
-				$this->_page->drawText("",
+				$this->_page->drawText($this->_DonneesDemande['numero_vpa'],
 						$this->_leftMargin+60,
 						$this->_yPosition);
 			}

@@ -705,14 +705,33 @@ class ConsultationTable {
 					}
 						
 					else if ($aColumns[$i] == 'id') {
+						
+						$html ="";
+						
+						if($aRow[ 'idSousDossier' ] == 1){
+						
+						
+						
+						
+						
+						
 	
 						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/orl/recherche-visualisation-fiche-observation-clinique?id_patient=".$aRow[ 'id' ]."&id_cons=".$aRow[ 'Id_cons' ]."'>";
 						$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/transfert_droite.png' title='d&eacute;tails'></a> </infoBulleVue>";
 	
 	
 	
-						$row[] = $html;
+						
 					}
+					
+					else if($aRow[ 'idSousDossier' ] == 2){
+						$html ="<infoBulleVue> <a href='".$tabURI[0]."public/orl/recherche-visualisation-thyroide?id_admission=".$aRow[ 'id_admission' ]."&id_cons=".$aRow[ 'Id_cons' ]."'>";
+						$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/transfert_droite.png' title='d&eacute;tails'></a> </infoBulleVue>";
+					}
+					
+					$row[] = $html;
+					}
+					
 	
 					else {
 						$row[] = $aRow[ $aColumns[$i] ];

@@ -50,17 +50,28 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
   $Dimanche1 = $Control->lePremierDimancheDuMois();
   /*****Mois 2 *****(Sauf pour le douzieme mois)*/
   $leMois2 = $leMois1 +1;
-  if($leMois2 == 13){ $leMois2 = 1; $AnneeActuelle = $AnneeActuelle + 1;}
-  $Dimanche2 = $Control->lePremierDimancheDuMoisByDate($leMois2, $AnneeActuelle);
+  if($leMois2 == 13){ $leMois2 = 1; $AnneeActuelle2 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle2 = $AnneeActuelle;}
+  $Dimanche2 = $Control->lePremierDimancheDuMoisByDate($leMois2, $AnneeActuelle2);
   /*****Mois 3 *****/
   $leMois3 = $leMois2 +1;
-  if($leMois3 == 13){ $leMois3 = 1; $AnneeActuelle = $AnneeActuelle + 1;}
-  $Dimanche3 = $Control->lePremierDimancheDuMoisByDate($leMois3, $AnneeActuelle);
+  if($leMois3 == 13){ $leMois3 = 1; $AnneeActuelle3 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle3 = $AnneeActuelle;}
+  $Dimanche3 = $Control->lePremierDimancheDuMoisByDate($leMois3, $AnneeActuelle3);
   /*****Mois 4 *****/
   $leMois4 = $leMois3 +1;
-  if($leMois4 == 13){ $leMois4 = 1; $AnneeActuelle = $AnneeActuelle + 1;}
-  $Dimanche4 = $Control->lePremierDimancheDuMoisByDate($leMois4, $AnneeActuelle);
-
+  if($leMois4 == 13){ $leMois4 = 1; $AnneeActuelle4 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle4 = $AnneeActuelle;}
+  $Dimanche4 = $Control->lePremierDimancheDuMoisByDate($leMois4, $AnneeActuelle4);
+  /*****Mois 5 *****/
+  $leMois5 = $leMois4 +1;
+  if($leMois5 == 13){ $leMois5 = 1; $AnneeActuelle5 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle5 = $AnneeActuelle;}
+  $Dimanche5 = $Control->lePremierDimancheDuMoisByDate($leMois5, $AnneeActuelle5);
+  /*****Mois 6 *****/
+  $leMois6 = $leMois5 +1;
+  if($leMois6 == 13){ $leMois6 = 1; $AnneeActuelle6 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle6 = $AnneeActuelle;}
+  $Dimanche6 = $Control->lePremierDimancheDuMoisByDate($leMois6, $AnneeActuelle6);
+  /*****Mois 7 *****/
+  $leMois7 = $leMois6 +1;
+  if($leMois7 == 13){ $leMois7 = 1; $AnneeActuelle7 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle7 = $AnneeActuelle;}
+  $Dimanche7 = $Control->lePremierDimancheDuMoisByDate($leMois7, $AnneeActuelle7);
 ?>
 
 <script>
@@ -68,19 +79,40 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
   /*****Mois 1*****/
   mois1 = '<?php echo $leMois1?>';
   dimanche1 = <?php echo $Dimanche1?>;
+  annee1 ='<?php echo $today->format('Y'); ?>';
+  
+  
   /*****Mois 2 *****/
   if(<?php echo $leMois2?> > 9){mois2 = <?php echo $leMois2?>;}else{mois2 = '0'+'<?php echo $leMois2?>';}
   dimanche2 = <?php echo $Dimanche2?>;
+  annee2 ='<?php echo $AnneeActuelle2?>';
+
+  
   /*****Mois 3 *****/
   if(<?php echo $leMois3?> > 9){mois3 = <?php echo $leMois3?>;}else{mois3 = '0'+'<?php echo $leMois3?>';}
   dimanche3 = <?php echo $Dimanche3?>;
+  annee3 ='<?php echo $AnneeActuelle3?>';
+
+  
   /*****Mois 4 *****/
   if(<?php echo $leMois4?> > 9){mois4 = <?php echo $leMois4?>;}else{mois4 = '0'+'<?php echo $leMois4?>';}
   dimanche4 = <?php echo $Dimanche4?>;
+  annee4 ='<?php echo $AnneeActuelle4?>';
+  
+  /*****Mois 5 *****/
+  if(<?php echo $leMois5?> > 9){mois5 = <?php echo $leMois5?>;}else{mois5 = '0'+'<?php echo $leMois5?>';}
+  dimanche5 = <?php echo $Dimanche5?>;
+  annee5 ='<?php echo $AnneeActuelle5?>';
 
-  /***ANNEE EN COURS***/
-  annee = '<?php echo $AnneeActuelle?>';
+  /*****Mois 6 *****/
+  if(<?php echo $leMois6?> > 9){mois6 = <?php echo $leMois6?>;}else{mois6 = '0'+'<?php echo $leMois6?>';}
+  dimanche6 = <?php echo $Dimanche6?>;
+  annee6 ='<?php echo $AnneeActuelle6?>';
 
+  /*****Mois 7 *****/
+ if(<?php echo $leMois7?> > 9){mois7 = <?php echo $leMois7?>;}else{mois7 = '0'+'<?php echo $leMois7?>';}
+  dimanche7 = <?php echo $Dimanche7?>;
+  annee7 ='<?php echo $AnneeActuelle7?>';
   /****************************
   *===========================
    **************************/
@@ -882,6 +914,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
            </script>
 
 
+
 					<!--****** ================== ANTECEDENTS FAMILIAUX ================== ****** -->
 					<!--****** ================== ANTECEDENTS FAMILIAUX ================== ****** -->
 					<table id="AntecedentsFamiliaux" style="width: 100%;">
@@ -899,13 +932,10 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderDiabeteAM"
-											style='cursor: pointer; padding-right: 10px;'
-											src='<?php echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span> 
+										
                          
                          Diab&egrave;te 
-                         <?php echo $this->formRow($form->get('DiabeteAM'));?>
+                         <?php echo $this->formRow($form->get('DiabeteAF'));?>
                       </label>
 								</div>
 							</td>
@@ -914,13 +944,9 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderHtaAM"
-											style='cursor: pointer; padding-right: 10px;'
-											src='<?php echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span> 
-                         
+										
                         HTA 
-                        <?php echo $this->formRow($form->get('htaAM'));?>
+                        <?php echo $this->formRow($form->get('htaAF'));?>
                      </label>
 								</div>
 							</td>
@@ -929,12 +955,9 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderDrepanocytoseAM"
-											style='cursor: pointer; padding-right: 0px;'
-											src='<?php echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span> 
+									
                         
-                        Dr&eacute;panocytose <?php echo $this->formRow($form->get('drepanocytoseAM'));?>
+                        Dr&eacute;panocytose <?php echo $this->formRow($form->get('DrepanocytoseAF'));?>
                      </label>
 								</div>
 							</td>
@@ -943,12 +966,9 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderDislipidemieAM"
-											style='cursor: pointer; padding-right: 10px;'
-											src='<?php echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span>  
+										  
                         
-                        Dislipid&eacute;mie  <?php echo $this->formRow($form->get('dislipidemieAM'));?>
+                        Dislipid&eacute;mie  <?php echo $this->formRow($form->get('dislipAF'));?>
                      </label>
 								</div>
 							</td>
@@ -957,12 +977,9 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								<div>
 									<label
 										style="width: 90%; height: 30px; text-align: right; font-family: time new romans; font-size: 18px;">
-										<span> <img class="imageValiderAsthmeAM"
-											style='cursor: pointer; padding-right: 10px;'
-											src='<?php echo $this->basepath().'/images_icons/tick-icon2.png'?>' />
-									</span> 
+
                      
-                        Asthme  <?php echo $this->formRow($form->get('asthmeAM'));?>
+                        Asthme  <?php echo $this->formRow($form->get('AsthmeAF'));?>
                      </label>
 								</div>
 							</td>
@@ -1005,10 +1022,12 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 						
 					
 					</table>
-					<script>
+           <script>
                var temoinDiabeteAF = <?php echo $this->donneesAntecedentsFamiliaux['DiabeteAF'];?>;
                var temoinDrepanocytoseAF = <?php echo $this->donneesAntecedentsFamiliaux['DrepanocytoseAF'];?>;
                var temoinhtaAF = <?php echo $this->donneesAntecedentsFamiliaux['htaAF'];?>;
+               var temoinAsthmeAF = <?php echo $this->donneesAntecedentsFamiliaux['AsthmeAF'];?>;
+               var temoindislipAF = <?php echo $this->donneesAntecedentsFamiliaux['dislipAF'];?>;
            </script>
 
 					<!--****** ================== FIN ANTECEDENTS TERRAIN PARTICULIER ================== ****** -->
@@ -1264,20 +1283,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								</div>
 							</div>
 
-							<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-							<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-							<table style="width: 86%; position: relative; top: 0px;">
-								<tr style="width: 100%;">
-									<th style="width: 65%;">
-										<div style="float: right;">
-											<button id='bouton_motif_valider'>Valider</button>
-										</div>
-										<div style="float: right;">
-											<button id='bouton_motif_modifier'>Modifier</button>
-										</div>
-									</th>
-								</tr>
-							</table>
+
 
 							<script>
                             var nbMotif = "<?php echo $this->nbMotifs;?>";
@@ -1402,7 +1408,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 				<!-- ******************** Notes Médicales ******************-->
 				<!-- ******************** Notes Médicales ******************-->
 			
-	    <div style='font-family: police2; font-size: 17px; font-weight: bold;'>Notes m&eacute;dicales</div>
+	    <div style='font-family: police2; font-size: 17px; font-weight: bold;'>Note m&eacute;dicale</div>
 		<div style='max-height: 700px;'>
 		    <div id="accordionsNoteMedical" style=''>
 		    
@@ -1491,20 +1497,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 			  </div>
 		    </div>
 		 </div>
-		 <!--********************* BOUTON VALIDER-MODIFIER ************************-->
-         <!--********************* BOUTON VALIDER-MODIFIER ************************-->		            
-         <table style="width: 59%; position: relative; top: 0px;">
-              <tr style="width: 90%;">
-                <th style="width:65%;">
-                    <div style="float:right;">
-                       <button id='bouton_donnee_valider'>Valider</button>
-                    </div>
-                    <div style="float:right;">
-                       <button id='bouton_donnee_modifier'>Modifier</button>
-                    </div>
-                </th>
-              </tr>
-         </table>
+
          <script>
          var nbexamendonnee = 1;
           cacherTouteDonnee();
@@ -1528,14 +1521,6 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							style='font-family: police2; font-size: 17px; font-weight: bold;'>
 							Demande</div>
 						<div style=''>
-							<div
-								style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
-							<!-- LE PDF POUR IMPRESSION-->
-							<div class="rendezvous">
-								<hass><input  title="Imprimer"name="demandeExamenBioMorpho" id="demandeExamenBioMorpho"> </hass>
-							</div>
-							<div
-								style="padding-bottom: 40px; margin-bottom: 10px; border-bottom: 1px dashed green; margin-left: 0px; margin-right: 0px;"></div>
 
 							<div id="accordions_demande">
                           
@@ -1554,9 +1539,17 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                           <div
 									style='font-family: police2; font-size: 15px; font-weight: bold; color: green;'>
 									Examens Biologiques</div>
+									
+						
 								<div>
-									<div
-										style="margin-bottom: 5px; border-bottom: 1.5px solid #cccccc; margin-top: -15px;"></div>
+								<div style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
+						<!-- LE PDF POUR IMPRESSION-->
+						    <div class="rendezvous">
+								<hass> <input type="submit" title="Imprimer" name="demandeExamenBio" id="demandeExamenBio"> </hass>
+							</div>
+							<div style="padding-bottom: 40px; margin-bottom: 10px; border-bottom: 1px dashed green; margin-left: 0px; margin-right: 0px;"></div>
+							
+									
 
                            <?php 
                            /**
@@ -1606,23 +1599,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 											</div>
 										</div>
 
-										<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-										<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-										<table
-											style="width: 90%; float: right; position: relative; right: 0;">
-											<tr style="width: 100%;">
-												<th style="height: 15px;">
-													<div id='bouton_ExamenBio_valider_demande'
-														style="float: right;">
-														<button>Valider</button>
-													</div>
-													<div id='bouton_ExamenBio_modifier_demande'
-														style="float: right;">
-														<button>Modifier</button>
-													</div>
-												</th>
-											</tr>
-										</table>
+			
 
 									</div>
 
@@ -1661,8 +1638,13 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 									style='font-family: police2; font-size: 15px; font-weight: bold; color: green;'>
 									Examens Morphologiques</div>
 								<div style="max-height: 250px;">
-									<div
-										style="margin-bottom: 5px; border-bottom: 1.5px solid #cccccc; margin-top: -15px;"></div>
+							<div style="padding-bottom: 0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
+							<!-- LE PDF POUR IMPRESSION-->
+							<div class="rendezvous">
+								<hass> <input type="submit" title="Imprimer" name="demandeExamenMorpho" id="demandeExamenMorpho"> </hass>
+							</div>
+							<div style="padding-bottom: 40px; margin-bottom: 10px; border-bottom: 1px dashed green; margin-left: 0px; margin-right: 0px;"></div>
+									
                                         
                             <?php 
                             /**
@@ -1712,24 +1694,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 										</div>
 									</div>
 
-									<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-									<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-									<table
-										style="width: 90%; float: right; position: relative; right: 0;">
-										<tr style="width: 100%;">
-											<th style="height: 15px;">
-												<div id='bouton_morpho_valider_demande'
-													style="float: right;">
-													<button>Valider</button>
-												</div>
-												<div id='bouton_morpho_modifier_demande'
-													style="float: right;">
-													<button>Modifier</button>
-												</div>
-											</th>
 
-										</tr>
-									</table>
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
 									<!--********************* CHARGEMENT DES DONNEES  ************************-->
@@ -2271,20 +2236,6 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 						</div>
 					</div>
 
-					<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-					<!--********************* BOUTON VALIDER-MODIFIER ************************-->
-					<table style="width: 59%; position: relative; top: 0px;">
-						<tr style="width: 90%;">
-							<th style="width: 65%;">
-								<div style="float: right;">
-									<button id='bouton_diagnostic_valider'>Valider</button>
-								</div>
-								<div style="float: right;">
-									<button id='bouton_diagnostic_modifier'>Modifier</button>
-								</div>
-							</th>
-						</tr>
-					</table>
 
 			<script>
               var nbdiagnostic = 1;
@@ -2396,23 +2347,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 									</div>
 								</div>
 
-								<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-								<!--********************* BOUTON VALIDER OU MODIFIER ************************-->
-								<table
-									style="width: 90%; float: right; position: relative; right: 0;">
-									<tr style="width: 100%;">
-										<th style="height: 15px;">
-											<div id='bouton_Medicament_modifier_demande'
-												style="float: right;">
-												<button>Modifier</button>
-											</div>
-											<div id='bouton_Medicament_valider_demande'
-												style="float: right;">
-												<button>Valider</button>
-											</div>
-										</th>
-									</tr>
-								</table>
+
 
 							</div>
 
@@ -2421,7 +2356,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							<!--********************* CHARGEMENT DES DONNEES  ************************-->
 							<!--********************* CHARGEMENT DES DONNEES  ************************-->
 							<script> 
-                   ValiderOrdonnance();
+                  // ValiderOrdonnance();
 
                    //var myArrayMedicament = [''];
                    <?php /* foreach($this->liste_med as $Liste) {?>
@@ -2496,11 +2431,13 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                                <div id="tabs-1">
                                
                                
-                                                <div style=" padding-bottom:0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
+                                       <div style=" padding-bottom:0px; margin-bottom: 5px; border-bottom: 2px solid green; margin-left: 0px;"></div>
+                                       <!-- LE PDF POUR IMPRESSION-->
                                        <!-- LE PDF POUR IMPRESSION-->
                                        <div class="rendezvous">
-                                           <hass><input  alt="Constantes" title="Imprimer" name="traitement_chirurgical" id="chirurgical1"></hass>
+                                           <hass><input type="submit" alt="Constantes" title="Imprimer" name="traitement_chirurgical" id="chirurgical1"></hass>
                                        </div>
+                                                
 
                                        <div class="annulertransfert">
                                            <hass><input type="submit" alt="Constantes" title="Annuler" name="annuler_traitement_chirurgical" id="annuler_traitement_chirurgical"></hass>
@@ -2522,19 +2459,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
                                         </tr>
                                         
                                         
-                                        <tr class="form-chirurgical" style="width: 100%;">
-                                            <th style="width: 33%;">  </th>
-                                            <th style="width: 33%;">  </th>
-                                            <th style="width: 33%; padding-right:30px;">
-                                                <div id="bouton_valider_chirurgical" style='margin-top:30px; float:right; '> 
-                                                     <button id='bouton_chirurgical_valider'>Valider</button>  
-                                                </div >
-                                                <div id="bouton_modifier_chirurgical" style='margin-top:30px; float:right; '> 
-                                                     <button id='bouton_chirurgical_modifier'>Modifier</button>  
-                                                </div>
-                                            </th>
-                                           
-                                        </tr>
+                                      
                                       </table>
                                
                                
@@ -2754,16 +2679,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 								<tr style="width: 100%;">
 									<th></th>
 									<th></th>
-									<th
-										style="float: right; height: 40px; margin-top: 20px; width: 80px;">
-										<!-- On crï¿½e le bouton Valider (permettant la validation des donnï¿½es -->
-										<div id="bouton_valider_transfert">
-											<button id='bouton_transfert_valider'>Valider</button>
-										</div> <!-- On crï¿½e le bouton MODIFIER (permettant la modification des donnï¿½es -->
-										<div id="bouton_modifier_transfert">
-											<button id='bouton_transfert_modifier'>Modifier</button>
-										</div>
-									</th>
+									
 								</tr>
 							</table>
 
@@ -2809,15 +2725,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 							<table style="width: 100%; margin-top: 20px;">
 								<tr>
 									<th style="width: 55%;"></th>
-									<th style="width: 10%;">
-										<!-- On crï¿½e le bouton Valider (permettant la validation des donnï¿½es -->
-										<div id="bouton_valider_hospi">
-											<button id='bouton_hospi_valider'>Valider</button>
-										</div> <!-- On crï¿½e le bouton MODIFIER (permettant la modification des donnï¿½es -->
-										<div id="bouton_modifier_hospi">
-											<button id='bouton_hospi_modifier'>Modifier</button>
-										</div>
-									</th>
+									
 									<th style="width: 35%;"></th>
 								</tr>
 							</table>
@@ -2865,17 +2773,7 @@ $('#declarer_style').css({'font-weight':'bold','color':'white','font-size':'22px
 										type="hidden" id="delai_rv_tampon" name="delai_rv_tampon"></th>
 								</tr>
 								<tr style="width: 100%;">
-									<th colspan='4'>
-										<!-- On crï¿½e le bouton Valider (permettant la validation des donnï¿½es -->
-										<div id="bouton_valider"
-											style="float: right; height: 15px; margin-top: 20px;">
-											<button id='enable_bouton'>Valider</button>
-										</div> <!-- On crï¿½e le bouton MODIFIER (permettant la modification des donnï¿½es -->
-										<div id="bouton"
-											style="float: right; height: 15px; margin-top: 20px;">
-											<button id='disable_bouton'>Modifier</button>
-										</div>
-									</th>
+									
 								</tr>
 							</table>
 

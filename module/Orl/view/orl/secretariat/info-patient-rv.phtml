@@ -19,57 +19,91 @@ echo $this->headScript()->appendFile($this->basePath().'/js/mesjs/bloquerDate.js
 <!--===================================== BLOCAGE DES JOURS NON CONSULTABLE ====================================-->
 <!--************************************************************************************************************-->
 <?php
-$today = new \DateTime();
-$AnneeActuelle =  $today->format('Y');
+  
+  $today = new \DateTime();
+  $AnneeActuelle =  $today->format('Y');
 
-/*****Mois 1 *****/
-$leMois1 = $today->format('m'); //C'est le mois actuel l'heure du calendrier
-$Dimanche1 = $Control->lePremierDimancheDuMois();
-/*****Mois 2 *****(Sauf pour le douzieme mois)*/
-$leMois2 = $leMois1 +1;
-if($leMois2 == 13){ $leMois2 = 1; $AnneeActuelle = $AnneeActuelle + 1;}
-$Dimanche2 = $Control->lePremierDimancheDuMoisByDate($leMois2, $AnneeActuelle);
-/*****Mois 3 *****/
-$leMois3 = $leMois2 +1;
-if($leMois3 == 13){ $leMois3 = 1; $AnneeActuelle = $AnneeActuelle + 1;}
-$Dimanche3 = $Control->lePremierDimancheDuMoisByDate($leMois3, $AnneeActuelle);
-/*****Mois 4 *****/
-$leMois4 = $leMois3 +1;
-if($leMois4 == 13){ $leMois4 = 1; $AnneeActuelle = $AnneeActuelle + 1;}
-$Dimanche4 = $Control->lePremierDimancheDuMoisByDate($leMois4, $AnneeActuelle);
-
+  /*****Mois 1 *****/
+  $leMois1 = $today->format('m'); //C'est le mois actuel � l'heure du calendrier
+  $Dimanche1 = $Control->lePremierDimancheDuMois();
+  /*****Mois 2 *****(Sauf pour le douzieme mois)*/
+  $leMois2 = $leMois1 +1;
+  if($leMois2 == 13){ $leMois2 = 1; $AnneeActuelle2 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle2 = $AnneeActuelle;}
+  $Dimanche2 = $Control->lePremierDimancheDuMoisByDate($leMois2, $AnneeActuelle2);
+  /*****Mois 3 *****/
+  $leMois3 = $leMois2 +1;
+  if($leMois3 == 13){ $leMois3 = 1; $AnneeActuelle3 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle3 = $AnneeActuelle;}
+  $Dimanche3 = $Control->lePremierDimancheDuMoisByDate($leMois3, $AnneeActuelle3);
+  /*****Mois 4 *****/
+  $leMois4 = $leMois3 +1;
+  if($leMois4 == 13){ $leMois4 = 1; $AnneeActuelle4 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle4 = $AnneeActuelle;}
+  $Dimanche4 = $Control->lePremierDimancheDuMoisByDate($leMois4, $AnneeActuelle4);
+  /*****Mois 5 *****/
+  $leMois5 = $leMois4 +1;
+  if($leMois5 == 13){ $leMois5 = 1; $AnneeActuelle5 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle5 = $AnneeActuelle;}
+  $Dimanche5 = $Control->lePremierDimancheDuMoisByDate($leMois5, $AnneeActuelle5);
+  /*****Mois 6 *****/
+  $leMois6 = $leMois5 +1;
+  if($leMois6 == 13){ $leMois6 = 1; $AnneeActuelle6 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle6 = $AnneeActuelle;}
+  $Dimanche6 = $Control->lePremierDimancheDuMoisByDate($leMois6, $AnneeActuelle6);
+  /*****Mois 7 *****/
+  $leMois7 = $leMois6 +1;
+  if($leMois7 == 13){ $leMois7 = 1; $AnneeActuelle7 = $AnneeActuelle + 1; $AnneeActuelle++; }else { $AnneeActuelle7 = $AnneeActuelle;}
+  $Dimanche7 = $Control->lePremierDimancheDuMoisByDate($leMois7, $AnneeActuelle7);
 ?>
 
+
 <script>
-//Bloquer les 90 jours non consultable a patir du jour, du mois actuel
-/*****Mois 1*****/
-mois1 = '<?php echo $leMois1?>';
-dimanche1 = <?php echo $Dimanche1?>;
-/*****Mois 2 *****/
-if(<?php echo $leMois2?> > 9){mois2 = <?php echo $leMois2?>;}else{mois2 = '0'+'<?php echo $leMois2?>';}
-dimanche2 = <?php echo $Dimanche2?>;
-/*****Mois 3 *****/
-if(<?php echo $leMois3?> > 9){mois3 = <?php echo $leMois3?>;}else{mois3 = '0'+'<?php echo $leMois3?>';}
-dimanche3 = <?php echo $Dimanche3?>;
-/*****Mois 4 *****/
-if(<?php echo $leMois4?> > 9){mois4 = <?php echo $leMois4?>;}else{mois4 = '0'+'<?php echo $leMois4?>';}
-dimanche4 = <?php echo $Dimanche4?>;
+  //Bloquer les 90 jours non consultable a patir du jour, du mois actuel
+  /*****Mois 1*****/
+  mois1 = '<?php echo $leMois1?>';
+  dimanche1 = <?php echo $Dimanche1?>;
+  annee1 ='<?php echo $today->format('Y'); ?>';
+  
+  
+  /*****Mois 2 *****/
+  if(<?php echo $leMois2?> > 9){mois2 = <?php echo $leMois2?>;}else{mois2 = '0'+'<?php echo $leMois2?>';}
+  dimanche2 = <?php echo $Dimanche2?>;
+  annee2 ='<?php echo $AnneeActuelle2?>';
 
-/***ANNEE EN COURS***/
-annee = '<?php echo $AnneeActuelle?>';
+  
+  /*****Mois 3 *****/
+  if(<?php echo $leMois3?> > 9){mois3 = <?php echo $leMois3?>;}else{mois3 = '0'+'<?php echo $leMois3?>';}
+  dimanche3 = <?php echo $Dimanche3?>;
+  annee3 ='<?php echo $AnneeActuelle3?>';
 
-/**************************
- ==========================
- **************************/
-        bloquerDate();
-/**************************
- *=========================
- **************************/
+  
+  /*****Mois 4 *****/
+  if(<?php echo $leMois4?> > 9){mois4 = <?php echo $leMois4?>;}else{mois4 = '0'+'<?php echo $leMois4?>';}
+  dimanche4 = <?php echo $Dimanche4?>;
+  annee4 ='<?php echo $AnneeActuelle4?>';
+  
+  /*****Mois 5 *****/
+  if(<?php echo $leMois5?> > 9){mois5 = <?php echo $leMois5?>;}else{mois5 = '0'+'<?php echo $leMois5?>';}
+  dimanche5 = <?php echo $Dimanche5?>;
+  annee5 ='<?php echo $AnneeActuelle5?>';
 
-/*<!--************************************************************************************************************-->
-  <!--===================================== FIN BLOCAGE DES JOURS NON CONSULTABLE ================================-->
-  <!--===================================== FIN BLOCAGE DES JOURS NON CONSULTABLE ================================-->
-  <!--************************************************************************************************************--*/
+  /*****Mois 6 *****/
+  if(<?php echo $leMois6?> > 9){mois6 = <?php echo $leMois6?>;}else{mois6 = '0'+'<?php echo $leMois6?>';}
+  dimanche6 = <?php echo $Dimanche6?>;
+  annee6 ='<?php echo $AnneeActuelle6?>';
+
+  /*****Mois 7 *****/
+ if(<?php echo $leMois7?> > 9){mois7 = <?php echo $leMois7?>;}else{mois7 = '0'+'<?php echo $leMois7?>';}
+  dimanche7 = <?php echo $Dimanche7?>;
+  annee7 ='<?php echo $AnneeActuelle7?>';
+  /****************************
+  *===========================
+   **************************/
+          bloquerDate();
+  /**************************
+   * ========================
+   **************************/
+
+  /*<!--************************************************************************************************************-->
+    <!--===================================== FIN BLOCAGE DES JOURS NON CONSULTABLE ================================-->
+    <!--===================================== FIN BLOCAGE DES JOURS NON CONSULTABLE ================================-->
+    <!--************************************************************************************************************--*/
 
 </script>
 
@@ -279,10 +313,15 @@ $(window).load(function () {
                                                 <input type="hidden" id="delai-rv_tampon" name="delai_rv_tampon">
                                             </th>
                                         </tr>
-                                        <tr style="width: 100%;">
-                                            <th colspan='4'>
-                                                 <div class='block' id='thoughtbot' style=' vertical-align: bottom; padding-left:60%; padding-top: 35px; font-size: 18px; font-weight: bold;'><button id='terminer' name= 'terminer'>Terminer</button></div>
+                                       <tr class="form-rendezvous" style="width: 100%;">
+                                                
+                                            <th colspan='1' >
+                                                 <div class='block' id='thoughtbot' style=' vertical-align: bottom; float: right; padding-left:10%; padding-top: 35px; font-size: 18px; font-weight: bold;'> <button id='annuler' >Annuler</button></div>
                                             </th>
+                                            <th colspan='4'>
+                                                 <div class='block' id='thoughtbot' style=' vertical-align: bottom; float: left; padding-left:5%; padding-top: 35px; font-size: 18px; font-weight: bold;'><button id='terminer' >Terminer</button></div>
+                                            </th>
+                                        
                                         </tr>
                                   </table>
 
@@ -303,4 +342,21 @@ $("#rendez_vous_orl").replaceWith("<li id='rendez_vous_orl' style='background:#4
 dep_rendez_vous_orl1();
 $('#fixer_rendez_vous_style').css({'font-weight':'bold','color':'white','font-size':'18px'});
 
+</script>
+
+
+
+<script> 
+
+
+    $(document).keypress(function(e){
+	if(e.keyCode == 13){
+		e.preventDefault();
+	}
+    });
+    $('#annuler').click(function(){ 
+		 vart=tabUrl[0]+'public/secretariat/fixer-rendez-vous';
+	     $(location).attr("href",vart);
+	     return false;
+	});
 </script>

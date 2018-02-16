@@ -154,6 +154,9 @@ return array(
     								'impression-facture-acte' => 'facturation',
     								
     								'liste-admission-bloc-ajax' =>  array('major', 'medecin', 'facturation'),
+    								'informations-statistiques' =>  array('major', 'medecin', 'facturation'),
+    								'informations-complementaires' =>  array('major', 'medecin', 'facturation'),
+    								'informations-complementaires-ajax' =>  array('major', 'medecin', 'facturation'),
     								
     								
     								
@@ -571,7 +574,10 @@ return array(
     							    'vue-infos-patient' => 'medecin',
     								'recherche-visualisation-fiche-observation-clinique' => 'medecin',
     								'visualisation-note-medicale-precedente' => 'medecin',
-    								
+    								'visualisation-thyroide' => 'medecin',
+    								'demande-examen-biologique' => 'medecin',
+    								'demande-examen' => 'medecin',
+    								'recherche-visualisation-thyroide' => 'medecin',
     						),
     						//secretariat
     						

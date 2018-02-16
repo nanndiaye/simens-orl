@@ -129,9 +129,9 @@ $(function(){
 	var observation = $("#observation");
 	
 	$("#chirurgical1").click(function(){
-		diagnostic_traitement_chirurgical.attr( 'readonly', true).css({'background':'#f8f8f8'});
-		intervention_prevue.attr( 'readonly', true).css({'background':'#f8f8f8'});
-		observation.attr( 'readonly', true).css({'background':'#f8f8f8'});
+		diagnostic_traitement_chirurgical.attr( 'readonly', false).css({'background':'#fff'});
+		intervention_prevue.attr( 'readonly', false).css({'background':'#fff'});
+		observation.attr( 'readonly', false).css({'background':'#fff'});
 		
 		$("#bouton_chirurgical_modifier").toggle(true);
 		$("#bouton_chirurgical_valider").toggle(false);	
@@ -148,9 +148,9 @@ $(function(){
 	observation.attr( 'readonly', false).css({'background':'#fff'});
 	
 	$("#bouton_chirurgical_valider").click(function(){
-		diagnostic_traitement_chirurgical.attr( 'readonly', true).css({'background':'#f8f8f8'});
-		intervention_prevue.attr( 'readonly', true).css({'background':'#f8f8f8'});
-		observation.attr( 'readonly', true).css({'background':'#f8f8f8'});
+		diagnostic_traitement_chirurgical.attr( 'readonly', false).css({'background':'#fff'});
+		intervention_prevue.attr( 'readonly', false).css({'background':'#fff'});
+		observation.attr( 'readonly', false).css({'background':'#fff'});
 		
 		$("#bouton_chirurgical_modifier").toggle(true);
 		$("#bouton_chirurgical_valider").toggle(false);
@@ -486,6 +486,11 @@ $(function(){
        return false;
     });
 	
+	$("#terminer333").click(function(){
+		window.location.href = tabUrl[0]+"public/orl/espace-recherche-med";   
+		return false;
+	});
+	
 	//******************* POPUP ENVOIE DEMANDE OPERATION VPA ********************************
     function confirmationDemandeOperation(){
     	$( "#popupVPA" ).dialog({
@@ -700,7 +705,12 @@ $(function(){
 	    
 	 // **********-- Donnees de l'examen clinique --*******
 	    donnees['examen_clinique'] = $("#examen_clinique").val();
+	    donnees['reste_examen_clinique'] = $("#reste_examen_clinique").val();
 	    donnees['examen_para_clinique'] = $("#examen_para_clinique").val();
+	    
+		 // **********-- Nouvelle note medicale --*******
+	    donnees['nouvelle_note_medicale'] = $("#nouvelle_note_medicale").val();
+
 	    
 	    //**********-- ANALYSE BIOLOGIQUE --************
         //**********-- ANALYSE BIOLOGIQUE --************
@@ -745,7 +755,7 @@ $(function(){
 		//*********** TRAITEMENTS CHIRURGICAUX ************
 	    donnees['diagnostic_traitement_chirurgical'] = $("#diagnostic_traitement_chirurgical").val();
 	    donnees['intervention_prevue'] = $("#intervention_prevue").val();
-	    donnees['type_anesthesie_demande'] = $("#type_anesthesie_demande").val();
+	    donnees['type_anesthesie'] = $("#type_anesthesie").val();
 	    donnees['numero_vpa'] = $("#numero_vpa").val();
 	    donnees['observation'] = $("#observation").val();
 	    donnees['note_compte_rendu_operatoire'] = $("#note_compte_rendu_operatoire").val();
@@ -939,6 +949,12 @@ $(function(){
 		if(!donnees['htaAF']){ donnees['htaAF'] = 0;}
 		donnees['NoteHtaAF'] = $("#NoteHtaAF").val();
 		
+		donnees['AsthmeAF'] = $("#AsthmeAF:checked").val(); 
+		if(!donnees['AsthmeAF']){ donnees['AsthmeAF'] = 0;}
+
+		donnees['dislipAF'] = $("#dislipAF:checked").val(); 
+		if(!donnees['dislipAF']){ donnees['dislipAF'] = 0;}
+		
 		donnees['autresAF'] = $("#autresAF:checked").val(); 
 		if(!donnees['autresAF']){ donnees['autresAF'] = 0;}
 		donnees['NoteAutresAF'] = $("#NoteAutresAF").val();
@@ -964,6 +980,10 @@ $(function(){
 		donnees['autresMotifHospitalisation'] = $("#autresMotifHospitalisation").val();
 		// **=== HISTOIRE DE LA MALADIE
 		donnees['histoire_maladie'] = $("#histoire_maladie").val();
+		
+		// **=== PLAINTE(MOTIF DE CONSULTATION)
+		donnees['plainte_motif'] = $("#plainte_motif").val();
+		
 		// **=== EXAMENS COMPLEMENTAIRES
 		donnees['examen_complementaire'] = $("#examen_complementaire").val();		
 		// **=== PEAU CERVICO-FASCIALE
@@ -1412,6 +1432,14 @@ $(function(){
 			if(temoinhtaAF != 1){
 				$("#DivNoteHtaAF").toggle(false);
 			}
+			
+//			if(temoinAsthmeAF != 1){
+//				$("#DivNoteAsthmeAF").toggle(false);
+//			}
+//			
+//			if(temoindislipAF != 1){
+//				$("#DivNoteDislipAF").toggle(false);
+//			}
 			$("#DivNoteAutresAF").toggle(false);
 			
 			$('#AntecedentsFamiliaux input[name=DiabeteAF]').click(function(){ 
@@ -1432,6 +1460,19 @@ $(function(){
 				if( boutons[1].checked){ $("#DivNoteHtaAF").toggle(true); }
 				if(!boutons[1].checked){ $("#DivNoteHtaAF").toggle(false); }
 			});
+			
+//			$('#AntecedentsFamiliaux input[name=AsthmeAF]').click(function(){ 
+//				var boutons = $('#AntecedentsFamiliaux input[name=AsthmeAF]');
+//				if( boutons[1].checked){ $("#DivNoteAsthmeAF").toggle(true); }
+//				if(!boutons[1].checked){ $("#DivNoteAsthmeAF").toggle(false); }
+//			});
+//			
+//			
+//			$('#AntecedentsFamiliaux input[name=dislipAF]').click(function(){ 
+//				var boutons = $('#AntecedentsFamiliaux input[name=dislipAF]');
+//				if( boutons[1].checked){ $("#DivNoteDislipAF").toggle(true); }
+//				if(!boutons[1].checked){ $("#DivNoteDislipAF").toggle(false); }
+//			});
 			
 			$('#AntecedentsFamiliaux input[name=autresAF]').click(function(){ 
 				var boutons = $('#AntecedentsFamiliaux input[name=autresAF]');
