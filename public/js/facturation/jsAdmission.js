@@ -222,6 +222,67 @@ function declarer(id){
   
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+function imprimerStat(id){
+	
+	$("#termineradmission").replaceWith("<button id='termineradmission' style='height:35px;'>Terminer</button>");
+    $("#titre").replaceWith("<div id='titre2' style='font-family: police2; color: green; font-size: 18px; font-weight: bold; padding-left: 35px;'><iS style='font-size: 25px;'>&curren;</iS> ADMISSION </div>");	
+
+    //R�cup�ration des donn�es du patient
+    var cle = id;
+    var chemin = tabUrl[0]+'public/facturation/admission';
+    $.ajax({
+        type: 'POST',
+        url: chemin ,
+        data: $(this).serialize(),  
+        data:'id='+cle,
+        success: function(data) {    
+        	    var result = jQuery.parseJSON(data);  
+        	     $("#info_patient").html(result);
+        	     //PASSER A SUIVANT
+        	     $('#declarer_deces').animate({
+        	         height : 'toggle'
+        	      },1000);
+        	     $('#contenu').animate({
+        	         height : 'toggle'
+        	     },1000);
+        },
+        error:function(e){console.log(e);alert("Une erreur interne est survenue!");},
+        dataType: "html"
+    });
+    //Fin R�cup�ration des donn�es de la maman
+    
+    //Annuler l'enregistrement d'une naissance
+    $("#annuler").click(function(){
+    	$("#annuler").css({"border-color":"#ccc", "background":"-webkit-linear-gradient( #555, #CCC)", "box-shadow":"1px 1px 5px black inset,0 1px 0 rgba( 255, 255, 255, 0.4)"});
+    	
+	    vart = tabUrl[0]+'public/facturation/admission';
+	    $(location).attr("href",vart);
+        return false;
+    });
+    
+    $("#termineradmission").click(function(){
+    	this.attr('disabled',true);
+    	$("#envoyerDonneesForm").trigger("click");
+        return false;
+    });
+    $("#id_patient").val(id);
+  
+}
+
+
 var montant;
 function getmontant(id){
     var cle = id;

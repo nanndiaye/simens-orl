@@ -43,6 +43,9 @@ use Facturation\View\Helper\FacturePdf;
 use Facturation\View\Helper\FactureActePdf;
 use Facturation\Form\AdmissionBlocForm;
 use Facturation\Form\StatistiqueForm;
+use Orl\View\Helpers\StatistiquesImprimeesPdf;
+use Facturation\View\Helper\infosStatistiquePdf;
+use Facturation\View\Helper\infosStatistiqueDiagnosticPdf;
 
 class FacturationController extends AbstractActionController {
 	protected $dateHelper;
@@ -211,6 +214,7 @@ class FacturationController extends AbstractActionController {
 		$tab_service = array_merge ( $afficheTous, $listeService );
 		$formAdmission->get ( 'service' )->setValueOptions ( $service );
 		$formAdmission->get ( 'liste_service' )->setValueOptions ( $tab_service );
+		//var_dump($service);exit();
 		
 		if ($this->getRequest ()->isPost ()) {
 			
@@ -2612,14 +2616,63 @@ class FacturationController extends AbstractActionController {
 		$this->layout ()->setTemplate ( 'layout/facturation' );
 		$patientTable = $this->getPatientTable();
 		$infos = $this->getConsultationTable()->getInfosSousDossier();
-		//var_dump($infos);exit();
+		$listeDiagnostic = $this->getPatientTable ()->getListePatientNouvelle ();
+		//$nomDuService= $this->getPatientTable()->getServiceParId( 6 )['NOM'];
+		$nomDuSousDossier= $this->getPatientTable()->getSousDossierParId();
+		$formStatistique = new StatistiqueForm ();
+		$sousDossier = $this->getConsultationTable()->fetchSousDossier();
+ 		$formStatistique->get ( 'id_sous_dossier' )->setValueOptions ( $sousDossier );
+ 		
+ 		
+ 		
+ 		//LES PATIENTS ADMIS ET CONSULTES
+ 		$nbPatient = $this->getPatientTable()->nbPatientConsulte();
+  		$nbPatientF = $this->getPatientTable()->nbPatientConsulteSexeFem();
+  		$nbPatientM = $this->getPatientTable()->nbPatientConsulteSexeMas();
+ 			
+		$tabPatFM = array($nbPatientF, $nbPatientM);
+ 		$pourcentageSexe = $this->pourcentage_element_tab($tabPatFM, $nbPatient);
+ 		
+ 		
+ 		
+ 		
+ 		//var_dump($nomDuSousDossier);exit();
 		
-		return new ViewModel ( array (
-				'infos' => $infos
-		) );
+		return array (
+				'infos' => $infos,
+				'diagnostics' => $listeDiagnostic,
+				//'service' => $nomDuService, //a revoir
+			    'sousDossier' => $nomDuSousDossier,
+				'formStatistique' => $formStatistique,
+				'nbPatient' => $nbPatient,
+				'nbPatientF' => $nbPatientF,
+				'nbPatientM' => $nbPatientM,
+				'pourcentageSexe' => $pourcentageSexe,
+		 );
 	
 
-	}	
+	}
+
+	
+	function item_percentage($item, $total){
+	
+		if($total){
+			return number_format(($item * 100 / $total), 1);
+		}else{
+			return 0;
+		}
+	
+	}
+	
+	function pourcentage_element_tab($tableau, $total){
+		$resultat = array();
+	
+		foreach ($tableau as $tab){
+			$resultat [] = $this->item_percentage($tab, $total);
+		}
+	
+		return $resultat;
+	}
 	
 	
 	public function informationsComplementairesAjaxAction() {
@@ -2637,6 +2690,110 @@ class FacturationController extends AbstractActionController {
 		$view = new ViewModel ();
 		return $view;
 	}	
+	
+	
+	
+	
+	public function statistiquesImprimeesAction() {
+	
+		$control = new DateHelper();
+		
+		$id_service = (int) $this->params()->fromPost ('id_service');
+		$id_diagnostic = (int) $this->params()->fromPost ('id_diagnostic');
+		$date_debut = $this->params()->fromPost ('date_debut');
+		$date_fin   = $this->params()->fromPost ('date_fin');
+		
+		$periodeIntervention = array();
+		
+		
+				
+				 	
+
+		$listeSousDossier = $this->getConsultationTable()->getInfosSousDossier();
+				
+
+		//var_dump($listeSousDossier); exit();
+		
+		
+		$user = $this->layout()->user;
+		$nomService = $user['NomService'];
+		$infosComp['dateImpression'] = (new \DateTime ())->format( 'd/m/Y' );
+		
+		$pdf = new infosStatistiquePdf();
+		$pdf->SetMargins(13.5,13.5,13.5);
+		$pdf->setTabInformations($listeSousDossier);
+		
+		$pdf->setNomService($nomService);
+		$pdf->setInfosComp($infosComp);
+		//$pdf->setPeriodeIntervention($periodeIntervention);
+		
+		$pdf->ImpressionInfosStatistiques();
+		$pdf->Output('I');
+		
+		}
+		
+		public function statistiquesDiagnosticsImprimeesAction() {
+		
+			$control = new DateHelper();
+		
+			$id_service = (int) $this->params()->fromPost ('id_service');
+			$id_diagnostic = (int) $this->params()->fromPost ('id_diagnostic');
+			$date_debut = $this->params()->fromPost ('date_debut');
+			$date_fin   = $this->params()->fromPost ('date_fin');
+		
+			$periodeIntervention = array();
+		
+		
+		
+		
+		
+			$listeDiagnostic = $this->getPatientTable ()->getListePatientNouvelle ();
+		
+		
+			//var_dump($listeSousDossier); exit();
+		
+		
+			$user = $this->layout()->user;
+			$nomService = $user['NomService'];
+			$infosComp['dateImpression'] = (new \DateTime ())->format( 'd/m/Y' );
+		
+			$pdf = new infosStatistiqueDiagnosticPdf();
+			$pdf->SetMargins(13.5,13.5,13.5);
+			$pdf->setTabInformations($listeDiagnostic);
+		
+			$pdf->setNomService($nomService);
+			$pdf->setInfosComp($infosComp);
+			//$pdf->setPeriodeIntervention($periodeIntervention);
+		
+			$pdf->ImpressionInfosStatistiques();
+			$pdf->Output('I');
+		
+		}
+		
+		
+		
+		
+		function getTableauStatistiquesDiagnosticsParPeriodeAction(){
+		
+		
+			$id_service = (int) $this->params()->fromPost ('id_service');
+			$date_debut = $this->params()->fromPost ('date_debut');
+			$date_fin   = $this->params()->fromPost ('date_fin');
+		
+			$control = new DateHelper();
+			$infoPeriodeRapport ="Rapport du ".$control->convertDate($date_debut)." au ".$control->convertDate($date_fin);
+		
+			if($id_service == 0){
+				$listeDiagnostic = $this->getPatientTable()->getListeDiagnosticPourUnePeriode($date_debut, $date_fin);
+			}
+			
+			$tabInfos = array($infoPeriodeRapport);
+			
+			$this->getResponse ()->getHeaders ()->addHeaderLine ( 'Content-Type', 'application/html; charset=utf-8' );
+			return $this->getResponse()->setContent(Json::encode($tabInfos));
+		}
+	
+	
 	
 	
 	

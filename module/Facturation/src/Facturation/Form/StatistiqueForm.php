@@ -12,16 +12,30 @@ class StatistiqueForm extends Form{
 		$dateAujourdhui = $today->format( 'Y-m-d' );
 		
 		$this->add ( array (
-				'name' => 'id_service',
+				'name' => 'id_sous_dossier',
 				'type' => 'Select',
 				'options' => array (
-						'label' => iconv('ISO-8859-1', 'UTF-8','Choix du service'),
+						'label' => iconv('ISO-8859-1', 'UTF-8','Choix du sous dossier'),
 				),
 				'attributes' => array (
 						'registerInArrrayValidator' => true,
-						'onchange' => 'getInformationsService(this.value)',
-						'id' => 'id_service',
+						'onchange' => 'getInformationsSousDossier(this.value)',
+						'id' => 'id_sous_dossier',
 						'class' => 'select-element',
+				)
+		) );
+		
+		
+		$this->add ( array (
+				'name' => 'sous_dossier',
+				'type' => 'select',
+				'options' => array (
+						'label' => iconv('ISO-8859-1', 'UTF-8','Type Sous-Dossier'),
+				),
+				'attributes' => array (
+						'id' =>'sous_dossier',
+						'required' => true
+		
 				)
 		) );
 		
@@ -186,5 +200,26 @@ class StatistiqueForm extends Form{
 						'class' => 'diagnostic_rapport',
 				)
 		) );
+		
+		
+		
+		$this->add ( array (
+				'name' => 'SEXE',
+				'type' => 'Zend\Form\Element\Select',
+				'options' => array (
+						'label' => 'Sexe',
+						'value_options' => array (
+								'' => '',
+								'Masculin' => 'Masculin',
+								iconv ( 'ISO-8859-1', 'UTF-8','Féminin') => iconv ( 'ISO-8859-1', 'UTF-8','Féminin')
+						)
+				),
+				'attributes' => array (
+						'id' => 'SEXE',
+						//'required' => true,
+						//'tabindex' => 1,
+				)
+		) );		
+		
 	}
 }

@@ -206,6 +206,7 @@ div .dataTables_paginate
 
 #contenuPageA, #contenuPageB, #contenuPageC {
     background: #fff; 
+	min-height: 450px;
     max-height: 1000px;
     border: 2px solid #ccc ;
     border-bottom-right-radius: 10px;
@@ -1165,6 +1166,16 @@ font-family: Goudy Old Style;
 	background: #f4f4f4;
 	font-weight: bold;
 	font-size: 17px;
+}
+
+
+#barre
+{
+  /*background-color: #a8a8a8;*/
+  padding-bottom:20px; /*Pour s�parer le contenu de la bordure du bas du bloc*/
+  magin-bottom:15px; /*Pour s�parer la bordure du prochain �l�ment*/
+  border-bottom: 3px solid gray;/*Pour faire un trait gris horizontal*/
+  margin-left: 165px;
 }
 
 .piedTableauTotal .col2PiedTabTotal{

@@ -267,4 +267,105 @@ $(function() {
   		    var Age = age(birthday);
   		}
   		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
 });
+
+
+
+
+
+function imprimerRapportStatistique(){ 
+	
+		var id_service = $('#id_service_rapport').val();
+		var date_debut = $('#date_debut_rapport').val();
+		var date_fin = $('#date_fin_rapport').val();
+		var id_diagnostic = $('#diagnostic_rapport').val();
+		
+		var lienImpression =  tabUrl[0]+'public/facturation/statistiques-imprimees';
+		var imprimerInformationsStatistiques = document.getElementById("imprimerRapportInformationsStatistiques");
+		imprimerInformationsStatistiques.setAttribute("action", lienImpression);
+		imprimerInformationsStatistiques.setAttribute("method", "POST");
+		imprimerInformationsStatistiques.setAttribute("target", "_blank");
+		
+		// Ajout dynamique de champs dans le formulaire
+		var champ = document.createElement("input");
+		champ.setAttribute("type", "hidden");
+		champ.setAttribute("name", 'date_debut');
+		champ.setAttribute("value", date_debut);
+		imprimerInformationsStatistiques.appendChild(champ);
+		
+		var champ2 = document.createElement("input");
+		champ2.setAttribute("type", "hidden");
+		champ2.setAttribute("name", 'date_fin');
+		champ2.setAttribute("value", date_fin);
+		imprimerInformationsStatistiques.appendChild(champ2);
+		
+		var champ3 = document.createElement("input");
+		champ3.setAttribute("type", "hidden");
+		champ3.setAttribute("name", 'id_diagnostic');
+		champ3.setAttribute("value", id_diagnostic);
+		imprimerInformationsStatistiques.appendChild(champ3);
+		
+		var champ4 = document.createElement("input");
+		champ4.setAttribute("type", "hidden");
+		champ4.setAttribute("name", 'id_service');
+		champ4.setAttribute("value", id_service);
+		imprimerInformationsStatistiques.appendChild(champ4);
+
+		$("#imprimerRapportInformationsStatistiques button").trigger('click');
+		
+	}
+
+
+
+
+
+
+
+function imprimerRapportStatistiqueDiagnostics(){ 
+	
+	var id_service = $('#id_service_rapport').val();
+	var date_debut = $('#date_debut_rapport').val();
+	var date_fin = $('#date_fin_rapport').val();
+	var id_diagnostic = $('#diagnostic_rapport').val();
+	
+	var lienImpression =  tabUrl[0]+'public/facturation/statistiques-diagnostics-imprimees';
+	var imprimerInformationsStatistiques = document.getElementById("imprimerRapportInformationsStatistiques");
+	imprimerInformationsStatistiques.setAttribute("action", lienImpression);
+	imprimerInformationsStatistiques.setAttribute("method", "POST");
+	imprimerInformationsStatistiques.setAttribute("target", "_blank");
+	
+	// Ajout dynamique de champs dans le formulaire
+	var champ = document.createElement("input");
+	champ.setAttribute("type", "hidden");
+	champ.setAttribute("name", 'date_debut');
+	champ.setAttribute("value", date_debut);
+	imprimerInformationsStatistiques.appendChild(champ);
+	
+	var champ2 = document.createElement("input");
+	champ2.setAttribute("type", "hidden");
+	champ2.setAttribute("name", 'date_fin');
+	champ2.setAttribute("value", date_fin);
+	imprimerInformationsStatistiques.appendChild(champ2);
+	
+	var champ3 = document.createElement("input");
+	champ3.setAttribute("type", "hidden");
+	champ3.setAttribute("name", 'id_diagnostic');
+	champ3.setAttribute("value", id_diagnostic);
+	imprimerInformationsStatistiques.appendChild(champ3);
+	
+	var champ4 = document.createElement("input");
+	champ4.setAttribute("type", "hidden");
+	champ4.setAttribute("name", 'id_service');
+	champ4.setAttribute("value", id_service);
+	imprimerInformationsStatistiques.appendChild(champ4);
+
+	$("#imprimerRapportInformationsStatistiques button").trigger('click');
+	
+}

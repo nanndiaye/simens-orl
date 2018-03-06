@@ -263,7 +263,7 @@ class PatientTable {
 	
 	
 	
-	public function getListePatientNouvelle(){
+	public function getListePatientNouvelleanc(){
 		$today = new \DateTime();
 		$date = $today->format('Y-m-d');
 		$db = $this->tableGateway->getAdapter();
@@ -391,6 +391,98 @@ class PatientTable {
 	
 	
 	
+	public function nbPatientConsulte(){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))
+		->columns(array('*'))
+		->join(array('pat' => 'patient') , 'pers.ID_PERSONNE = pat.ID_PERSONNE' , array('*'))
+		->join(array('c' => 'consultation') , 'c.id_patient = pat.ID_PERSONNE' , array('*'));
+		
+	
+		$requete = $sql->prepareStatementForSqlObject($sQuery)->execute()->count();
+	
+		return $requete;
+	}
+	
+	/**
+	 * NOMBRE DE PATIENTS CONSULTES DE SEXE FEMININ
+	 */
+	public function nbPatientConsulteSexeFem(){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))
+		->columns(array('*'))
+		->join(array('pat' => 'patient') , 'pers.ID_PERSONNE = pat.ID_PERSONNE' , array('*'))
+		->join(array('c' => 'consultation') , 'c.id_patient = pat.ID_PERSONNE' , array('*'))
+		->where(array('pers.SEXE' => 'FéMININ'));
+	
+		$requete = $sql->prepareStatementForSqlObject($sQuery)->execute()->count();
+	
+		return $requete;
+	}
+	
+	
+	/**
+	 * NOMBRE DE PATIENTS CONSULTES DE SEXE MASCULIN
+	 */
+	public function nbPatientConsulteSexeMas(){
+		$db = $this->tableGateway->getAdapter();
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))
+		->columns(array('*'))
+		->join(array('pat' => 'patient') , 'pers.ID_PERSONNE = pat.ID_PERSONNE' , array('*'))
+		->join(array('c' => 'consultation') , 'c.id_patient = pat.ID_PERSONNE' , array('*'))
+		->where(array('pers.SEXE' => 'MASCULIN'));
+	
+		$requete = $sql->prepareStatementForSqlObject($sQuery)->execute()->count();
+	
+		return $requete;
+	}
+	
+	
+	
+	
+	public function getListePatientNouvelle(){
+		$adapter = $this->tableGateway->getAdapter ();
+		$sql = new Sql ( $adapter );
+		$select = $sql->select ();
+		$select->columns( array( '*' ));
+		$select->from( array('c' => 'consultation'));
+		$select->join( array('d' => 'diagnostic'), 'c.ID_CONS = d.id_cons' , array('*'));
+		$stat = $sql->prepareStatementForSqlObject ( $select );
+		$result = $stat->execute ();
+	
+		$donnees = array();
+		$tabTypePathologie = array();
+		foreach ($result as $resultat){
+				
+			$donnees[] = $resultat['libelle_diagnostics'];
+				
+			if(!in_array( $resultat['libelle_diagnostics'], $tabTypePathologie)){
+				$tabTypePathologie[] =  $resultat['libelle_diagnostics'];
+			}
+		}
+	
+		return array($tabTypePathologie, array_count_values($donnees));
+	}
+	
+	
+	
+	public function getListeDiagnosticPourUnePeriode($date_debut, $date_fin){
+	
+		$listeDiagnostic = $this->tableGateway->select(function(Select $select) use ($date_debut, $date_fin){
+			$select->join(array('c' => 'consultation'), 'c.ID_CONS = id', array('*'));
+			$select->join(array('d' => 'diagnostic'), 'c.ID_CONS = d.ID_CONS', array('*'));
+			$select->where(array('c.date  >= ?' => $date_debut, 'c.date <= ?' => $date_fin));
+		
+		})->toArray();
+	
+		return $listeDiagnostic;
+	}
 	
 	
 	
@@ -830,6 +922,20 @@ class PatientTable {
 		$resultat = $stat->execute()->current();
 		
 		return $resultat;
+	}
+	
+	public function getSousDossierParId(){
+		$adapter = $this->tableGateway->getAdapter();
+		$sql = new Sql($adapter);
+		$select = $sql->select();
+		$select->from(array('s'=>'sous_dossier'));
+		$select->columns(array('id_sous_dossier','type_dossier'));
+		$stat = $sql->prepareStatementForSqlObject($select);
+		$result = $stat->execute();
+		foreach ($result as $data) {
+			$options[$data['id_sous_dossier']] = $data['type_dossier'];
+		}
+		return $options;
 	}
 	
 	public function deletePatient($id) {
@@ -1789,6 +1895,132 @@ class PatientTable {
 		$stat = $sql2->prepareStatementForSqlObject($subselect1);
 		return $stat->execute();
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	public function getListePatientsAdmisBloc(){
+		$db = $this->tableGateway->getAdapter();
+		$aColumns = array('Nom','Prenom','Datenaissance','Sexe', 'Adresse', 'Nationalite', 'id');
+		/* Indexed column (used for fast and accurate table cardinality) */
+		$sIndexColumn = "id";
+		/*
+		 * Paging
+		*/
+		$sLimit = array();
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$sLimit[0] = $_GET['iDisplayLength'];
+			$sLimit[1] = $_GET['iDisplayStart'];
+		}
+		/*
+		 * Ordering
+		*/
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{
+			$sOrder = array();
+			$j = 0;
+			for ( $i=0 ; $i<intval( $_GET['iSortingCols'] ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($_GET['iSortCol_'.$i]) ] == "true" )
+				{
+					$sOrder[$j++] = $aColumns[ intval( $_GET['iSortCol_'.$i] ) ]."
+								 	".$_GET['sSortDir_'.$i];
+				}
+			}
+		}
+		$date = (new \DateTime ( 'now' ))->format ( 'Y-m-d' );
+		/*
+		 * SQL queries
+		*/
+		$sql = new Sql($db);
+		$sQuery = $sql->select()
+		->from(array('pers' => 'personne'))->columns(array('Nom'=>'NOM','Prenom'=>'PRENOM','Datenaissance'=>'DATE_NAISSANCE','Sexe'=>'SEXE','Adresse'=>'ADRESSE','Nationalite'=>'NATIONALITE_ACTUELLE','Taille'=>'TAILLE','id'=>'ID_PERSONNE'))
+		->join(array('pat' => 'patient') , 'pers.ID_PERSONNE = pat.ID_PERSONNE' , array('*'))
+		->join(array('c' => 'consultation') , 'c.ID_PATIENT = pat.ID_PERSONNE' , array('*'))
+		->join(array('a' => 'admission_bloc') , 'a.id_cons = c.ID_CONS' , array('*'))
+		->join(array('se' => 'service_employe') , 'se.id_employe = a.operateur' , array('*'))
+		->join(array('s' => 'service') , 's.ID_SERVICE = se.id_service' , array('NomService' => 'NOM'))
+		->order(array('a.date' => 'DESC' , 'a.heure' => 'DESC'));
+		/* Data set length after filtering */
+		$stat = $sql->prepareStatementForSqlObject($sQuery);
+		$rResultFt = $stat->execute();
+		$iFilteredTotal = count($rResultFt);
+		$rResult = $rResultFt;
+		$output = array(
+				"iTotalDisplayRecords" => $iFilteredTotal,
+				"aaData" => array()
+		);
+	
+		/*
+		 * $Control pour convertir la date en fran�ais
+		*/
+		$Control = new DateHelper();
+	
+		/*
+		 * ADRESSE URL RELATIF
+		*/
+		$baseUrl = $_SERVER['REQUEST_URI'];
+		$tabURI  = explode('public', $baseUrl);
+	
+		/*
+		 * Pr�parer la liste
+		*/
+		foreach ( $rResult as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					if ($aColumns[$i] == 'Nom'){
+						$row[] = "<khass id='nomMaj'>".$aRow[ $aColumns[$i]]."</khass>";
+					}
+	
+					else if ($aColumns[$i] == 'Datenaissance') {
+						$date = $aRow[ $aColumns[$i] ];
+						if($date){ $date = $Control->convertDate($date); } else { $date = null; }
+						$row[] = $date;
+					}
+	
+					else if ($aColumns[$i] == 'Adresse') {
+						$row[] = $this->adresseText($aRow[ $aColumns[$i] ]);
+					}
+	
+					else if ($aColumns[$i] == 'id') {
+						$html ="<infoBulleVue> <a href='javascript:affichervue(".$aRow[ $aColumns[$i] ].",".$aRow[ 'id_admission' ].")' >";
+						$html .="<img style='margin-right: 15%;' src='".$tabURI[0]."public/images_icons/voir2.png'></a> </infoBulleVue>";
+	
+						if(!$this->getProtocoleOperatoire($aRow[ 'id_admission' ])){
+							$html .= "<infoBulleVue> <a id='".$aRow[ 'id_admission' ]."' href='javascript:envoyer(".$aRow[ 'id_admission' ].")' >";
+							$html .="<img style='display: inline; margin-right: 15%;' src='".$tabURI[0]."public/images_icons/symbol_supprimer.png'></a> </infoBulleVue>";
+						}
+	
+	
+						$html .="<span style='display: none;'> ".$aRow[ 'NomService' ]." </span>";
+						$html .="<span style='display: none;'> ".$aRow[ 'date' ]." </span>";
+	
+						$row[] = $html;
+					}
+	
+					else {
+						$row[] = $aRow[ $aColumns[$i] ];
+					}
+	
+				}
+			}
+			$output['aaData'][] = $row;
+		}
+		return $output;
+	}
+	
+	
+	
 	
 	
 	

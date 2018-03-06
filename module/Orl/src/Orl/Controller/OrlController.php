@@ -7452,7 +7452,7 @@ class OrlController extends AbstractActionController {
 		$form->get ( 'id_patient' )->setValue ($id_pat);
 		$form->get ( 'id_admission' )->setValue ($id_admission);
 		
-		//var_dump($form); exit();
+		//var_dump($sous_dossier); exit();
 	
 		return array (
 				'lesdetails' => $liste,
