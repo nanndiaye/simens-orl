@@ -157,6 +157,9 @@ return array(
     								'informations-statistiques' =>  array('major', 'medecin', 'facturation'),
     								'informations-complementaires' =>  array('major', 'medecin', 'facturation'),
     								'informations-complementaires-ajax' =>  array('major', 'medecin', 'facturation'),
+    								'statistiques-imprimees'=>  array('major', 'medecin', 'facturation'),
+    								'statistiques-diagnostics-imprimees'=>  array('major', 'medecin', 'facturation'),
+    								'get-tableau-statistiques-diagnostics-par-periode'=>  array('major', 'medecin', 'facturation'),
     								
     								
     								

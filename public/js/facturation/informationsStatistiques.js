@@ -1,6 +1,259 @@
 var base_url = window.location.toString();
 var tabUrl = base_url.split("public");
+var saveStatOption1 = 0;
+var saveStatOption2 = 0;
+var saveStatOption3 = 0;
+function initialisation (){
 	
+	$('#visualiserResultatParDateIntervention').click(function(){
+		getInformationsStatistiquesParDateIntervention();
+	});
+	
+	$('#iconeReinitialiserDateIntervention').click(function(){
+		getFonctionReinitialisationDateIntervention();
+	});
+	
+	//GESTION DE LA PAGE INFOS 1
+	//GESTION DE LA PAGE INFOS 1
+	$('#menuOption1').click(function(){ 
+		$('#menuGeneral').fadeOut(function(){
+			$('#menu_infos').html('INFOS STATISTIQUES');
+			$('#contenuPageA').fadeIn();
+			$('#contenuInterface').css({'visibility' : 'visible'}); 
+		});
+	});
+
+	
+	$('#retourPageAMenuInfos').click(function(){
+		if(saveStatOption1 == 1){
+			vart = tabUrl[0]+'public/facturation/informations-statistiques';
+		    $(location).attr("href",vart);
+		}else{ 
+			$('#contenuPageA').fadeOut(function(){
+				$('#menu_infos').html('MENU INFOS');
+				$('#menuGeneral').fadeIn();
+				//$('#iconeInfosPremiereIntervention').css({'visibility' : 'hidden'});
+			});
+		}
+	});
+
+	
+	//GESTION DE LA PAGE INFOS 2
+	//GESTION DE LA PAGE INFOS 2
+	$('#menuOption2').click(function(){
+		$('#menuGeneral').fadeOut(function(){
+			$('#menu_infos').html('INFOS STATISTIQUES OPTIONNELLES-DIAGNOSTICS');
+			$('#contenuPageB').fadeIn();
+			$('#contenuInterface').css({'visibility' : 'visible'});
+		});
+	});
+
+	$('#retourPageBMenuInfos').click(function(){
+		if(saveStatOption2 == 1){
+			vart = tabUrl[0]+'public/facturation/informations-statistiques';
+		    $(location).attr("href",vart);
+		}else{
+			$('#contenuPageB').fadeOut(function(){
+				$('#menu_infos').html('MENU INFOS');
+				$('#menuGeneral').fadeIn();
+				//$('#iconeInfosPremiereIntervention').css({'visibility' : 'hidden'});
+			});
+		}
+	});
+	
+
+	
+	//GESTION DE LA PAGE INFOS 3
+	//GESTION DE LA PAGE INFOS 3
+	$('#menuOption3').click(function(){
+		$('#menuGeneral').fadeOut(function(){
+			$('#menu_infos').html('INFOS STATISTIQUES OPTIONNELLES-GENRE');
+			$('#contenuPageC').fadeIn();
+			$('#contenuInterface').css({'visibility' : 'visible'});
+		});
+	});
+
+	$('#retourPageCMenuInfos').click(function(){
+		if(saveStatOption3 == 1){
+			vart = tabUrl[0]+'public/facturation/informations-statistiques';
+		    $(location).attr("href",vart);
+		}else{
+			$('#contenuPageC').fadeOut(function(){
+				$('#menu_infos').html('MENU INFOS');
+				$('#menuGeneral').fadeIn();
+				//$('#iconeInfosPremiereIntervention').css({'visibility' : 'hidden'});
+			});
+		}
+	});	
+	
+}
+
+
+//GESTION DE L'AFFICHAGE DES STATISTIQUES LORS DE LA SELECTION D'UN SOUS DOSSIER
+//GESTION DE L'AFFICHAGE DES STATISTIQUES LORS DE LA SELECTION D'UN SOUS DOSSIER
+function getInformationsSousDossier(id_sous_dossier){ 
+	$('.affichageResultatOptionsChoisi div').html('<table> <tr> <td style="padding-top: 60px;"> Chargement </td> </tr>  <tr> <td align="center"> <img style="margin-top: 20px; width: 70px; height: 70px;" src="../images/loading/Chargement_1.gif" /> </td> </tr> </table>');
+	$('#titreResultatOptionChoisi').html("");
+	$('#tableauResultatOptionChoisi').html("");
+	//getInformationsStatistiquesOptionnelles(id_service);
+}
+
+function informationsOptionnelles(PileOPS) {
+	var affichageResultatOptionsChoisi = new CanvasJS.Chart("affichageResultatOptionsChoisi", {
+		data: [{
+			type: "column",
+			dataPoints: PileOPS
+		}]
+
+	});
+	
+	affichageResultatOptionsChoisi.render();
+}
+
+
+
+//AFFICHAGE STATISTIQUES LORS DE LA SELECTION DES DATES
+//AFFICHAGE STATISTIQUES LORS DE LA SELECTION DES DATES
+function getListeDateDebut(infos){
+	
+	var date_debut = document.getElementById('date_debut');
+	var date_fin = document.getElementById('date_fin');
+	
+	if(!date_debut.validity.valid){ 
+		$('#visualiserResultatParDateIntervention').toggle(false);
+		$('#ValidationInformation').trigger('click'); 
+	}
+	else{
+		if(date_fin.validity.valid){
+			if(date_debut.value > date_fin.value){
+				date_fin.value = date_debut.value;
+			}
+			$('#visualiserResultatParDateIntervention').toggle(true);
+			$('#iconeReinitialiserDateIntervention').css({'visibility':'visible'});
+		}else{
+			$('#visualiserResultatParDateIntervention').toggle(false);
+		}
+	}
+	
+}
+
+function getListeDateFin(infos){
+
+	var date_fin = document.getElementById('date_fin');
+	var date_debut = document.getElementById('date_debut');
+	
+	if(!date_fin.validity.valid){ 
+		$('#visualiserResultatParDateIntervention').toggle(false);
+		$('#ValidationInformation').trigger('click'); 
+	}
+	else{
+		if(date_debut.validity.valid){ 
+			if(date_debut.value > date_fin.value){
+				date_debut.value = date_fin.value;
+			}
+			$('#visualiserResultatParDateIntervention').toggle(true);
+			$('#iconeReinitialiserDateIntervention').css({'visibility':'visible'});
+		}else{
+			$('#visualiserResultatParDateIntervention').toggle(false);
+		}
+	}
+}
+
+
+
+
+
+//Afficher les informations lors de la saisie d'une date_debut et date_fin
+//Afficher les informations lors de la saisie d'une date_debut et date_fin
+function getInformationsDatedebutDatefinRapport(){
+	var id_servive_rapport = $('#id_service_rapport').val();
+	var date_debut_rapport = $('#date_debut_rapport').val();
+	var date_fin_rapport = $('#date_fin_rapport').val();
+	
+	if(date_debut_rapport && date_fin_rapport){
+		$('#listeTableauInfosStatistiques').html('<table> <tr> <td style="padding-top: 10px;"> Chargement </td> </tr>  <tr> <td align="center" style="padding-bottom: 40px;"> <img style="margin-top: 20px; width: 70px; height: 70px;" src="../images/loading/Chargement_1.gif" /> </td> </tr> </table>');
+		$.ajax({
+			url: tabUrl[0]+"public/facturation/get-tableau-statistiques-diagnostics-par-periode",
+			type: 'post',
+			data: {'id_service' : id_servive_rapport, 'date_debut' : date_debut_rapport, 'date_fin' : date_fin_rapport},
+			success: function( data ) {
+				var resultat = jQuery.parseJSON(data); 
+				$('#titreResultatRapportOptionChoisi div span').html(resultat[1]);
+				$('#tableauResultatRapportOptionChoisi div').html(resultat[0]);
+				
+				$('#diagnostic_rapport').val(0);
+			}
+		});
+	
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 var saveStatOption1 = 0;
 var saveStatOption2 = 0;
 var saveStatOption3 = 0;
@@ -31,7 +284,7 @@ function initialisation (){
 		$('#menuGeneral').fadeOut(function(){
 			$('#menu_infos').html('INFOS STATISTIQUES');
 			$('#contenuPageA').fadeIn();
-			$('#iconeInfosPremiereIntervention').css({'visibility' : 'visible'}); 
+			$('#contenuInterface').css({'visibility' : 'visible'}); 
 		});
 	});
 
@@ -1135,46 +1388,46 @@ function getListeDiagnosticRapport(id_diagnostic){
 
 	}
 }
-
+*/
 //Imprimer les rapports des diagnostics des intervention
 //Imprimer les rapports des diagnostics des intervention
-function imprimerRapportStatistique(){
-	var id_service = $('#id_service_rapport').val();
-	var date_debut = $('#date_debut_rapport').val();
-	var date_fin = $('#date_fin_rapport').val();
-	var id_diagnostic = $('#diagnostic_rapport').val();
-	
-	var lienImpression =  tabUrl[0]+'public/facturation/imprimer-rapport-des-diagnostics-des-interventions';
-	var imprimerInformationsStatistiques = document.getElementById("imprimerRapportInformationsStatistiques");
-	imprimerInformationsStatistiques.setAttribute("action", lienImpression);
-	imprimerInformationsStatistiques.setAttribute("method", "POST");
-	imprimerInformationsStatistiques.setAttribute("target", "_blank");
-	
-	// Ajout dynamique de champs dans le formulaire
-	var champ = document.createElement("input");
-	champ.setAttribute("type", "hidden");
-	champ.setAttribute("name", 'date_debut');
-	champ.setAttribute("value", date_debut);
-	imprimerInformationsStatistiques.appendChild(champ);
-	
-	var champ2 = document.createElement("input");
-	champ2.setAttribute("type", "hidden");
-	champ2.setAttribute("name", 'date_fin');
-	champ2.setAttribute("value", date_fin);
-	imprimerInformationsStatistiques.appendChild(champ2);
-	
-	var champ3 = document.createElement("input");
-	champ3.setAttribute("type", "hidden");
-	champ3.setAttribute("name", 'id_diagnostic');
-	champ3.setAttribute("value", id_diagnostic);
-	imprimerInformationsStatistiques.appendChild(champ3);
-	
-	var champ4 = document.createElement("input");
-	champ4.setAttribute("type", "hidden");
-	champ4.setAttribute("name", 'id_service');
-	champ4.setAttribute("value", id_service);
-	imprimerInformationsStatistiques.appendChild(champ4);
-
-	$("#imprimerRapportInformationsStatistiques button").trigger('click');
-	
-}
+//function imprimerRapportStatistique(){
+//	var id_service = $('#id_service_rapport').val();
+//	var date_debut = $('#date_debut_rapport').val();
+//	var date_fin = $('#date_fin_rapport').val();
+//	var id_diagnostic = $('#diagnostic_rapport').val();
+//	
+//	var lienImpression =  tabUrl[0]+'public/facturation/imprimer-rapport-des-diagnostics-des-interventions';
+//	var imprimerInformationsStatistiques = document.getElementById("imprimerRapportInformationsStatistiques");
+//	imprimerInformationsStatistiques.setAttribute("action", lienImpression);
+//	imprimerInformationsStatistiques.setAttribute("method", "POST");
+//	imprimerInformationsStatistiques.setAttribute("target", "_blank");
+//	
+//	// Ajout dynamique de champs dans le formulaire
+//	var champ = document.createElement("input");
+//	champ.setAttribute("type", "hidden");
+//	champ.setAttribute("name", 'date_debut');
+//	champ.setAttribute("value", date_debut);
+//	imprimerInformationsStatistiques.appendChild(champ);
+//	
+//	var champ2 = document.createElement("input");
+//	champ2.setAttribute("type", "hidden");
+//	champ2.setAttribute("name", 'date_fin');
+//	champ2.setAttribute("value", date_fin);
+//	imprimerInformationsStatistiques.appendChild(champ2);
+//	
+//	var champ3 = document.createElement("input");
+//	champ3.setAttribute("type", "hidden");
+//	champ3.setAttribute("name", 'id_diagnostic');
+//	champ3.setAttribute("value", id_diagnostic);
+//	imprimerInformationsStatistiques.appendChild(champ3);
+//	
+//	var champ4 = document.createElement("input");
+//	champ4.setAttribute("type", "hidden");
+//	champ4.setAttribute("name", 'id_service');
+//	champ4.setAttribute("value", id_service);
+//	imprimerInformationsStatistiques.appendChild(champ4);
+//
+//	$("#imprimerRapportInformationsStatistiques button").trigger('click');
+//	
+//}

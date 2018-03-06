@@ -134,7 +134,21 @@ class ConsultationTable {
 		return array($tabTypePathologie, array_count_values($donnees));
 	}
 	
+	public function fetchSousDossier()
+	{
+		$adapter = $this->tableGateway->getAdapter ();
+		$sql = new Sql($adapter);
+		$select = $sql->select('sous_dossier');
+		$select->columns(array('id_sous_dossier', 'type_dossier'));
+		$stat = $sql->prepareStatementForSqlObject($select);
+		$result = $stat->execute();
 	
+		$options = array(null => 'Tous');
+		foreach ($result as $data) {
+			$options[$data['id_sous_dossier']] = $data['type_dossier'];
+		}
+		return $options;
+	}
 	
 	
 	public function getListePatientsDiagnostiquesAjax(){
